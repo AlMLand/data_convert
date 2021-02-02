@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -42,6 +43,12 @@ public class AppConfig {
 	@Value("${hibernate.jdbc.batch_size}")String batch_size;
 	@Value("${hibernate.jdbc.fetch_size}")String fetch_size;
 	@Value("${hibernate.hbm2ddl.auto}")String ddl_auto;
+	@Autowired 
+	private StringToLocalDateConverter stringToLocalDateConverter; 
+	@Autowired
+	private EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter; 
+	@Autowired
+	private EmployeeToEmployeeEntityConverter employeeToEmployeeEntityConverter;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -81,27 +88,12 @@ public class AppConfig {
 	public ConversionServiceFactoryBean conversionServiceFactoryBean() {
 		ConversionServiceFactoryBean conversionServiceFactoryBean = new ConversionServiceFactoryBean();
 		Set<Converter> converters = new HashSet<Converter>();
-		converters.add(employeeToEmployeeEntityConverter());
-		converters.add(employeeEntityToEmployeeConverter());
-		converters.add(stringToLocalDateConverter());
+		converters.add(employeeEntityToEmployeeConverter);
+		converters.add(employeeToEmployeeEntityConverter);
+		converters.add(stringToLocalDateConverter);
 		conversionServiceFactoryBean.setConverters(converters);
 		conversionServiceFactoryBean.afterPropertiesSet();
 		return conversionServiceFactoryBean;
-	}
-	
-	@Bean
-	public EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter() {
-		return new EmployeeEntityToEmployeeConverter();
-	}
-	
-	@Bean
-	public EmployeeToEmployeeEntityConverter employeeToEmployeeEntityConverter() {
-		return new EmployeeToEmployeeEntityConverter();
-	}
-	
-	@Bean
-	public StringToLocalDateConverter stringToLocalDateConverter() {
-		return new StringToLocalDateConverter();
 	}
 
 }
