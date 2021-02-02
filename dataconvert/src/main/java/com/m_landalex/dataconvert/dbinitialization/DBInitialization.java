@@ -24,10 +24,10 @@ public class DBInitialization {
 	@PostConstruct
 	public void init() throws MalformedURLException, ResourceNullException {
 		employeeService.save(Employee.builder()
-				.firstName("Alex")
-				.lastName("Morland")
-				.birthDate(stringToLocalDateConverter.convert("1985-06-05"))
-				.webSite(new URL("http://alexmorland.com/"))
+				.firstName("Al")
+				.lastName("M_land")
+				.birthDate(stringToLocalDateConverter.convert("2000-01-01"))
+				.webSite(new URL("http://alm_land.com/"))
 				.build());
 	}
 	
