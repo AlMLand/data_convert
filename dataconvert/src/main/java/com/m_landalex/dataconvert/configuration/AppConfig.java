@@ -25,6 +25,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import com.m_landalex.dataconvert.converter.EmployeeEntityToEmployeeConverter;
 import com.m_landalex.dataconvert.converter.EmployeeToEmployeeEntityConverter;
+import com.m_landalex.dataconvert.converter.LocalDateToStringConverter;
 import com.m_landalex.dataconvert.converter.StringToLocalDateConverter;
 
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
@@ -45,6 +46,8 @@ public class AppConfig {
 	@Value("${hibernate.hbm2ddl.auto}")String ddl_auto;
 	@Autowired 
 	private StringToLocalDateConverter stringToLocalDateConverter; 
+	@Autowired
+	private LocalDateToStringConverter localDateToStringConverter;
 	@Autowired
 	private EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter; 
 	@Autowired
@@ -83,14 +86,14 @@ public class AppConfig {
 		return bean.getNativeEntityManagerFactory();
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Bean
 	public ConversionServiceFactoryBean conversionServiceFactoryBean() {
 		ConversionServiceFactoryBean conversionServiceFactoryBean = new ConversionServiceFactoryBean();
-		Set<Converter> converters = new HashSet<Converter>();
+		Set<Converter<?, ?>> converters = new HashSet<>();
 		converters.add(employeeEntityToEmployeeConverter);
 		converters.add(employeeToEmployeeEntityConverter);
 		converters.add(stringToLocalDateConverter);
+		converters.add(localDateToStringConverter);
 		conversionServiceFactoryBean.setConverters(converters);
 		conversionServiceFactoryBean.afterPropertiesSet();
 		return conversionServiceFactoryBean;
