@@ -1,13 +1,11 @@
 package com.m_landalex.dataconvert.view;
 
-import java.util.List;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
 import com.m_landalex.dataconvert.configuration.AppConfig;
-import com.m_landalex.dataconvert.data.Employee;
 import com.m_landalex.dataconvert.service.EmployeeService;
+import com.m_landalex.dataconvert.service.UserService;
 
 public class DemoRunFile {
 
@@ -15,9 +13,11 @@ public class DemoRunFile {
 		
 		GenericApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 		
-		EmployeeService service = context.getBean(EmployeeService.class);
-		List<Employee> list = service.fetchAll();
-		list.forEach(System.out::println);
+		EmployeeService employeeService = context.getBean(EmployeeService.class);
+		employeeService.fetchAll().forEach(System.out::println);
+		
+		UserService userService = context.getBean(UserService.class);
+		userService.fetchAll().forEach(System.out::println);
 		
 		context.close();
 	}

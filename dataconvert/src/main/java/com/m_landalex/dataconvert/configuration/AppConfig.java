@@ -27,6 +27,8 @@ import com.m_landalex.dataconvert.converter.EmployeeEntityToEmployeeConverter;
 import com.m_landalex.dataconvert.converter.EmployeeToEmployeeEntityConverter;
 import com.m_landalex.dataconvert.converter.LocalDateToStringConverter;
 import com.m_landalex.dataconvert.converter.StringToLocalDateConverter;
+import com.m_landalex.dataconvert.converter.UserEntityToUserConverter;
+import com.m_landalex.dataconvert.converter.UserToUserEntityConverter;
 
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
 @EnableJpaRepositories(basePackages = "com.m_landalex.dataconvert.petsistence")
@@ -52,6 +54,10 @@ public class AppConfig {
 	private EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter; 
 	@Autowired
 	private EmployeeToEmployeeEntityConverter employeeToEmployeeEntityConverter;
+	@Autowired
+	private UserEntityToUserConverter userEntityToUserConverter;
+	@Autowired
+	private UserToUserEntityConverter userToUserEntityConverter;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -92,6 +98,8 @@ public class AppConfig {
 		Set<Converter<?, ?>> converters = new HashSet<>();
 		converters.add(employeeEntityToEmployeeConverter);
 		converters.add(employeeToEmployeeEntityConverter);
+		converters.add(userEntityToUserConverter);
+		converters.add(userToUserEntityConverter);
 		converters.add(stringToLocalDateConverter);
 		converters.add(localDateToStringConverter);
 		conversionServiceFactoryBean.setConverters(converters);

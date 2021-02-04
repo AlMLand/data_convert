@@ -2,16 +2,20 @@ package com.m_landalex.dataconvert.dbinitialization;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.m_landalex.dataconvert.converter.StringToLocalDateConverter;
 import com.m_landalex.dataconvert.data.Employee;
+import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
+import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryBean;
 import com.m_landalex.dataconvert.service.EmployeeService;
+import com.m_landalex.dataconvert.service.UserService;
 
 @Service
 public class DBInitialization {
@@ -19,16 +23,28 @@ public class DBInitialization {
 	@Autowired
 	private EmployeeService employeeService;
 	@Autowired
-	private StringToLocalDateConverter stringToLocalDateConverter;
-	
+	private UserService userService;
+	@Autowired
+	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
+
 	@PostConstruct
-	public void init() throws MalformedURLException, ResourceNullException {
+	public void init() throws MalformedURLException, ResourceNullException, ParseException {
 		employeeService.save(Employee.builder()
 				.firstName("Al")
 				.lastName("M_land")
-				.birthDate(stringToLocalDateConverter.convert("2000-01-01"))
-				.webSite(new URL("http://alm_land.com/"))
+				.birthDate(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("2001-01-01", Locale.GERMAN))
+				.webSite(new URL("http://alm_land.com/")).build());
+
+		userService.save(User.builder()
+				.username("Timur")
+				.password(applicationConversionServiceFactoryBean
+						.getIntegerFormatter().parse("12345", Locale.GERMAN))
+				.start(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("2010-10-10",Locale.GERMAN))
+				.aktiv(applicationConversionServiceFactoryBean
+						.getBooleanFormatter().parse("true", Locale.GERMAN))
 				.build());
 	}
-	
+
 }
