@@ -16,6 +16,8 @@ import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryBean;
 import com.m_landalex.dataconvert.service.EmployeeService;
+import com.m_landalex.dataconvert.service.EmployeeValidator;
+import com.m_landalex.dataconvert.service.UserValidator;
 
 @Service
 public class DBInitialization {
@@ -24,26 +26,35 @@ public class DBInitialization {
 	private EmployeeService employeeService;
 	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
+	@Autowired
+	private EmployeeValidator employeeValidator;
+	@Autowired
+	private UserValidator userValidator;
 
 	@PostConstruct
 	public void init() throws MalformedURLException, ResourceNullException, ParseException {
-		employeeService.save(Employee.builder()
-							.firstName("Al")
-							.lastName("M_land")
-							.birthDate(applicationConversionServiceFactoryBean
-									.getLocalDateFormatter().parse("2001-01-01", Locale.GERMAN))
-							.webSite(new URL("http://alm_land.com/"))
-							.user(User.builder()
-									.username("Timur")
-									.password(applicationConversionServiceFactoryBean
-											.getIntegerFormatter().parse("12345", Locale.GERMAN))
-									.start(applicationConversionServiceFactoryBean
-											.getLocalDateFormatter().parse("2010-10-10",Locale.GERMAN))
-									.aktiv(applicationConversionServiceFactoryBean
-											.getBooleanFormatter().parse("true", Locale.GERMAN))
-									.userRole(Role.DEVELOPER)
-									.build())
-							.build());
+		User user = User.builder()
+				.username("Timur")
+				.password(applicationConversionServiceFactoryBean
+						.getIntegerFormatter().parse("12345", Locale.GERMAN))
+				.start(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("2010-10-10",Locale.GERMAN))
+				.aktiv(applicationConversionServiceFactoryBean
+						.getBooleanFormatter().parse("true", Locale.GERMAN))
+				.userRole(Role.DEVELOPER)
+				.build();
+		userValidator.validateUser(user);
+		
+		Employee employee = Employee.builder()
+				.firstName("Al")
+				.lastName("M_land")
+				.birthDate(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("2001-01-01", Locale.GERMAN))
+				.webSite(new URL("http://alm_land.com/"))
+				.user(user)
+				.build();
+		employeeValidator.validateEmployee(employee);
+		employeeService.save(employee);
 	}
 
 }

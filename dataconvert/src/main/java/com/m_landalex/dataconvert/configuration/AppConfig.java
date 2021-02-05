@@ -22,6 +22,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.m_landalex.dataconvert.converter.EmployeeEntityToEmployeeConverter;
 import com.m_landalex.dataconvert.converter.EmployeeToEmployeeEntityConverter;
@@ -105,6 +106,11 @@ public class AppConfig {
 		conversionServiceFactoryBean.setConverters(converters);
 		conversionServiceFactoryBean.afterPropertiesSet();
 		return conversionServiceFactoryBean;
+	}
+	
+	@Bean
+	public LocalValidatorFactoryBean localValidatorFactoryBean() {
+		return new LocalValidatorFactoryBean();
 	}
 
 }
