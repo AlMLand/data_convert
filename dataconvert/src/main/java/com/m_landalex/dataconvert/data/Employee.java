@@ -14,5 +14,6 @@ public class Employee {
 	private String lastName;
 	private LocalDate birthDate;
 	private URL webSite;
+	private User user;
 
 }
