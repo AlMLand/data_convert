@@ -27,6 +27,7 @@ public class UserEntity {
 	private String password;
 	private String start;
 	private String aktiv;
+	private String userRole;
 	@OneToOne(mappedBy = "user")
 	private EmployeeEntity employeeEntity;
 	

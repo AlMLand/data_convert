@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.m_landalex.dataconvert.data.Employee;
+import com.m_landalex.dataconvert.data.Role;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryBean;
@@ -40,6 +41,7 @@ public class DBInitialization {
 											.getLocalDateFormatter().parse("2010-10-10",Locale.GERMAN))
 									.aktiv(applicationConversionServiceFactoryBean
 											.getBooleanFormatter().parse("true", Locale.GERMAN))
+									.userRole(Role.DEVELOPER)
 									.build())
 							.build());
 	}

@@ -13,5 +13,6 @@ public class User {
 	private Integer password;
 	private LocalDate start;
 	private Boolean aktiv;
+	private Role userRole;
 	
 }

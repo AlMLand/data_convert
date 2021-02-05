@@ -13,6 +13,8 @@ import org.springframework.format.Formatter;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 import org.springframework.stereotype.Component;
 
+import com.m_landalex.dataconvert.data.Role;
+
 @Component
 public class ApplicationConversionServiceFactoryBean extends FormattingConversionServiceFactoryBean {
 
@@ -37,7 +39,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
 			@Override
 			public Integer parse(String text, Locale locale) throws ParseException {
-				return Integer.parseInt(text);
+				return Integer.parseInt(text.trim());
 			}
 		};
 	}
@@ -52,7 +54,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
 			@Override
 			public LocalDate parse(String text, Locale locale) throws ParseException {
-				return LocalDate.parse(text);
+				return LocalDate.parse(text.trim());
 			}
 		};
 	}
@@ -67,7 +69,22 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
 			@Override
 			public Boolean parse(String text, Locale locale) throws ParseException {
-				return Boolean.valueOf(text);
+				return Boolean.valueOf(text.trim());
+			}
+		};
+	}
+	
+	public Formatter<Role> getEnumFormatter(){
+		return new Formatter<Role>() {
+
+			@Override
+			public String print(Role object, Locale locale) {
+				return object.toString();
+			}
+
+			@Override
+			public Role parse(String text, Locale locale) throws ParseException {
+				return Role.valueOf(text.trim());
 			}
 		};
 	}
