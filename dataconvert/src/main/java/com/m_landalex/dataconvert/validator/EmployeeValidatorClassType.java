@@ -15,7 +15,7 @@ public class EmployeeValidatorClassType implements ConstraintValidator<CheckEmpl
 	public boolean isValid(Employee value, ConstraintValidatorContext context) {
 		boolean result = false;
 		if (value.getFirstName() != null & value.getLastName() != null & value.getBirthDate() != null
-				& value.getUser() != null) {
+				& value.getUser() != null & (value.getLastName().length() > 2 & value.getLastName().length() < 50)) {
 			return result = true;
 		}
 		return result;

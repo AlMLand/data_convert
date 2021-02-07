@@ -47,7 +47,7 @@ public class DBInitialization {
 		
 		Employee employee = Employee.builder()
 				.firstName(null)
-				.lastName("M_land")
+				.lastName("M")
 				.birthDate(applicationConversionServiceFactoryBean
 						.getLocalDateFormatter().parse("2001-01-01", Locale.GERMAN))
 				.webSite(new URL("http://alm_land.com/"))

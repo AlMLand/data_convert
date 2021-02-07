@@ -18,7 +18,7 @@ import com.m_landalex.dataconvert.validator.EmployeeValidatorClassType;
 @Documented
 public @interface CheckEmployee {
 
-	String message() default "Employee should have first name, last name, birth date and user daten defined";
+	String message() default "Employee should have first name, last name, birth date and user daten defined or the last name lenght must be between 2 and 50 ";
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {}; 
 	
