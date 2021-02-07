@@ -5,21 +5,20 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
 
+import com.m_landalex.dataconvert.annotation.CheckEmployee;
+
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@CheckEmployee
 public class Employee {
 	
-	@NotNull
-	private String firstName;
-	@NotNull
-	private String lastName;
-	@NotNull
-	private LocalDate birthDate;
+	@NotNull private String firstName;
+	@NotNull private String lastName;
+	@NotNull private LocalDate birthDate;
 	private URL webSite;
-	@NotNull
-	private User user;
+	@NotNull private User user;
 
 }
