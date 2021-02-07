@@ -46,8 +46,8 @@ public class DBInitialization {
 		userValidator.validateUser(user);
 		
 		Employee employee = Employee.builder()
-				.firstName(null)
-				.lastName("M")
+				.firstName("Al")
+				.lastName("M_land")
 				.birthDate(applicationConversionServiceFactoryBean
 						.getLocalDateFormatter().parse("2001-01-01", Locale.GERMAN))
 				.webSite(new URL("http://alm_land.com/"))

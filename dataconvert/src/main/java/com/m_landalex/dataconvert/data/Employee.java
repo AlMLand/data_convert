@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import com.m_landalex.dataconvert.annotation.CheckEmployee;
@@ -16,10 +17,14 @@ import lombok.Data;
 @CheckEmployee
 public class Employee {
 	
-	@NotNull private String firstName;
-	@NotNull @Size(min = 2, max = 50) private String lastName;
-	@NotNull private LocalDate birthDate;
+	@NotNull
+	private String firstName;
+	@NotNull @Size(min = 2, max = 50) 
+	private String lastName;
+	@NotNull @Past(message = "Birth date must be in the past") 
+	private LocalDate birthDate;
 	private URL webSite;
-	@NotNull private User user;
+	@NotNull 
+	private User user;
 
 }
