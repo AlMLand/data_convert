@@ -25,6 +25,7 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
 	public User convert(UserEntity source) {
 		try {
 			return User.builder()
+					.id(source.getId())
 					.username(source.getUsername())
 					.password(applicationConversionServiceFactoryBean
 									.getIntegerFormatter()
@@ -37,6 +38,7 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
 									.parse(source.getAktiv(), Locale.GERMAN))
 					.userRole(applicationConversionServiceFactoryBean
 									.getEnumFormatter().parse(source.getUserRole(), Locale.GERMAN))
+					.version(source.getVersion())
 					.build();
 		} catch (ParseException e) {
 			logger.error("Not created a user object");

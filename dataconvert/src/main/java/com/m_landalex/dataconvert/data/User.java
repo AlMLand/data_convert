@@ -8,11 +8,14 @@ import javax.validation.constraints.Size;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Builder
+@ToString(exclude = {"id","version"})
 public class User {
 
+	private Long id;
 	@NotNull @Size(min = 2, max = 50) 
 	private String username;
 	@NotNull 
@@ -23,5 +26,6 @@ public class User {
 	private Boolean aktiv;
 	@NotNull 
 	private Role userRole;
+	private int version;
 	
 }

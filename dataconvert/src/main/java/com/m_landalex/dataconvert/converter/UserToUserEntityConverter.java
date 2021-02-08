@@ -19,6 +19,7 @@ public class UserToUserEntityConverter implements Converter<User, UserEntity> {
 	@Override
 	public UserEntity convert(User source) {
 		UserEntity userEntity = new UserEntity();
+		userEntity.setId(source.getId());
 		userEntity.setUsername(source.getUsername());
 		userEntity.setPassword(applicationConversionServiceFactoryBean.getIntegerFormatter().print(source.getPassword(),
 				Locale.GERMAN));
@@ -28,6 +29,7 @@ public class UserToUserEntityConverter implements Converter<User, UserEntity> {
 				applicationConversionServiceFactoryBean.getBooleanFormatter().print(source.getAktiv(), Locale.GERMAN));
 		userEntity.setUserRole(
 				applicationConversionServiceFactoryBean.getEnumFormatter().print(source.getUserRole(), Locale.GERMAN));
+		userEntity.setVersion(source.getVersion());
 		return userEntity;
 	}
 
