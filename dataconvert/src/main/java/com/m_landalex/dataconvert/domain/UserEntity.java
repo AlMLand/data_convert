@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,6 +29,8 @@ public class UserEntity {
 	private String start;
 	private String aktiv;
 	private String userRole;
+	@Version
+	private int version;
 	@OneToOne(mappedBy = "user")
 	private EmployeeEntity employeeEntity;
 	

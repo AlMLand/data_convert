@@ -38,7 +38,7 @@ public class DBInitialization {
 				.password(applicationConversionServiceFactoryBean
 						.getIntegerFormatter().parse("12345", Locale.GERMAN))
 				.start(applicationConversionServiceFactoryBean
-						.getLocalDateFormatter().parse("2010-10-10",Locale.GERMAN))
+						.getLocalDateFormatter().parse("2022-10-10",Locale.GERMAN))
 				.aktiv(applicationConversionServiceFactoryBean
 						.getBooleanFormatter().parse("true", Locale.GERMAN))
 				.userRole(Role.DEVELOPER)

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,6 +33,8 @@ public class EmployeeEntity {
 	private String lastName;
 	private LocalDate birthDate;
 	private URL webSite;
+	@Version
+	private int version;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private UserEntity user;
