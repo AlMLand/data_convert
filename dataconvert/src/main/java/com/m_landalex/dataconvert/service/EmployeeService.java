@@ -1,5 +1,7 @@
 package com.m_landalex.dataconvert.service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +19,15 @@ import com.m_landalex.dataconvert.domain.EmployeeEntity;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.petsistence.EmployeeRepository;
 
+import lombok.Getter;
+
 @Transactional
 @Service
 public class EmployeeService {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+	@Getter
+	public boolean done;
 	
 	@Autowired
 	private EmployeeRepository employeeRepository;
@@ -43,6 +50,22 @@ public class EmployeeService {
 					.stream()
 					.map(employeeEntity -> conversionService.convert(employeeEntity, Employee.class))
 					.collect(Collectors.toList());
+	}
+	
+	@Scheduled(fixedRate = 10000)
+	public void updateEmployeeCompanyAffiliation() {
+		List<Employee> returnedList = fetchAll();
+		returnedList.forEach(employee -> {
+			int years = Period.between(employee.getJobStartInTheCompany(), LocalDate.now()).getYears();
+			employee.setCompanyAffiliation(years);
+			try {
+				save(employee);
+				done = true;
+			} catch (ResourceNullException e) {
+				logger.error("Resource in method updateEmployeeCompanyAffiliation() is null");
+				e.printStackTrace();
+			}
+		});
 	}
 	
 }

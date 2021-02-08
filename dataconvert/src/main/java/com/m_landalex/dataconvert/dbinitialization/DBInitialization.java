@@ -50,6 +50,9 @@ public class DBInitialization {
 				.lastName("M_land")
 				.birthDate(applicationConversionServiceFactoryBean
 						.getLocalDateFormatter().parse("2001-01-01", Locale.GERMAN))
+				.jobStartInTheCompany(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("2018-01-15", Locale.GERMAN))
+				.companyAffiliation(0)
 				.webSite(new URL("http://alm_land.com/"))
 				.user(user)
 				.build();

@@ -15,11 +15,15 @@ public class EmployeeEntityToEmployeeConverter implements Converter<EmployeeEnti
 	
 	public Employee convert(EmployeeEntity source) {
 		return Employee.builder()
+					.id(source.getId())
 					.firstName(source.getFirstName())
 					.lastName(source.getLastName())
 					.birthDate(source.getBirthDate())
+					.jobStartInTheCompany(source.getJobStartInTheCompany())
+					.companyAffiliation(source.getCompanyAffiliation())
 					.webSite(source.getWebSite())
 					.user(userEntityToUserConverter.convert(source.getUser()))
+					.version(source.getVersion())
 					.build();
 	}
 

@@ -32,6 +32,8 @@ public class EmployeeEntity {
 	private String firstName;
 	private String lastName;
 	private LocalDate birthDate;
+	private LocalDate jobStartInTheCompany;
+	private int companyAffiliation;
 	private URL webSite;
 	@Version
 	private int version;

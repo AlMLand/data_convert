@@ -15,11 +15,15 @@ public class EmployeeToEmployeeEntityConverter implements Converter<Employee, Em
 	
 	public EmployeeEntity convert(Employee source) {
 		EmployeeEntity employeeEntity = new EmployeeEntity();
+		employeeEntity.setId(source.getId());
 		employeeEntity.setFirstName(source.getFirstName());
 		employeeEntity.setLastName(source.getLastName());
 		employeeEntity.setBirthDate(source.getBirthDate());
+		employeeEntity.setJobStartInTheCompany(source.getJobStartInTheCompany());
+		employeeEntity.setCompanyAffiliation(source.getCompanyAffiliation());
 		employeeEntity.setWebSite(source.getWebSite());
 		employeeEntity.setUser(userToUserEntityConverter.convert(source.getUser()));
+		employeeEntity.setVersion(source.getVersion());
 		return employeeEntity;
 	}
 
