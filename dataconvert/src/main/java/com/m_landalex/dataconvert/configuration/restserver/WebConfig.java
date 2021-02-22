@@ -1,4 +1,4 @@
-package com.m_landalex.dataconvert.configuration.rest;
+package com.m_landalex.dataconvert.configuration.restserver;
 
 import java.util.List;
 
