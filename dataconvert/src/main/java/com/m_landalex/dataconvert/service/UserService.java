@@ -29,11 +29,20 @@ public class UserService {
 	}
 	
 	@Transactional(readOnly = true)
+	public User fetchById(Long id) {
+		return conversionService.convert(userRepository.findById(id), User.class);
+	}
+	
+	@Transactional(readOnly = true)
 	public List<User> fetchAll(){
 		return userRepository.findAll()
 				.stream()
 				.map(userEntity -> conversionService.convert(userEntity, User.class))
 				.collect(Collectors.toList());
+	}
+	
+	public void delete(User user) {
+		userRepository.delete(conversionService.convert(user, UserEntity.class));
 	}
 	
 }

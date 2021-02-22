@@ -1,5 +1,6 @@
 package com.m_landalex.dataconvert.data;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
 
@@ -17,10 +18,12 @@ import lombok.ToString;
 @Data
 @Builder
 @CheckEmployee
+@SuppressWarnings("serial")
 @ToString(exclude = {"id","version"})
-public class Employee {
+public class Employee implements Serializable{
 	
 	private Long id;
+	private int version;
 	@NotNull
 	private String firstName;
 	@NotNull @Size(min = 2, max = 50) 
@@ -34,6 +37,5 @@ public class Employee {
 	private URL webSite;
 	@NotNull 
 	private User user;
-	private int version;
 
 }

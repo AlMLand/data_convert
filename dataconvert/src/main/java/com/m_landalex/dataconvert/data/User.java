@@ -1,5 +1,6 @@
 package com.m_landalex.dataconvert.data;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -12,10 +13,12 @@ import lombok.ToString;
 
 @Data
 @Builder
+@SuppressWarnings("serial")
 @ToString(exclude = {"id","version"})
-public class User {
+public class User implements Serializable{
 
 	private Long id;
+	private int version;
 	@NotNull @Size(min = 2, max = 50) 
 	private String username;
 	@NotNull 
@@ -26,6 +29,5 @@ public class User {
 	private Boolean aktiv;
 	@NotNull 
 	private Role userRole;
-	private int version;
 	
 }

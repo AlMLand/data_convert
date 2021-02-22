@@ -45,11 +45,20 @@ public class EmployeeService {
 	}
 	
 	@Transactional(readOnly = true)
+	public Employee fetchById(Long id) {
+		return conversionService.convert(employeeRepository.findById(id), Employee.class);
+	}
+	
+	@Transactional(readOnly = true)
 	public List<Employee> fetchAll(){
 		return employeeRepository.findAll()
 					.stream()
 					.map(employeeEntity -> conversionService.convert(employeeEntity, Employee.class))
 					.collect(Collectors.toList());
+	}
+	
+	public void delete(Employee employee) {
+		employeeRepository.delete(conversionService.convert(employee, EmployeeEntity.class));
 	}
 	
 	@Scheduled(fixedRate = 10000)

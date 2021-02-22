@@ -29,14 +29,14 @@ public class EmployeeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Version
+	private int version;
 	private String firstName;
 	private String lastName;
 	private LocalDate birthDate;
 	private LocalDate jobStartInTheCompany;
 	private int companyAffiliation;
 	private URL webSite;
-	@Version
-	private int version;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private UserEntity user;

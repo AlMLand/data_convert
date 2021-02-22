@@ -24,13 +24,13 @@ public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Version
+	private int version;
 	private String username;
 	private String password;
 	private String start;
 	private String aktiv;
 	private String userRole;
-	@Version
-	private int version;
 	@OneToOne(mappedBy = "user")
 	private EmployeeEntity employeeEntity;
 	
