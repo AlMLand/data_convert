@@ -34,11 +34,11 @@ public class DBInitialization {
 	@PostConstruct
 	public void init() throws MalformedURLException, ResourceNullException, ParseException {
 		User user = User.builder()
-				.username("Timur")
+				.username("Chicken")
 				.password(applicationConversionServiceFactoryBean
 						.getIntegerFormatter().parse("12345", Locale.GERMAN))
 				.start(applicationConversionServiceFactoryBean
-						.getLocalDateFormatter().parse("2022-10-10",Locale.GERMAN))
+						.getLocalDateFormatter().parse("2025-10-10",Locale.GERMAN))
 				.aktiv(applicationConversionServiceFactoryBean
 						.getBooleanFormatter().parse("true", Locale.GERMAN))
 				.userRole(Role.DEVELOPER)
@@ -46,14 +46,40 @@ public class DBInitialization {
 		userValidator.validateUser(user);
 		
 		Employee employee = Employee.builder()
-				.firstName("Al")
-				.lastName("M_land")
+				.firstName("Connor")
+				.lastName("McGregor")
 				.birthDate(applicationConversionServiceFactoryBean
 						.getLocalDateFormatter().parse("2001-01-01", Locale.GERMAN))
 				.jobStartInTheCompany(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("2010-04-04", Locale.GERMAN))
+				.companyAffiliation(0)
+				.webSite(new URL("http://connor_mcgregor.com/"))
+				.user(user)
+				.build();
+		employeeValidatorClassTypeService.validateEmployee(employee);
+		employeeService.save(employee);
+		
+		user = User.builder()
+				.username("Diamant")
+				.password(applicationConversionServiceFactoryBean
+						.getIntegerFormatter().parse("67890", Locale.GERMAN))
+				.start(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("2032-08-08",Locale.GERMAN))
+				.aktiv(applicationConversionServiceFactoryBean
+						.getBooleanFormatter().parse("true", Locale.GERMAN))
+				.userRole(Role.ADMINISTRATOR)
+				.build();
+		userValidator.validateUser(user);
+		
+		employee = Employee.builder()
+				.firstName("Dustin")
+				.lastName("Poirier")
+				.birthDate(applicationConversionServiceFactoryBean
+						.getLocalDateFormatter().parse("1993-04-06", Locale.GERMAN))
+				.jobStartInTheCompany(applicationConversionServiceFactoryBean
 						.getLocalDateFormatter().parse("2018-01-15", Locale.GERMAN))
 				.companyAffiliation(0)
-				.webSite(new URL("http://alm_land.com/"))
+				.webSite(new URL("http://dustin_poirier.com/"))
 				.user(user)
 				.build();
 		employeeValidatorClassTypeService.validateEmployee(employee);
