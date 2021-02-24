@@ -16,7 +16,7 @@ import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.service.UserService;
 
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -24,7 +24,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@RequestMapping(value = "/listUsers", method = RequestMethod.GET)
 	@ResponseBody
 	public List<User> listUsers(){
 		return userService.fetchAll();

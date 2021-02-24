@@ -17,7 +17,7 @@ import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.service.EmployeeService;
 
 @Controller
-@RequestMapping(value = "/employee")
+@RequestMapping(value = "/employees")
 public class EmployeeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
@@ -25,7 +25,7 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	@RequestMapping(value = "/employees", method = RequestMethod.GET)
+	@RequestMapping(value = "/listEmployees", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Employee> listEmployees(){
 		return employeeService.fetchAll();
