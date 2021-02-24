@@ -30,7 +30,7 @@ public class UserService {
 	
 	@Transactional(readOnly = true)
 	public User fetchById(Long id) {
-		return conversionService.convert(userRepository.findById(id), User.class);
+		return conversionService.convert(userRepository.findById(id).get(), User.class);
 	}
 	
 	@Transactional(readOnly = true)

@@ -37,8 +37,8 @@ public class EmployeeService {
 	
 	public Employee save(Employee employee) throws ResourceNullException {
 		if(employee == null) {
-			logger.error("employee argument is null");
-			throw new ResourceNullException("employee object is null");
+			logger.error("Employee argument is null");
+			throw new ResourceNullException("Employee object is null");
 		}
 		employeeRepository.save(conversionService.convert(employee, EmployeeEntity.class));
 		return employee;
@@ -46,7 +46,7 @@ public class EmployeeService {
 	
 	@Transactional(readOnly = true)
 	public Employee fetchById(Long id) {
-		return conversionService.convert(employeeRepository.findById(id), Employee.class);
+		return conversionService.convert(employeeRepository.findById(id).get(), Employee.class);
 	}
 	
 	@Transactional(readOnly = true)
