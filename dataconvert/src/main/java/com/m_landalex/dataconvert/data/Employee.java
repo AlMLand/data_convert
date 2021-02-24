@@ -11,13 +11,17 @@ import javax.validation.constraints.Size;
 
 import com.m_landalex.dataconvert.annotation.CheckEmployee;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @Builder
 @CheckEmployee
+@NoArgsConstructor
+@AllArgsConstructor
 @SuppressWarnings("serial")
 @ToString(exclude = {"id","version"})
 public class Employee implements Serializable{
