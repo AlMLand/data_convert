@@ -46,7 +46,7 @@ public class RestClientEmployeeTest {
 		for (Employee employee : returnedArray) {
 			logger.info("TEST FIND ALL : --> {}", employee);
 		}
-		assertTrue(returnedArray.length == 2);
+		assertTrue(returnedArray.length == 1);
 	}
 
 	@Test
@@ -55,6 +55,16 @@ public class RestClientEmployeeTest {
 		logger.info("TEST FIND BY ID : --> {}", returnedEmployee);
 		assertNotNull(returnedEmployee);
 		assertEquals("Connor", returnedEmployee.getFirstName());
+	}
+	
+	@Test
+	public void testDeleteEmployee() {
+		restTemplate.delete(URL_DELETE_EMPLOYEE_BY_ID, 2);
+		Employee[] returnedArray = restTemplate.getForObject(URL_GET_ALL_EMPLOYEES, Employee[].class);
+		for(Employee employee : returnedArray) {
+			logger.info("TEST DELETE : --> {}", employee);
+		}
+		assertEquals(1, returnedArray.length);
 	}
 	
 	@Test
@@ -79,7 +89,7 @@ public class RestClientEmployeeTest {
 		for(Employee employee : returnedArray) {
 			logger.info("TEST CREATE : --> {}", employee);
 		}
-		assertEquals(3, returnedArray.length);
+		assertEquals(2, returnedArray.length);
 	}
 	
 	@Test
@@ -92,14 +102,4 @@ public class RestClientEmployeeTest {
 		assertEquals("Habib", modifiedReturnedEmployee.getFirstName());
 	}
 	
-	@Test
-	public void testDeleteEmployee() {
-		restTemplate.delete(URL_DELETE_EMPLOYEE_BY_ID, 1);
-		Employee[] returnedArray = restTemplate.getForObject(URL_GET_ALL_EMPLOYEES, Employee[].class);
-		for(Employee employee : returnedArray) {
-			logger.info("TEST DELETE : --> {}", employee);
-		}
-		assertEquals(1, returnedArray.length);
-	}
-
 }
