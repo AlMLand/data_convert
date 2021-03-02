@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.m_landalex.dataconvert.data.AbstractObject;
 import com.m_landalex.dataconvert.data.Employee;
 import com.m_landalex.dataconvert.domain.EmployeeEntity;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
@@ -23,7 +24,7 @@ import lombok.Getter;
 
 @Transactional
 @Service
-public class EmployeeService {
+public class EmployeeService implements DefaultService{
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 	@Getter
@@ -35,7 +36,7 @@ public class EmployeeService {
 	@Qualifier(value = "conversionServiceFactoryBean")
 	private ConversionService conversionService;
 	
-	public Employee save(Employee employee) throws ResourceNullException {
+	public AbstractObject save(AbstractObject employee) throws ResourceNullException {
 		if(employee == null) {
 			logger.error("Employee argument is null");
 			throw new ResourceNullException("Employee object is null");
@@ -45,28 +46,32 @@ public class EmployeeService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Employee fetchById(Long id) {
+	public AbstractObject fetchById(Long id) {
 		return conversionService.convert(employeeRepository.findById(id).get(), Employee.class);
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Employee> fetchAll(){
+	public List<AbstractObject> fetchAll(){
 		return employeeRepository.findAll()
 					.stream()
 					.map(employeeEntity -> conversionService.convert(employeeEntity, Employee.class))
 					.collect(Collectors.toList());
 	}
 	
-	public void delete(Employee employee) {
+	public void delete(AbstractObject employee) {
 		employeeRepository.delete(conversionService.convert(employee, EmployeeEntity.class));
 	}
 	
-	@Scheduled(fixedRate = 10000)
-	public void updateEmployeeCompanyAffiliation() {
-		List<Employee> returnedList = fetchAll();
+	public void deleteAll() {
+		employeeRepository.deleteAll();
+	}
+	
+	@Scheduled(fixedRate = 50000)
+	public void updateCompanyAffiliation() {
+		List<AbstractObject> returnedList = fetchAll();
 		returnedList.forEach(employee -> {
-			int years = Period.between(employee.getJobStartInTheCompany(), LocalDate.now()).getYears();
-			employee.setCompanyAffiliation(years);
+			int years = Period.between(((Employee) employee).getJobStartInTheCompany(), LocalDate.now()).getYears();
+			((Employee) employee).setCompanyAffiliation(years);
 			try {
 				save(employee);
 				done = true;

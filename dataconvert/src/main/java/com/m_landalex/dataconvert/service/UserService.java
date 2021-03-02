@@ -9,13 +9,14 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.m_landalex.dataconvert.data.AbstractObject;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.domain.UserEntity;
 import com.m_landalex.dataconvert.petsistence.UserRepository;
 
 @Transactional
 @Service
-public class UserService {
+public class UserService implements DefaultService{
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -23,7 +24,7 @@ public class UserService {
 	@Qualifier(value = "conversionServiceFactoryBean")
 	private ConversionService conversionService;
 	
-	public User save(User user) {
+	public AbstractObject save(AbstractObject user) {
 		userRepository.save(conversionService.convert(user, UserEntity.class));
 		return user;
 	}
@@ -34,15 +35,22 @@ public class UserService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<User> fetchAll(){
+	public List<AbstractObject> fetchAll(){
 		return userRepository.findAll()
 				.stream()
 				.map(userEntity -> conversionService.convert(userEntity, User.class))
 				.collect(Collectors.toList());
 	}
 	
-	public void delete(User user) {
+	public void delete(AbstractObject user) {
 		userRepository.delete(conversionService.convert(user, UserEntity.class));
 	}
+	
+	public void deleteAll() {
+		userRepository.deleteAll();
+	}
+
+	@Override
+	public void updateCompanyAffiliation() {}
 	
 }
