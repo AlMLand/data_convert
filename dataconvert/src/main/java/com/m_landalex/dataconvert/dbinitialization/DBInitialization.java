@@ -5,9 +5,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Locale;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.m_landalex.dataconvert.data.Employee;
@@ -15,7 +14,7 @@ import com.m_landalex.dataconvert.data.Role;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryBean;
-import com.m_landalex.dataconvert.service.EmployeeService;
+import com.m_landalex.dataconvert.service.DefaultService;
 import com.m_landalex.dataconvert.validator.EmployeeValidatorClassTypeService;
 import com.m_landalex.dataconvert.validator.UserValidator;
 
@@ -23,7 +22,8 @@ import com.m_landalex.dataconvert.validator.UserValidator;
 public class DBInitialization {
 
 	@Autowired
-	private EmployeeService employeeService;
+	@Qualifier(value = "employeeService")
+	private DefaultService defaultService;
 	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
 	@Autowired
@@ -31,8 +31,8 @@ public class DBInitialization {
 	@Autowired
 	private EmployeeValidatorClassTypeService employeeValidatorClassTypeService;
 
-	@PostConstruct
-	public void init() throws MalformedURLException, ResourceNullException, ParseException {
+	//@PostConstruct
+	public void init() throws ParseException, MalformedURLException, ResourceNullException {
 		User user = User.builder()
 				.username("Chicken")
 				.password(applicationConversionServiceFactoryBean
@@ -57,7 +57,7 @@ public class DBInitialization {
 				.user(user)
 				.build();
 		employeeValidatorClassTypeService.validateEmployee(employee);
-		employeeService.save(employee);
+		defaultService.save(employee);
 		
 		user = User.builder()
 				.username("Diamant")
@@ -83,7 +83,7 @@ public class DBInitialization {
 				.user(user)
 				.build();
 		employeeValidatorClassTypeService.validateEmployee(employee);
-		employeeService.save(employee);
+		defaultService.save(employee);
 	}
 
 }
