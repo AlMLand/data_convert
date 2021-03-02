@@ -12,19 +12,19 @@ public class EmployeeEntityToEmployeeConverter implements Converter<EmployeeEnti
 
 	@Autowired
 	private UserEntityToUserConverter userEntityToUserConverter;
-	
+
 	public Employee convert(EmployeeEntity source) {
-		return Employee.builder()
-					.id(source.getId())
-					.firstName(source.getFirstName())
-					.lastName(source.getLastName())
-					.birthDate(source.getBirthDate())
-					.jobStartInTheCompany(source.getJobStartInTheCompany())
-					.companyAffiliation(source.getCompanyAffiliation())
-					.webSite(source.getWebSite())
-					.user(userEntityToUserConverter.convert(source.getUser()))
-					.version(source.getVersion())
-					.build();
+		Employee employee = new Employee();
+		employee.setId(source.getId());
+		employee.setFirstName(source.getFirstName());
+		employee.setLastName(source.getLastName());
+		employee.setBirthDate(source.getBirthDate());
+		employee.setJobStartInTheCompany(source.getJobStartInTheCompany());
+		employee.setCompanyAffiliation(source.getCompanyAffiliation());
+		employee.setWebSite(source.getWebSite());
+		employee.setUser(userEntityToUserConverter.convert(source.getUser()));
+		employee.setVersion(source.getVersion());
+		return employee;
 	}
 
 }

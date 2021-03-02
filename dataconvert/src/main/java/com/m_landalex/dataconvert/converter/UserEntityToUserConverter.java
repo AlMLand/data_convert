@@ -17,34 +17,29 @@ import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryB
 public class UserEntityToUserConverter implements Converter<UserEntity, User> {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserEntityToUserConverter.class);
-	
+
 	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
-	
+
 	@Override
 	public User convert(UserEntity source) {
+		User user = new User();
+		user.setId(source.getId());
+		user.setVersion(source.getVersion());
+		user.setUsername(source.getUsername());
 		try {
-			return User.builder()
-					.id(source.getId())
-					.username(source.getUsername())
-					.password(applicationConversionServiceFactoryBean
-									.getIntegerFormatter()
-									.parse(source.getPassword(), Locale.GERMAN))
-					.start(applicationConversionServiceFactoryBean
-									.getLocalDateFormatter()
-									.parse(source.getStart(), Locale.GERMAN))
-					.aktiv(applicationConversionServiceFactoryBean
-									.getBooleanFormatter()
-									.parse(source.getAktiv(), Locale.GERMAN))
-					.userRole(applicationConversionServiceFactoryBean
-									.getEnumFormatter().parse(source.getUserRole(), Locale.GERMAN))
-					.version(source.getVersion())
-					.build();
+			user.setPassword(applicationConversionServiceFactoryBean.getIntegerFormatter().parse(source.getPassword(),
+					Locale.GERMAN));
+			user.setStart(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse(source.getStart(),
+					Locale.GERMAN));
+			user.setAktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().parse(source.getAktiv(),
+					Locale.GERMAN));
+			user.setUserRole(applicationConversionServiceFactoryBean.getEnumFormatter().parse(source.getUserRole(),
+					Locale.GERMAN));
 		} catch (ParseException e) {
-			logger.error("Not created a user object");
-			e.printStackTrace();
-			return null;
+			logger.error("Parse ERROR", e);
 		}
+		return user;
 	}
 
 }
