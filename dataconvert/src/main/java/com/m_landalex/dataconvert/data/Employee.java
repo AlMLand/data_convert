@@ -14,6 +14,7 @@ import com.m_landalex.dataconvert.annotation.CheckEmployee;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -23,11 +24,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuppressWarnings("serial")
-@ToString(exclude = {"id","version"})
-public class Employee implements Serializable{
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+//@ToString(exclude = {"id","version"})
+public class Employee extends AbstractObject implements Serializable{
 	
-	private Long id;
-	private int version;
 	@NotNull
 	private String firstName;
 	@NotNull @Size(min = 2, max = 50) 

@@ -10,19 +10,17 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @SuppressWarnings("serial")
-@ToString(exclude = {"id","version"})
-public class User implements Serializable{
+@EqualsAndHashCode(callSuper = true)
+public class User extends AbstractObject implements Serializable{
 
-	private Long id;
-	private int version;
 	@NotNull @Size(min = 2, max = 50) 
 	private String username;
 	@NotNull 
