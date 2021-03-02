@@ -3,8 +3,13 @@ package com.m_landalex.dataconvert.configuration.restclient;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -18,18 +23,34 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class RestClientConfig {
-
+	
+	@Bean
+	public Credentials credentials() {
+		return new UsernamePasswordCredentials("Friend", "12345");
+	}
+	
+	@Bean
+	public CredentialsProvider credentialProvider() {
+		BasicCredentialsProvider basicCredentialsProvider = new BasicCredentialsProvider();
+		basicCredentialsProvider.setCredentials(AuthScope.ANY, credentials());
+		return basicCredentialsProvider;
+	}
+	
 	@Bean
 	public HttpComponentsClientHttpRequestFactory clientHttpRequestFactory() {
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-		HttpClient httpClient = HttpClientBuilder.create().build();
-		factory.setHttpClient(httpClient);
+		CloseableHttpClient closeableHttpClient = HttpClients
+				.custom()
+				.setDefaultCredentialsProvider(credentialProvider())
+				.build();
+		factory.setHttpClient(closeableHttpClient);
 		return factory;
 	}
 	
 	@Bean
 	public RestTemplate restTemplate() {
-		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setRequestFactory(clientHttpRequestFactory());
 		List<HttpMessageConverter<?>> converters = new ArrayList<>();
 		converters.add(mappingJackson2HttpMessageConverter());
 		restTemplate.setMessageConverters(converters);
