@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
@@ -27,11 +28,11 @@ import lombok.Getter;
 public class EmployeeService implements DefaultService{
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
-	@Getter
-	public boolean done;
 	
-	@Autowired
-	private EmployeeRepository employeeRepository;
+	@Getter	public boolean done;
+	@Autowired private RabbitTemplate rabbitTemplate;
+	@Autowired private EmployeeRepository employeeRepository;
+	
 	@Autowired
 	@Qualifier(value = "conversionServiceFactoryBean")
 	private ConversionService conversionService;
@@ -39,9 +40,11 @@ public class EmployeeService implements DefaultService{
 	public AbstractObject save(AbstractObject employee) throws ResourceNullException {
 		if(employee == null) {
 			logger.error("Employee argument is null");
+			rabbitTemplate.convertAndSend("error");
 			throw new ResourceNullException("Employee object is null");
 		}
 		employeeRepository.save(conversionService.convert(employee, EmployeeEntity.class));
+		rabbitTemplate.convertAndSend("succesful");
 		return employee;
 	}
 	
