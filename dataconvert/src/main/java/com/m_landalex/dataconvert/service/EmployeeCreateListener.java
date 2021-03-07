@@ -15,7 +15,7 @@ public class EmployeeCreateListener {
 		if (status.equals("succesful")) {
 			logger.info("The object Employee.class are succesful created. [ {} ]", status);
 		} else if (status.equals("error")) {
-			logger.info("The object Employee.class are not crated. [ error ]");
+			logger.info("The object Employee.class are not crated. [ {} ]", status);
 		}
 	}
 
