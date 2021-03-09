@@ -200,4 +200,13 @@ public class EmployeeControllerTest {
 		assertEquals("TestFirstName_2", updatedEmployee.getFirstName());
 		assertEquals("TestLastName_2", updatedEmployee.getLastName());
 	}
+	
+	@Test(expected = RuntimeException.class)
+	public void updateEmployeeByIdShouldThrowRuntimeExceptionTest() throws ResourceNullException {
+		Mockito.doThrow(RuntimeException.class).when(mockedDefaultService).save(Mockito.any(Employee.class));
+		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
+		
+		employeeController.updateEmployeeById(new Employee());
+	}
+	
 }
