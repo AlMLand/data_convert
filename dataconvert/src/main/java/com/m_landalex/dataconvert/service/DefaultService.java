@@ -13,7 +13,7 @@ public interface DefaultService {
 	
 	List<AbstractObject> fetchAll();
 
-	void delete(AbstractObject object);
+	void deleteById(Long id);
 	
 	void deleteAll();
 	
