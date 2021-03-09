@@ -196,6 +196,7 @@ public class EmployeeControllerTest {
 		employeeController.updateEmployeeById(employee);
 		Employee updatedEmployee = (Employee) listEmployee.get(0);
 		
+		assertEquals(1, listEmployee.size());
 		assertEquals("TestFirstName_2", updatedEmployee.getFirstName());
 		assertEquals("TestLastName_2", updatedEmployee.getLastName());
 	}
