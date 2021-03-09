@@ -166,4 +166,37 @@ public class EmployeeControllerTest {
 		assertEquals(LocalDate.of(2000, 10, 10), returnedEmployee.getBirthDate());
 	}
 	
+	@Test
+	public void updateEmployeeByIdTest() throws MalformedURLException, ResourceNullException {
+		User user = User.builder().username("TestUserName_2").password(12345).start(LocalDate.now()).aktiv(true)
+				.userRole(Role.ADMINISTRATOR).build();
+		Employee employee = Employee.builder().firstName("TestFirstName_2").lastName("TestLastName_2")
+				.birthDate(LocalDate.of(2000, 10, 10)).jobStartInTheCompany(LocalDate.of(2019, 10, 10))
+				.companyAffiliation(0).webSite(new URL("http://test_2.com/")).user(user).build();
+		
+		Mockito.doAnswer(new Answer<AbstractObject>() {
+
+			@Override
+			public AbstractObject answer(InvocationOnMock invocation) throws Throwable {
+				Employee returnedEmployee = (Employee) listEmployee.get(0);
+				returnedEmployee.setFirstName(employee.getFirstName());
+				returnedEmployee.setLastName(employee.getLastName());
+				returnedEmployee.setBirthDate(employee.getBirthDate());
+				returnedEmployee.setJobStartInTheCompany(employee.getJobStartInTheCompany());
+				returnedEmployee.setCompanyAffiliation(employee.getCompanyAffiliation());
+				returnedEmployee.setWebSite(employee.getWebSite());
+				returnedEmployee.setVersion(returnedEmployee.getVersion() + 1);
+				listEmployee.remove(0);
+				listEmployee.add(returnedEmployee);
+				return returnedEmployee;
+			}
+		}).when(mockedDefaultService).save(employee);
+		
+		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
+		employeeController.updateEmployeeById(employee);
+		Employee updatedEmployee = (Employee) listEmployee.get(0);
+		
+		assertEquals("TestFirstName_2", updatedEmployee.getFirstName());
+		assertEquals("TestLastName_2", updatedEmployee.getLastName());
+	}
 }
