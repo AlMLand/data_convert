@@ -32,11 +32,13 @@ public class EmployeeControllerTest {
 
 	@Mock
 	private DefaultService mockedDefaultService;
+	private EmployeeController employeeController;
 	
 	private List<AbstractObject> listEmployee = new ArrayList<>();
 
 	@Before
 	public void setUp() throws MalformedURLException {
+		employeeController = new EmployeeController();
 		User user = User.builder().username("TestUserName_1").password(12345).start(LocalDate.now()).aktiv(true)
 				.userRole(Role.DEVELOPER).build();
 		user.setId(1L);
@@ -53,7 +55,6 @@ public class EmployeeControllerTest {
 	public void fetchAllEmployeeTest() {
 		Mockito.when(mockedDefaultService.fetchAll()).thenReturn(listEmployee);
 
-		EmployeeController employeeController = new EmployeeController();
 		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
 
 		ExtendedModelMap extendedModelMap = new ExtendedModelMap();
@@ -85,7 +86,6 @@ public class EmployeeControllerTest {
 			}
 		});
 		
-		EmployeeController employeeController = new EmployeeController();
 		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
 		
 		ExtendedModelMap extendedModelMap = new ExtendedModelMap();
@@ -102,7 +102,6 @@ public class EmployeeControllerTest {
 		Employee employee = null;
 		Mockito.when(mockedDefaultService.save(employee)).thenThrow(IllegalArgumentException.class);
 		
-		EmployeeController employeeController = new EmployeeController();
 		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
 		
 		employeeController.createEmployee(employee);
@@ -113,7 +112,6 @@ public class EmployeeControllerTest {
 		User user = null;
 		Mockito.when(mockedDefaultService.save(Mockito.any(Employee.class))).thenThrow(NullPointerException.class);
 
-		EmployeeController employeeController = new EmployeeController();
 		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
 
 		employeeController.createEmployee(Employee.builder().firstName("TestFirstName_2").lastName("TestLastName_2")
@@ -132,7 +130,6 @@ public class EmployeeControllerTest {
 			}
 		}).when(mockedDefaultService).deleteAll();
 		
-		EmployeeController employeeController = new EmployeeController();
 		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
 		
 		employeeController.deleteAllEmployees();
@@ -140,7 +137,7 @@ public class EmployeeControllerTest {
 	}
 	
 	@Test
-	public void fetchEmployeeByIdTest() {
+	public void deleteEmployeeByIdTest() {
 		Mockito.doAnswer(new Answer<AbstractObject>() {
 
 			@Override
@@ -149,11 +146,24 @@ public class EmployeeControllerTest {
 			}
 		}).when(mockedDefaultService).deleteById(Mockito.anyLong());
 		
-		EmployeeController employeeController = new EmployeeController();
 		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
 		
 		employeeController.deleteEmployeeById(1L);
 		assertEquals(0, listEmployee.size());
+	}
+
+	@Test
+	public void fetchEmployeeByIdTest() {
+		Mockito.when(mockedDefaultService.fetchById(Mockito.anyLong())).thenReturn(listEmployee.get(0));
+		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
+		
+		ExtendedModelMap extendedModelMap = new ExtendedModelMap();
+		extendedModelMap.addAttribute("fetchEmployeeById", employeeController.fetchEmployeeById(Mockito.anyLong()));
+		Employee returnedEmployee = (Employee) extendedModelMap.get("fetchEmployeeById");
+		
+		assertEquals("TestFirstName_1", returnedEmployee.getFirstName());
+		assertEquals("TestLastName_1", returnedEmployee.getLastName());
+		assertEquals(LocalDate.of(2000, 10, 10), returnedEmployee.getBirthDate());
 	}
 	
 }
