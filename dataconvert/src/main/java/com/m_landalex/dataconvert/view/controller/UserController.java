@@ -63,7 +63,7 @@ public class UserController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void deleteUserById(@PathVariable Long id) {
-		defaultService.delete(defaultService.fetchById(id));
+		defaultService.deleteById(id);
 		logger.info("User with id {} is deleted.", id);
 	}
 	

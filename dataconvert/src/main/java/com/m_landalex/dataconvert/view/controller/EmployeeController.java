@@ -58,7 +58,7 @@ public class EmployeeController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void deleteEmployeeById(@PathVariable Long id) {
-		defaultService.delete(defaultService.fetchById(id));
+		defaultService.deleteById(id);
 	}
 	
 }
