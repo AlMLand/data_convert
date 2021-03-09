@@ -42,8 +42,8 @@ public class UserService implements DefaultService{
 				.collect(Collectors.toList());
 	}
 	
-	public void delete(AbstractObject user) {
-		userRepository.delete(conversionService.convert(user, UserEntity.class));
+	public void deleteById(Long id) {
+		userRepository.deleteById(id);
 	}
 	
 	public void deleteAll() {
