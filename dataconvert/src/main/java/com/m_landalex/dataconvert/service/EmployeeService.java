@@ -61,8 +61,8 @@ public class EmployeeService implements DefaultService{
 					.collect(Collectors.toList());
 	}
 	
-	public void delete(AbstractObject employee) {
-		employeeRepository.delete(conversionService.convert(employee, EmployeeEntity.class));
+	public void deleteById(Long id) {
+		employeeRepository.deleteById(id);
 	}
 	
 	public void deleteAll() {
