@@ -10,8 +10,11 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ExtendedModelMap;
@@ -22,11 +25,14 @@ import com.m_landalex.dataconvert.data.Role;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.service.DefaultService;
-import com.m_landalex.dataconvert.service.EmployeeService;
 import com.m_landalex.dataconvert.view.controller.EmployeeController;
 
+@RunWith(MockitoJUnitRunner.StrictStubs.class)
 public class EmployeeControllerTest {
 
+	@Mock
+	private DefaultService mockedDefaultService;
+	
 	private List<AbstractObject> listEmployee = new ArrayList<>();
 
 	@Before
@@ -45,7 +51,6 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void fetchAllEmployeeTest() {
-		DefaultService mockedDefaultService = Mockito.mock(EmployeeService.class, "TEST_FetchAllEmployeeTest");
 		Mockito.when(mockedDefaultService.fetchAll()).thenReturn(listEmployee);
 
 		EmployeeController employeeController = new EmployeeController();
@@ -71,7 +76,6 @@ public class EmployeeControllerTest {
 		employee.setId(2L);
 		employee.setVersion(0);
 		
-		DefaultService mockedDefaultService = Mockito.mock(EmployeeService.class, "TEST_CreateEmployeeTest");
 		Mockito.when(mockedDefaultService.save(employee)).thenAnswer(new Answer<Employee>() {
 
 			@Override
@@ -96,7 +100,6 @@ public class EmployeeControllerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createEmployeeTestShouldThrowIllegalArgumentExceptionTest() throws ResourceNullException {
 		Employee employee = null;
-		DefaultService mockedDefaultService = Mockito.mock(EmployeeService.class, "TEST_CreateEmployeeTestShouldThrowIllegalArgumentExceptionTest");
 		Mockito.when(mockedDefaultService.save(employee)).thenThrow(IllegalArgumentException.class);
 		
 		EmployeeController employeeController = new EmployeeController();
@@ -108,7 +111,6 @@ public class EmployeeControllerTest {
 	@Test(expected = NullPointerException.class)
 	public void createEmployeeTestShouldThrowNullPointerExceptionTest()	throws MalformedURLException, ResourceNullException {
 		User user = null;
-		DefaultService mockedDefaultService = Mockito.mock(EmployeeService.class, "createEmployeeTestShouldThrowNullPointerExceptionTest");
 		Mockito.when(mockedDefaultService.save(Mockito.any(Employee.class))).thenThrow(NullPointerException.class);
 
 		EmployeeController employeeController = new EmployeeController();
@@ -121,7 +123,6 @@ public class EmployeeControllerTest {
 	
 	@Test
 	public void deleteAllEmployeesTest() {
-		DefaultService mockedDefaultService = Mockito.mock(EmployeeService.class, "TEST_deleteAllEmployeesTest");
 		Mockito.doAnswer(new Answer<List<AbstractObject>>() {
 
 			@Override
@@ -140,7 +141,6 @@ public class EmployeeControllerTest {
 	
 	@Test
 	public void fetchEmployeeByIdTest() {
-		DefaultService mockedDefaultService = Mockito.mock(EmployeeService.class, "TEST_FetchEmployeeByIdTest");
 		Mockito.doAnswer(new Answer<AbstractObject>() {
 
 			@Override
