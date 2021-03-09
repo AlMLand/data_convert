@@ -138,4 +138,22 @@ public class EmployeeControllerTest {
 		assertEquals(0, listEmployee.size());
 	}
 	
+	@Test
+	public void fetchEmployeeByIdTest() {
+		DefaultService mockedDefaultService = Mockito.mock(EmployeeService.class, "TEST_FetchEmployeeByIdTest");
+		Mockito.doAnswer(new Answer<AbstractObject>() {
+
+			@Override
+			public AbstractObject answer(InvocationOnMock invocation) throws Throwable {
+				return listEmployee.remove(0);
+			}
+		}).when(mockedDefaultService).deleteById(Mockito.anyLong());
+		
+		EmployeeController employeeController = new EmployeeController();
+		ReflectionTestUtils.setField(employeeController, "defaultService", mockedDefaultService);
+		
+		employeeController.deleteEmployeeById(1L);
+		assertEquals(0, listEmployee.size());
+	}
+	
 }
