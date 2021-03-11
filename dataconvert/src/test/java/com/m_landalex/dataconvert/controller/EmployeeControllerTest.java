@@ -1,4 +1,4 @@
-package com.m_landalex.dataconvert;
+package com.m_landalex.dataconvert.controller;
 
 import static org.junit.Assert.assertEquals;
 
