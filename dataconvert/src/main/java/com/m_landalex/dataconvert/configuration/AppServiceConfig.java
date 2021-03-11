@@ -7,8 +7,6 @@ import java.util.Set;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +16,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -35,40 +31,23 @@ import com.m_landalex.dataconvert.converter.UserToUserEntityConverter;
 @EnableJpaRepositories(basePackages = "com.m_landalex.dataconvert.petsistence")
 @PropertySource("classpath:application.properties")
 @Configuration
-public class AppConfig {
+public class AppServiceConfig {
 	
-	private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
-	
-	@Value("${h2.hibernate.dialect}")String dialect;
-	@Value("${hibernate.show_sql}")String show_sql;
-	@Value("${hibernate.format_sql}")String format_sql;
-	@Value("${hibernate.use_sql_comments}")String use_sql_comments;
-	@Value("${hibernate.max_fetch_depth}")String max_fetch_depth;
-	@Value("${hibernate.jdbc.batch_size}")String batch_size;
-	@Value("${hibernate.jdbc.fetch_size}")String fetch_size;
-	@Value("${hibernate.hbm2ddl.auto}")String ddl_auto;
-	@Autowired 
-	private StringToLocalDateConverter stringToLocalDateConverter; 
-	@Autowired
-	private LocalDateToStringConverter localDateToStringConverter;
-	@Autowired
-	private EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter; 
-	@Autowired
-	private EmployeeToEmployeeEntityConverter employeeToEmployeeEntityConverter;
-	@Autowired
-	private UserEntityToUserConverter userEntityToUserConverter;
-	@Autowired
-	private UserToUserEntityConverter userToUserEntityConverter;
-	
-	@Bean
-	public DataSource dataSource() {
-		try {
-			return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
-		} catch (Exception e) {
-			logger.error("No datasource created");
-			return null;
-		}
-	}
+	@Value("${h2.hibernate.dialect}")private String dialect;
+	@Value("${hibernate.show_sql}")private String show_sql;
+	@Value("${hibernate.format_sql}")private String format_sql;
+	@Value("${hibernate.use_sql_comments}")private String use_sql_comments;
+	@Value("${hibernate.max_fetch_depth}")private String max_fetch_depth;
+	@Value("${hibernate.jdbc.batch_size}")private String batch_size;
+	@Value("${hibernate.jdbc.fetch_size}")private String fetch_size;
+	@Value("${hibernate.hbm2ddl.auto}")private String ddl_auto;
+	@Autowired private StringToLocalDateConverter stringToLocalDateConverter; 
+	@Autowired private LocalDateToStringConverter localDateToStringConverter;
+	@Autowired private EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter; 
+	@Autowired private EmployeeToEmployeeEntityConverter employeeToEmployeeEntityConverter;
+	@Autowired private UserEntityToUserConverter userEntityToUserConverter;
+	@Autowired private UserToUserEntityConverter userToUserEntityConverter;
+	@Autowired private DataSource dataSource;
 	
 	private Properties getProperties() {
 		Properties properties = new Properties();
@@ -85,7 +64,7 @@ public class AppConfig {
 	@Bean
 	public EntityManagerFactory entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-		bean.setDataSource(dataSource());
+		bean.setDataSource(dataSource);
 		bean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		bean.setPackagesToScan("com.m_landalex.dataconvert.domain");
 		bean.setJpaProperties(getProperties());
