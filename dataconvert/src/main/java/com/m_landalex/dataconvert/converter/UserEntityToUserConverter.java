@@ -23,23 +23,27 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
 
 	@Override
 	public User convert(UserEntity source) {
-		User user = new User();
-		user.setId(source.getId());
-		user.setVersion(source.getVersion());
-		user.setUsername(source.getUsername());
-		try {
-			user.setPassword(applicationConversionServiceFactoryBean.getIntegerFormatter().parse(source.getPassword(),
-					Locale.GERMAN));
-			user.setStart(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse(source.getStart(),
-					Locale.GERMAN));
-			user.setAktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().parse(source.getAktiv(),
-					Locale.GERMAN));
-			user.setUserRole(applicationConversionServiceFactoryBean.getEnumFormatter().parse(source.getUserRole(),
-					Locale.GERMAN));
-		} catch (ParseException e) {
-			logger.error("Parse ERROR", e);
+		if (source != null) {
+			User user = new User();
+			user.setId(source.getId());
+			user.setVersion(source.getVersion());
+			user.setUsername(source.getUsername());
+			try {
+				user.setPassword(applicationConversionServiceFactoryBean.getIntegerFormatter()
+						.parse(source.getPassword(), Locale.GERMAN));
+				user.setStart(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse(source.getStart(),
+						Locale.GERMAN));
+				user.setAktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().parse(source.getAktiv(),
+						Locale.GERMAN));
+				user.setUserRole(applicationConversionServiceFactoryBean.getEnumFormatter().parse(source.getUserRole(),
+						Locale.GERMAN));
+			} catch (ParseException e) {
+				logger.error("Parse ERROR", e);
+			}
+			return user;
+		} else {
+			return null;
 		}
-		return user;
 	}
 
 }
