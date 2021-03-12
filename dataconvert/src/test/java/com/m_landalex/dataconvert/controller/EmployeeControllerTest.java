@@ -29,11 +29,10 @@ import com.m_landalex.dataconvert.view.controller.EmployeeController;
 
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
 public class EmployeeControllerTest {
-
+	
 	@Mock
 	private DefaultService mockedDefaultService;
 	private EmployeeController employeeController;
-	
 	private List<AbstractObject> listEmployee = new ArrayList<>();
 
 	@Before
