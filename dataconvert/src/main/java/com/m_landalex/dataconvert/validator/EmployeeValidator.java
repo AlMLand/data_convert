@@ -3,6 +3,7 @@ package com.m_landalex.dataconvert.validator;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class EmployeeValidator {
 				logger.info("Validation for property: {}, with value: {}, with error message: {}",
 						violation.getPropertyPath(), violation.getInvalidValue(), violation.getMessage());
 			});
+			throw new ConstraintViolationException("Quantity of violations: " + returnedSet.size() + ".", returnedSet);
 		}
 	}
 	
