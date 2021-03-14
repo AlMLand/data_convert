@@ -8,6 +8,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import com.m_landalex.dataconvert.configuration.AppServiceConfig;
 import com.m_landalex.dataconvert.configuration.TransactionManagerConfig;
 import com.m_landalex.dataconvert.data.AbstractObject;
 import com.m_landalex.dataconvert.data.Employee;
+import com.m_landalex.dataconvert.data.Role;
+import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.service.configuration.TestConfig;
 
@@ -82,12 +86,28 @@ public class EmployeeServiceTest {
 		newEmployee.setJobStartInTheCompany(LocalDate.of(2018, 04, 03));
 		newEmployee.setCompanyAffiliation(0);
 		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
-		newEmployee.setUser(null);
+		newEmployee.setUser(User.builder().username("Test_user").password(123).start(LocalDate.of(2032, 04, 02))
+				.userRole(Role.DEVELOPER).aktiv(true).build());
 		defaultService.save(newEmployee);
-		
+
 		List<AbstractObject> returnedList = defaultService.fetchAll();
 		assertNotNull(returnedList);
 		assertEquals(2, returnedList.size());
+	}
+	
+	@Test(expected = ConstraintViolationException.class)
+	public void saveWithConstraintViolationExceptionTest() throws MalformedURLException, ResourceNullException {
+		Employee newEmployee = new Employee();
+		newEmployee.setId(2L);
+		newEmployee.setVersion(0);
+		newEmployee.setFirstName("Test_save_new_employee_firstname");
+		newEmployee.setLastName("T");
+		newEmployee.setBirthDate(LocalDate.of(1987, 02, 02));
+		newEmployee.setJobStartInTheCompany(null);
+		newEmployee.setCompanyAffiliation(0);
+		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
+		newEmployee.setUser(null);
+		defaultService.save(newEmployee);
 	}
 	
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
