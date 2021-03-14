@@ -96,7 +96,7 @@ public class EmployeeServiceTest {
 	}
 	
 	@Test(expected = ConstraintViolationException.class)
-	public void saveWithConstraintViolationExceptionTest() throws MalformedURLException, ResourceNullException {
+	public void saveWithConstraintViolationExceptionByEmployeeTest() throws MalformedURLException, ResourceNullException {
 		Employee newEmployee = new Employee();
 		newEmployee.setId(2L);
 		newEmployee.setVersion(0);
@@ -107,6 +107,22 @@ public class EmployeeServiceTest {
 		newEmployee.setCompanyAffiliation(0);
 		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
 		newEmployee.setUser(null);
+		defaultService.save(newEmployee);
+	}
+	
+	@Test(expected = ConstraintViolationException.class)
+	public void saveWithConstraintViolationExceptionByUserTest() throws MalformedURLException, ResourceNullException {
+		Employee newEmployee = new Employee();
+		newEmployee.setId(2L);
+		newEmployee.setVersion(0);
+		newEmployee.setFirstName("Test_save_new_employee_firstname");
+		newEmployee.setLastName("Test_save_new_employee_lastname");
+		newEmployee.setBirthDate(LocalDate.of(1987, 02, 02));
+		newEmployee.setJobStartInTheCompany(LocalDate.of(2018, 04, 03));
+		newEmployee.setCompanyAffiliation(0);
+		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
+		newEmployee.setUser(User.builder().username("T").password(123).start(LocalDate.of(2032, 04, 02))
+				.userRole(Role.DEVELOPER).aktiv(true).build());
 		defaultService.save(newEmployee);
 	}
 	
