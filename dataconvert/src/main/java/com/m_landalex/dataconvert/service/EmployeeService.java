@@ -21,6 +21,7 @@ import com.m_landalex.dataconvert.domain.EmployeeEntity;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.petsistence.EmployeeRepository;
 import com.m_landalex.dataconvert.validator.EmployeeValidator;
+import com.m_landalex.dataconvert.validator.UserValidator;
 
 import lombok.Getter;
 
@@ -31,6 +32,7 @@ public class EmployeeService implements DefaultService{
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 	
 	@Getter	public boolean done;
+	@Autowired private UserValidator userValidator;
 	@Autowired private RabbitTemplate rabbitTemplate;
 	@Autowired private EmployeeValidator employeeValidator;
 	@Autowired private EmployeeRepository employeeRepository;
@@ -46,6 +48,7 @@ public class EmployeeService implements DefaultService{
 			throw new ResourceNullException("Employee object is null");
 		}
 		employeeValidator.validateEmployee((Employee)employee);
+		userValidator.validateUser(((Employee)employee).getUser());
 		employeeRepository.save(conversionService.convert(employee, EmployeeEntity.class));
 		rabbitTemplate.convertAndSend("succesful");
 		return employee;
