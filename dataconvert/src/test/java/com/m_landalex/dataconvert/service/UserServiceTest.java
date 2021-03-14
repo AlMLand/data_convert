@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,13 @@ public class UserServiceTest {
 		List<AbstractObject> returnedList = defaultService.fetchAll();
 		assertNotNull(returnedList);
 		assertEquals(2, returnedList.size());
+	}
+	
+	@Test(expected = ConstraintViolationException.class)
+	public void saveWithConstraintViolationExceptionTest() throws ResourceNullException {
+		User newUser = User.builder().username("T").password(123).start(LocalDate.of(2010, 04, 02))
+				.userRole(Role.DEVELOPER).aktiv(true).build();
+		defaultService.save(newUser);
 	}
 
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
