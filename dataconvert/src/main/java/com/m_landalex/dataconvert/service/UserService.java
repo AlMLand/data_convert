@@ -13,11 +13,14 @@ import com.m_landalex.dataconvert.data.AbstractObject;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.domain.UserEntity;
 import com.m_landalex.dataconvert.petsistence.UserRepository;
+import com.m_landalex.dataconvert.validator.UserValidator;
 
 @Transactional
 @Service
 public class UserService implements DefaultService{
 	
+	@Autowired
+	private UserValidator userValidator;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -25,6 +28,7 @@ public class UserService implements DefaultService{
 	private ConversionService conversionService;
 	
 	public AbstractObject save(AbstractObject user) {
+		userValidator.validateUser(((User)user));
 		userRepository.save(conversionService.convert(user, UserEntity.class));
 		return user;
 	}
