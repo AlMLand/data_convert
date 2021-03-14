@@ -20,6 +20,7 @@ import com.m_landalex.dataconvert.data.Employee;
 import com.m_landalex.dataconvert.domain.EmployeeEntity;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.petsistence.EmployeeRepository;
+import com.m_landalex.dataconvert.validator.EmployeeValidator;
 
 import lombok.Getter;
 
@@ -31,6 +32,7 @@ public class EmployeeService implements DefaultService{
 	
 	@Getter	public boolean done;
 	@Autowired private RabbitTemplate rabbitTemplate;
+	@Autowired private EmployeeValidator employeeValidator;
 	@Autowired private EmployeeRepository employeeRepository;
 	
 	@Autowired
@@ -43,6 +45,7 @@ public class EmployeeService implements DefaultService{
 			rabbitTemplate.convertAndSend("error");
 			throw new ResourceNullException("Employee object is null");
 		}
+		employeeValidator.validateEmployee((Employee)employee);
 		employeeRepository.save(conversionService.convert(employee, EmployeeEntity.class));
 		rabbitTemplate.convertAndSend("succesful");
 		return employee;
