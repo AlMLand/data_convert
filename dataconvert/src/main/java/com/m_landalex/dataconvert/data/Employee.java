@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
-import com.m_landalex.dataconvert.annotation.CheckEmployee;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,13 +18,11 @@ import lombok.ToString;
 
 @Data
 @Builder
-@CheckEmployee
 @NoArgsConstructor
 @AllArgsConstructor
 @SuppressWarnings("serial")
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-//@ToString(exclude = {"id","version"})
 public class Employee extends AbstractObject implements Serializable{
 	
 	@NotNull
