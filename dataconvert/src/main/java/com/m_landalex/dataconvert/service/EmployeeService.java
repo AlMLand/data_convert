@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.m_landalex.dataconvert.data.AbstractObject;
@@ -90,5 +91,11 @@ public class EmployeeService implements DefaultService{
 			}
 		});
 	}
-	
+
+	@Transactional( propagation = Propagation.NEVER )
+	@Override
+	public long getTotalCount() {
+		return employeeRepository.count();
+	}
+
 }

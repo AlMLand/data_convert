@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.m_landalex.dataconvert.data.AbstractObject;
@@ -56,5 +57,11 @@ public class UserService implements DefaultService{
 
 	@Override
 	public void updateCompanyAffiliation() {}
-	
+
+	@Transactional( propagation = Propagation.NEVER )
+	@Override
+	public long getTotalCount() {
+		return userRepository.count();
+	}
+
 }
