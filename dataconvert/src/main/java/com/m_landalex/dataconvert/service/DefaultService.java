@@ -19,4 +19,6 @@ public interface DefaultService {
 	
 	void updateCompanyAffiliation();
 	
+	long getTotalCount();
+	
 }
