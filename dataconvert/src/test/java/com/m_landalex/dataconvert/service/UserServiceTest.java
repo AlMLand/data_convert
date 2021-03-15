@@ -114,4 +114,17 @@ public class UserServiceTest {
 		assertEquals(0, returnedList.size());
 	}
 	
+	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
+			config = @SqlConfig( encoding = "utf-8", separator = ";", commentPrefix = "--" ),
+			executionPhase = ExecutionPhase.BEFORE_TEST_METHOD ),
+			@Sql( value = "classpath:db/clean-up.sql",
+			config = @SqlConfig( encoding = "utf-8", separator = ";", commentPrefix = "--" ),
+			executionPhase = ExecutionPhase.AFTER_TEST_METHOD ) } )
+	@Test
+	public void getTotalCountTest() {
+		Long totalCount = defaultService.getTotalCount();
+		assertNotNull(totalCount);
+		assertEquals(Long.valueOf(1L), totalCount);
+	}
+	
 }
