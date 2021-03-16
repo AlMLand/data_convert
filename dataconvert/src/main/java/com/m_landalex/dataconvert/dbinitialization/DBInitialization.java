@@ -5,6 +5,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Locale;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class DBInitialization {
 	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
 
-	//@PostConstruct
+	@PostConstruct
 	public void init() throws ParseException, MalformedURLException, ResourceNullException {
 		
 		Employee employee = Employee.builder()
