@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +25,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.m_landalex.dataconvert.jmx.AbstractObjectStatistics;
 import com.m_landalex.dataconvert.jmx.AbstractObjectStatisticsImpl;
+import com.m_landalex.dataconvert.jmx.CustomStatistics;
 
 //@Profile("dev")
 @EnableWebMvc
@@ -28,6 +33,9 @@ import com.m_landalex.dataconvert.jmx.AbstractObjectStatisticsImpl;
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
 public class WebConfig implements WebMvcConfigurer {
 
+	@Autowired
+	private EntityManagerFactory entityManagerFactory;
+	
 	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		return new MappingJackson2HttpMessageConverter(objectMapper());
@@ -64,9 +72,20 @@ public class WebConfig implements WebMvcConfigurer {
 		exporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
 		Map<String, Object> beansToExport = new HashMap<String, Object>();
 		beansToExport.put( "bean:name=MyBeansStatistics", abstractObjectStatistics() );
+		beansToExport.put( "bean:name=MyBeansStatisticsHibernate", customStatistics() );
 		exporter.setBeans( beansToExport );
 		exporter.afterPropertiesSet();
 		return exporter;
+	}
+	
+	@Bean
+	public CustomStatistics customStatistics() {
+		return new CustomStatistics();
+	}
+	
+	@Bean
+	public SessionFactory sessionFactory() {
+		return entityManagerFactory.unwrap( SessionFactory.class );
 	}
 	
 }
