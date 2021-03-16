@@ -33,14 +33,17 @@ import com.m_landalex.dataconvert.converter.UserToUserEntityConverter;
 @Configuration
 public class AppServiceConfig {
 	
-	@Value("${h2.hibernate.dialect}")private String dialect;
-	@Value("${hibernate.show_sql}")private String show_sql;
-	@Value("${hibernate.format_sql}")private String format_sql;
-	@Value("${hibernate.use_sql_comments}")private String use_sql_comments;
-	@Value("${hibernate.max_fetch_depth}")private String max_fetch_depth;
-	@Value("${hibernate.jdbc.batch_size}")private String batch_size;
-	@Value("${hibernate.jdbc.fetch_size}")private String fetch_size;
-	@Value("${hibernate.hbm2ddl.auto}")private String ddl_auto;
+	@Value( "${h2.hibernate.dialect}" ) private String dialect;
+	@Value( "${hibernate.show_sql}" ) private String showSql;
+	@Value( "${hibernate.format_sql}" ) private String formatSql;
+	@Value( "${hibernate.use_sql_comments}" ) private String useSqlComments;
+	@Value( "${hibernate.max_fetch_depth}" ) private String maxFetchDepth;
+	@Value( "${hibernate.jdbc.batch_size}" ) private String batchSize;
+	@Value( "${hibernate.jdbc.fetch_size}" ) private String fetchSize;
+	@Value( "${hibernate.hbm2ddl.auto}" ) private String ddlAuto;
+	@Value( "${hibernate.jmx.enabled}" ) private String jmxEnabled;
+	@Value( "${hibernate.generete_statistics}" ) private String genereteStatistics;
+	@Value( "${hibernate.session_factory_name}" ) private String sessionFactoryName;
 	@Autowired private StringToLocalDateConverter stringToLocalDateConverter; 
 	@Autowired private LocalDateToStringConverter localDateToStringConverter;
 	@Autowired private EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter; 
@@ -51,13 +54,16 @@ public class AppServiceConfig {
 	
 	private Properties getProperties() {
 		Properties properties = new Properties();
-		properties.setProperty("h2.hibernate.dialect", dialect);
-		properties.setProperty("hibernate.format_sql", format_sql);
-		properties.setProperty("hibernate.use_sql_comments", use_sql_comments);
-		properties.setProperty("hibernate.max_fetch_depth", max_fetch_depth);
-		properties.setProperty("hibernate.jdbc.batch_size", batch_size);
-		properties.setProperty("hibernate.jdbc.fetch_size", fetch_size);
-		properties.setProperty("hibernate.hbm2ddl.auto", ddl_auto);
+		properties.setProperty( "h2.hibernate.dialect", dialect );
+		properties.setProperty( "hibernate.format_sql", formatSql );
+		properties.setProperty( "hibernate.use_sql_comments", useSqlComments );
+		properties.setProperty( "hibernate.max_fetch_depth", maxFetchDepth );
+		properties.setProperty( "hibernate.jdbc.batch_size", batchSize );
+		properties.setProperty( "hibernate.jdbc.fetch_size", fetchSize );
+		properties.setProperty( "hibernate.hbm2ddl.auto", ddlAuto );
+		properties.setProperty( "hibernate.jmx.enabled", jmxEnabled );
+		properties.setProperty( "hibernate.generete_statistics", genereteStatistics );
+		properties.setProperty( "hibernate.session_factory_name", sessionFactoryName );
 		return properties;
 	}
 	
