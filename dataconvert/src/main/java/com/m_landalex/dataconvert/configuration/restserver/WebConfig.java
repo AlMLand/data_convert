@@ -7,10 +7,10 @@ import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
+import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.m_landalex.dataconvert.jmx.AbstractObjectStatistics;
 import com.m_landalex.dataconvert.jmx.AbstractObjectStatisticsImpl;
 
-@Profile("dev")
+//@Profile("dev")
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
@@ -61,6 +61,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Bean
 	public MBeanExporter jmxExporter() {
 		MBeanExporter exporter = new MBeanExporter();
+		exporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
 		Map<String, Object> beansToExport = new HashMap<String, Object>();
 		beansToExport.put( "bean:name=MyBeansStatistics", abstractObjectStatistics() );
 		exporter.setBeans( beansToExport );
