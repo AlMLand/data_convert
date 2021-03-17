@@ -22,9 +22,9 @@ import com.m_landalex.dataconvert.data.Role;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@ContextConfiguration(classes = { RestClientConfig.class })
+@RunWith( SpringJUnit4ClassRunner.class )
+@FixMethodOrder( MethodSorters.NAME_ASCENDING )
+@ContextConfiguration( classes = { RestClientConfig.class } )
 public class RestClientUserTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(RestClientUserTest.class);
@@ -77,23 +77,23 @@ public class RestClientUserTest {
 	
 	@Test
 	public void b_testFindUserById() {
-		User returnedUser = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 1);
+		User returnedUser = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 10);
 		logger.info("TEST FIND USER BY ID : --> {}", returnedUser);
 		assertEquals("Connor", returnedUser.getUsername());
 	}
 	
 	@Test
 	public void c_testUpdateUserById() {
-		User returnedUser = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 1);
+		User returnedUser = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 10);
 		returnedUser.setUsername("TestUserName");
-		restTemplate.put(URL_PUT_USER_BY_ID, returnedUser, 1);
-		returnedUser = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 1);
+		restTemplate.put(URL_PUT_USER_BY_ID, returnedUser, 10);
+		returnedUser = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 10);
 		assertEquals("TestUserName", returnedUser.getUsername());
 	}
 	
 	@Test
 	public void e_testDeleteUserById() {
-		restTemplate.delete(URL_DELETE_USER_BY_ID, 1);
+		restTemplate.delete(URL_DELETE_USER_BY_ID, 11);
 		User[] returnedArray = restTemplate.getForObject(URL_GET_ALL_USERS, User[].class);
 		assertEquals(1, returnedArray.length);
 	}
