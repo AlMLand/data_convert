@@ -33,7 +33,7 @@ import com.m_landalex.dataconvert.service.configuration.TestConfig;
 
 @ContextConfiguration(classes = { TestConfig.class, AppServiceConfig.class, TransactionManagerConfig.class } )
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("test")
+@ActiveProfiles( "test" )
 public class EmployeeServiceTest {
 	
 	@Autowired
