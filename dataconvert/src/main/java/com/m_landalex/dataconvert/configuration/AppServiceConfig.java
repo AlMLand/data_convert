@@ -27,8 +27,8 @@ import com.m_landalex.dataconvert.converter.StringToLocalDateConverter;
 import com.m_landalex.dataconvert.converter.UserEntityToUserConverter;
 import com.m_landalex.dataconvert.converter.UserToUserEntityConverter;
 
-@ComponentScan(basePackages = "com.m_landalex.dataconvert")
 @EnableJpaRepositories(basePackages = "com.m_landalex.dataconvert.petsistence")
+@ComponentScan(basePackages = "com.m_landalex.dataconvert")
 @PropertySource("classpath:application.properties")
 @Configuration
 public class AppServiceConfig {
@@ -43,7 +43,6 @@ public class AppServiceConfig {
 	@Value( "${hibernate.hbm2ddl.auto}" ) private String ddlAuto;
 	@Value( "${hibernate.jmx.enabled}" ) private String jmxEnabled;
 	@Value( "${hibernate.generete_statistics}" ) private String genereteStatistics;
-	@Value( "${hibernate.session_factory_name}" ) private String sessionFactoryName;
 	@Autowired private StringToLocalDateConverter stringToLocalDateConverter; 
 	@Autowired private LocalDateToStringConverter localDateToStringConverter;
 	@Autowired private EmployeeEntityToEmployeeConverter employeeEntityToEmployeeConverter; 
@@ -63,7 +62,6 @@ public class AppServiceConfig {
 		properties.setProperty( "hibernate.hbm2ddl.auto", ddlAuto );
 		properties.setProperty( "hibernate.jmx.enabled", jmxEnabled );
 		properties.setProperty( "hibernate.generete_statistics", genereteStatistics );
-		properties.setProperty( "hibernate.session_factory_name", sessionFactoryName );
 		return properties;
 	}
 	
