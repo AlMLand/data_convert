@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
@@ -27,9 +28,9 @@ import com.m_landalex.dataconvert.jmx.AbstractObjectStatistics;
 import com.m_landalex.dataconvert.jmx.AbstractObjectStatisticsImpl;
 import com.m_landalex.dataconvert.jmx.CustomStatistics;
 
-//@Profile("dev")
 @EnableWebMvc
 @Configuration
+@Profile( "!test" )
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
 public class WebConfig implements WebMvcConfigurer {
 
@@ -62,7 +63,7 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
 	@Bean
-	public AbstractObjectStatistics abstractObjectStatistics() {
+	AbstractObjectStatistics abstractObjectStatistics() {
 		return new AbstractObjectStatisticsImpl();
 	}
 	
@@ -79,12 +80,12 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
 	@Bean
-	public CustomStatistics customStatistics() {
+	CustomStatistics customStatistics() {
 		return new CustomStatistics();
 	}
 	
 	@Bean
-	public SessionFactory sessionFactory() {
+	SessionFactory sessionFactory() {
 		return entityManagerFactory.unwrap( SessionFactory.class );
 	}
 	

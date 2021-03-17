@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.m_landalex.dataconvert.data.Employee;
@@ -19,6 +20,7 @@ import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryB
 import com.m_landalex.dataconvert.service.DefaultService;
 
 @Service
+@Profile( "!test" )
 public class DBInitialization {
 
 	@Autowired
