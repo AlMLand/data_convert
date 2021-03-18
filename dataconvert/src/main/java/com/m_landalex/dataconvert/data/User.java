@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -24,14 +25,14 @@ public class User extends AbstractObject implements Serializable{
 	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
 	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" ) 
 	private String username;
-	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
+	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
 	private Integer password;
-	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@NotNull( message = "{javax.validation.constraints.NotNull.message}" ) 
 	@FutureOrPresent( message = "{javax.validation.constraints.FutureOrPresent.message}" ) 
 	private LocalDate start;
-	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
+	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
 	private Boolean aktiv;
-	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
+	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
 	private Role userRole;
 	
 }
