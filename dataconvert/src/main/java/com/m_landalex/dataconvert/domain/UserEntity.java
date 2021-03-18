@@ -1,5 +1,6 @@
 package com.m_landalex.dataconvert.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,13 +24,20 @@ public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column( name = "ID" )
 	private Long id;
 	@Version
+	@Column( name = "VERSION")
 	private int version;
+	@Column( name = "USERNAME" )
 	private String username;
+	@Column( name = "PASSWORD" )
 	private String password;
+	@Column( name = "START" )
 	private String start;
+	@Column( name = "AKTIV" )
 	private String aktiv;
+	@Column( name = "USERROLE" )
 	private String userRole;
 	@OneToOne(mappedBy = "user")
 	private EmployeeEntity employeeEntity;
