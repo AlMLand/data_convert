@@ -50,10 +50,10 @@ public class RestClientEmployeeTest {
 	@Before
 	public void setUp() throws MalformedURLException, ResourceNullException {
 		defaultService.deleteAll();
-		User user = User.builder().username("Chicken").password(123).start(LocalDate.of(2025, 10, 10)).aktiv(false)
+		User user = User.builder().username("Test_rest_user").password(123).start(LocalDate.of(2025, 10, 10)).aktiv(false)
 				.userRole(Role.DEVELOPER).build();
-		Employee employee = Employee.builder().firstName("Connor").lastName("McGregor")
-				.birthDate(LocalDate.of(2001, 01, 01)).jobStartInTheCompany(LocalDate.of(2010, 04, 04))
+		Employee employee = Employee.builder().firstName("Test_rest_firstname").lastName("Test_rest_lastname")
+				.birthDate(LocalDate.of(2001, 01, 01)).jobStartInTheCompany(LocalDate.of(2043, 04, 04))
 				.companyAffiliation(0).webSite(new URL("http://connor.com/")).user(user).build();
 		defaultService.save(employee);
 		
@@ -67,8 +67,8 @@ public class RestClientEmployeeTest {
 
 	@Test
 	public void testCreateEmployee() {
-		Employee newEmployee = Employee.builder().firstName("TEST").lastName("test").birthDate(LocalDate.of(2000, 10, 20))
-				.jobStartInTheCompany(LocalDate.of(2020, 05, 05)).companyAffiliation(0).webSite(null)
+		Employee newEmployee = Employee.builder().firstName("test_create").lastName("test_create").birthDate(LocalDate.of(2000, 10, 20))
+				.jobStartInTheCompany(LocalDate.of(2030, 05, 05)).companyAffiliation(0).webSite(null)
 				.user(User.builder().username("Yy").password(123).start(LocalDate.now()).aktiv(false)
 						.userRole(Role.DEVELOPER).build())
 				.build();
@@ -98,15 +98,15 @@ public class RestClientEmployeeTest {
 
 	@Test
 	public void testFetchEmployeeById() {
-		Employee returnedEmployee = restTemplate.getForObject(URL_GET_EMPLOYEE_BY_ID, Employee.class, 6);
+		Employee returnedEmployee = restTemplate.getForObject(URL_GET_EMPLOYEE_BY_ID, Employee.class, 13);
 		logger.info("TEST FIND BY ID : --> {}", returnedEmployee);
 		assertNotNull(returnedEmployee);
-		assertEquals("Connor", returnedEmployee.getFirstName());
+		assertEquals("Test_rest_firstname", returnedEmployee.getFirstName());
 	}
 
 	@Test
 	public void testDeleteEmployeeById() {
-		restTemplate.delete(URL_DELETE_EMPLOYEE_BY_ID, 4);
+		restTemplate.delete(URL_DELETE_EMPLOYEE_BY_ID, 11);
 		Employee[] returnedArray = restTemplate.getForObject(URL_GET_ALL_EMPLOYEES, Employee[].class);
 		for (Employee employee : returnedArray) {
 			logger.info("TEST DELETE : --> {}", employee);
@@ -116,10 +116,10 @@ public class RestClientEmployeeTest {
 
 	@Test
 	public void testUpdateEmployeeById() {
-		Employee returnedEmployee = restTemplate.getForObject(URL_GET_EMPLOYEE_BY_ID, Employee.class, 5);
+		Employee returnedEmployee = restTemplate.getForObject(URL_GET_EMPLOYEE_BY_ID, Employee.class, 12);
 		returnedEmployee.setFirstName("TEST");
-		restTemplate.put(URL_PUT_EMPLOYEE_BY_ID, returnedEmployee, 5);
-		Employee modifiedReturnedEmployee = restTemplate.getForObject(URL_GET_EMPLOYEE_BY_ID, Employee.class, 5);
+		restTemplate.put(URL_PUT_EMPLOYEE_BY_ID, returnedEmployee, 12);
+		Employee modifiedReturnedEmployee = restTemplate.getForObject(URL_GET_EMPLOYEE_BY_ID, Employee.class, 12);
 		logger.info("TEST UPDATE : --> {}", returnedEmployee);
 		assertEquals("TEST", modifiedReturnedEmployee.getFirstName());
 	}
