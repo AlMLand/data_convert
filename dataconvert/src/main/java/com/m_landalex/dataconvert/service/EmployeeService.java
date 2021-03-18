@@ -11,6 +11,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -41,8 +43,9 @@ public class EmployeeService implements DefaultService{
 	@Autowired
 	@Qualifier( value = "conversionServiceFactoryBean" )
 	private ConversionService conversionService;
-	
-	public AbstractObject save( AbstractObject employee ) throws ResourceNullException {
+
+	@Override
+	public <T extends AbstractObject> T save(T employee) throws ResourceNullException {
 		if( employee == null ) {
 			logger.error( "Employee argument is null" );
 			rabbitTemplate.convertAndSend( "error" );
@@ -56,7 +59,7 @@ public class EmployeeService implements DefaultService{
 	}
 	
 	@Transactional( readOnly = true )
-	public AbstractObject fetchById( Long id ) {
+	public Employee fetchById( Long id ) {
 		return conversionService.convert( employeeRepository.findById(id).get(), Employee.class );
 	}
 	
@@ -101,4 +104,10 @@ public class EmployeeService implements DefaultService{
 		return employeeRepository.count();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Page<Employee> findAllByPage(Pageable pageable) {
+		return (Page<Employee>) conversionService.convert(employeeRepository.findAll(pageable), Employee.class);
+	}
+	
 }

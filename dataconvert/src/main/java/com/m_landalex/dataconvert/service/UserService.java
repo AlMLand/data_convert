@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,7 @@ public class UserService implements DefaultService{
 	@Qualifier(value = "conversionServiceFactoryBean")
 	private ConversionService conversionService;
 	
-	public AbstractObject save(AbstractObject user) {
+	public <T extends AbstractObject> T save(T user) {
 		userValidator.validateUser(((User)user));
 		userRepository.save(conversionService.convert(user, UserEntity.class));
 		return user;
@@ -62,6 +64,13 @@ public class UserService implements DefaultService{
 	@Override
 	public long getTotalCount() {
 		return userRepository.count();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional( readOnly = true )
+	@Override
+	public Page<User> findAllByPage( Pageable pageable ) {
+		return (Page<User>) conversionService.convert( userRepository.findAll( pageable ), User.class );
 	}
 
 }
