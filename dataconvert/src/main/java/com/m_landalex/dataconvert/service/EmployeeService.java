@@ -39,36 +39,36 @@ public class EmployeeService implements DefaultService{
 	@Autowired private EmployeeRepository employeeRepository;
 	
 	@Autowired
-	@Qualifier(value = "conversionServiceFactoryBean")
+	@Qualifier( value = "conversionServiceFactoryBean" )
 	private ConversionService conversionService;
 	
-	public AbstractObject save(AbstractObject employee) throws ResourceNullException {
-		if(employee == null) {
-			logger.error("Employee argument is null");
-			rabbitTemplate.convertAndSend("error");
-			throw new ResourceNullException("Employee object is null");
+	public AbstractObject save( AbstractObject employee ) throws ResourceNullException {
+		if( employee == null ) {
+			logger.error( "Employee argument is null" );
+			rabbitTemplate.convertAndSend( "error" );
+			throw new ResourceNullException( "Employee object is null" );
 		}
-		employeeValidator.validateEmployee((Employee)employee);
-		userValidator.validateUser(((Employee)employee).getUser());
-		employeeRepository.save(conversionService.convert(employee, EmployeeEntity.class));
-		rabbitTemplate.convertAndSend("succesful");
+		employeeValidator.validateEmployee( ( Employee ) employee );
+		userValidator.validateUser( ( ( Employee )employee ).getUser() );
+		employeeRepository.save( conversionService.convert( employee, EmployeeEntity.class ) );
+		rabbitTemplate.convertAndSend( "succesful" );
 		return employee;
 	}
 	
-	@Transactional(readOnly = true)
-	public AbstractObject fetchById(Long id) {
-		return conversionService.convert(employeeRepository.findById(id).get(), Employee.class);
+	@Transactional( readOnly = true )
+	public AbstractObject fetchById( Long id ) {
+		return conversionService.convert( employeeRepository.findById(id).get(), Employee.class );
 	}
 	
-	@Transactional(readOnly = true)
+	@Transactional( readOnly = true )
 	public List<AbstractObject> fetchAll(){
 		return employeeRepository.findAll()
 					.stream()
-					.map(employeeEntity -> conversionService.convert(employeeEntity, Employee.class))
-					.collect(Collectors.toList());
+					.map( employeeEntity -> conversionService.convert( employeeEntity, Employee.class ) )
+					.collect( Collectors.toList() );
 	}
 	
-	public void deleteById(Long id) {
+	public void deleteById( Long id ) {
 		employeeRepository.deleteById(id);
 	}
 	
@@ -76,20 +76,23 @@ public class EmployeeService implements DefaultService{
 		employeeRepository.deleteAll();
 	}
 	
-	@Scheduled(fixedRate = 50000)
+	@Scheduled( fixedRate = 50000 )
 	public void updateCompanyAffiliation() {
 		List<AbstractObject> returnedList = fetchAll();
-		returnedList.forEach(employee -> {
-			int years = Period.between(((Employee) employee).getJobStartInTheCompany(), LocalDate.now()).getYears();
-			((Employee) employee).setCompanyAffiliation(years);
+		returnedList.forEach( employee -> {
+			int years = Period.between( ( ( Employee ) employee ).getJobStartInTheCompany(), LocalDate.now() ).getYears();
+			if( years < 0 ) {
+				years = 0;
+			}
+				( ( Employee ) employee ).setCompanyAffiliation( years );
 			try {
-				save(employee);
+				save( employee );
 				done = true;
-			} catch (ResourceNullException e) {
-				logger.error("Resource in method updateEmployeeCompanyAffiliation() is null");
+			} catch ( ResourceNullException e ) {
+				logger.error( "Resource in method updateEmployeeCompanyAffiliation() is null" );
 				e.printStackTrace();
 			}
-		});
+		} );
 	}
 
 	@Transactional( propagation = Propagation.NEVER )
