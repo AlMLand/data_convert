@@ -13,17 +13,19 @@ public class EmployeeToEmployeeEntityConverter implements Converter<Employee, Em
 	@Autowired
 	private UserToUserEntityConverter userToUserEntityConverter;
 	
-	public EmployeeEntity convert(Employee source) {
+	public EmployeeEntity convert( Employee source ) {
 		EmployeeEntity employeeEntity = new EmployeeEntity();
-		employeeEntity.setId(source.getId());
-		employeeEntity.setFirstName(source.getFirstName());
-		employeeEntity.setLastName(source.getLastName());
-		employeeEntity.setBirthDate(source.getBirthDate());
-		employeeEntity.setJobStartInTheCompany(source.getJobStartInTheCompany());
-		employeeEntity.setCompanyAffiliation(source.getCompanyAffiliation());
-		employeeEntity.setWebSite(source.getWebSite());
-		employeeEntity.setUser(userToUserEntityConverter.convert(source.getUser()));
-		employeeEntity.setVersion(source.getVersion());
+		employeeEntity.setId( source.getId() );
+		employeeEntity.setFirstName( source.getFirstName() );
+		employeeEntity.setLastName( source.getLastName() );
+		employeeEntity.setBirthDate( source.getBirthDate() );
+		employeeEntity.setJobStartInTheCompany( source.getJobStartInTheCompany() );
+		employeeEntity.setCompanyAffiliation( source.getCompanyAffiliation() );
+		employeeEntity.setDescription( source.getDescription() );
+		employeeEntity.setPhoto( source.getPhoto() );
+		employeeEntity.setWebSite( source.getWebSite() );
+		employeeEntity.setUser( userToUserEntityConverter.convert( source.getUser() ) );
+		employeeEntity.setVersion( source.getVersion() );
 		return employeeEntity;
 	}
 
