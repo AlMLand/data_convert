@@ -42,7 +42,7 @@ public class Employee extends AbstractObject implements Serializable{
 	@Min( value = 0, message = "{javax.validation.constraints.Min.message}" )
 	private int companyAffiliation;
 	private String description;
-	private byte photo;
+	private byte[] photo;
 	private URL webSite;
 	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
 	private User user;

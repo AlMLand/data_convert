@@ -52,7 +52,7 @@ public class EmployeeEntity {
 	@Lob
 	@Basic( fetch = FetchType.LAZY )
 	@Column( name = "PHOTO" )
-	private byte photo;
+	private byte[] photo;
 	@Column( name = "WEBSITE" )
 	private URL webSite;
 	@OneToOne(cascade = CascadeType.ALL)
