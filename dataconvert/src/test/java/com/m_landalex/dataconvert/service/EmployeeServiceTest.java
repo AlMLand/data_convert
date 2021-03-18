@@ -66,7 +66,7 @@ public class EmployeeServiceTest {
 		assertEquals("Test1_First_Name", returnedEmployee.getFirstName());
 		assertEquals("Test1_Last_Name", returnedEmployee.getLastName());
 		assertEquals(LocalDate.of(1985, 06, 05), returnedEmployee.getBirthDate());
-		assertEquals(LocalDate.of(2018, 10, 10), returnedEmployee.getJobStartInTheCompany());
+		assertEquals(LocalDate.of(2032, 10, 10), returnedEmployee.getJobStartInTheCompany());
 	}
 	
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
@@ -83,10 +83,10 @@ public class EmployeeServiceTest {
 		newEmployee.setFirstName("Test_save_new_employee_firstname");
 		newEmployee.setLastName("Test_save_new_employee_lastname");
 		newEmployee.setBirthDate(LocalDate.of(1987, 02, 02));
-		newEmployee.setJobStartInTheCompany(LocalDate.of(2018, 04, 03));
+		newEmployee.setJobStartInTheCompany(LocalDate.of(2044, 04, 03));
 		newEmployee.setCompanyAffiliation(0);
 		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
-		newEmployee.setUser(User.builder().username("Test_user").password(123).start(LocalDate.of(2032, 04, 02))
+		newEmployee.setUser(User.builder().username("Test_new_user").password(123).start(LocalDate.of(2032, 04, 02))
 				.userRole(Role.DEVELOPER).aktiv(true).build());
 		defaultService.save(newEmployee);
 

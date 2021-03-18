@@ -47,7 +47,7 @@ public class UserServiceTest {
 	public void fetchAllTest() {
 		List<AbstractObject> returnedList = defaultService.fetchAll();
 		assertNotNull(returnedList);
-		assertEquals(1, returnedList.size());
+		assertEquals(2, returnedList.size());
 	}
 	
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
@@ -58,7 +58,7 @@ public class UserServiceTest {
 			executionPhase = ExecutionPhase.AFTER_TEST_METHOD) } )
 	@Test
 	public void fetchByIdTest() {
-		User returnedUser = (User) defaultService.fetchById(2L);
+		User returnedUser = (User) defaultService.fetchById(1L);
 		assertNotNull(returnedUser);
 		assertEquals(Integer.valueOf(12345), returnedUser.getPassword());
 	}
@@ -76,7 +76,7 @@ public class UserServiceTest {
 		defaultService.save(newUser);
 		List<AbstractObject> returnedList = defaultService.fetchAll();
 		assertNotNull(returnedList);
-		assertEquals(2, returnedList.size());
+		assertEquals(3, returnedList.size());
 	}
 	
 	@Test(expected = ConstraintViolationException.class)
@@ -86,6 +86,9 @@ public class UserServiceTest {
 		defaultService.save(newUser);
 	}
 
+	/*
+	 * Only users who have no relationship with any employee are erased
+	 */
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
 			config = @SqlConfig( encoding = "utf-8", separator = ";", commentPrefix = "--" ),
 			executionPhase = ExecutionPhase.BEFORE_TEST_METHOD ),
@@ -97,9 +100,12 @@ public class UserServiceTest {
 		defaultService.deleteAll();
 		List<AbstractObject> returnedList = defaultService.fetchAll();
 		assertNotNull(returnedList);
-		assertEquals(0, returnedList.size());
+		assertEquals(1, returnedList.size());
 	}
 	
+	/*
+	 * Only users who have no relationship with any employee are erased
+	 */
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
 			config = @SqlConfig( encoding = "utf-8", separator = ";", commentPrefix = "--" ),
 			executionPhase = ExecutionPhase.BEFORE_TEST_METHOD ),
@@ -111,7 +117,7 @@ public class UserServiceTest {
 		defaultService.deleteById(2L);
 		List<AbstractObject> returnedList = defaultService.fetchAll();
 		assertNotNull(returnedList);
-		assertEquals(0, returnedList.size());
+		assertEquals(1, returnedList.size());
 	}
 	
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
@@ -124,7 +130,7 @@ public class UserServiceTest {
 	public void getTotalCountTest() {
 		Long totalCount = defaultService.getTotalCount();
 		assertNotNull(totalCount);
-		assertEquals(Long.valueOf(1L), totalCount);
+		assertEquals(Long.valueOf(2L), totalCount);
 	}
 	
 }
