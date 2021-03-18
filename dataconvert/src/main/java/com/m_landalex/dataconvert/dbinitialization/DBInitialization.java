@@ -34,7 +34,7 @@ public class DBInitialization {
 
 		for( int i = 1; i < 10; i++ ) {
 			
-			Employee employee = Employee.builder().firstName( "Firstname_" + i ).lastName( "Lastname_" + i )
+			defaultService.save( Employee.builder().firstName( "Firstname_" + i ).lastName( "Lastname_" + i )
 				.birthDate( applicationConversionServiceFactoryBean.getLocalDateFormatter().parse( "2000-0" + i + "-0" + i , Locale.GERMAN ) )
 				.jobStartInTheCompany( applicationConversionServiceFactoryBean.getLocalDateFormatter().parse( "2022-0" + i + "-0" + i, Locale.GERMAN ) )
 				.companyAffiliation( 0 ).description( "description_" + i ).photo( (byte)0 ).webSite( new URL( "http://employee_" + i + ".com/" ) )
@@ -43,8 +43,7 @@ public class DBInitialization {
 						.start( applicationConversionServiceFactoryBean.getLocalDateFormatter().parse( "2022-0" + i + "-0" + i, Locale.GERMAN ) )
 						.aktiv( applicationConversionServiceFactoryBean.getBooleanFormatter().parse( "true", Locale.GERMAN ) )
 						.userRole( Role.DEVELOPER ).build() )
-				.build();
-			defaultService.save( employee );
+				.build() );
 		
 		}
 
