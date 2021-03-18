@@ -37,7 +37,7 @@ public class EmployeeEntity {
 	@Version
 	@Column( name = "VERSION" )
 	private int version;
-	@Column( name = "FIRTSNAME" )
+	@Column( name = "FIRSTNAME" )
 	private String firstName;
 	@Column( name = "LASTNAME" )
 	private String lastName;
@@ -45,7 +45,7 @@ public class EmployeeEntity {
 	private LocalDate birthDate;
 	@Column( name = "JOBSTARTINTHECOMPANY" )
 	private LocalDate jobStartInTheCompany;
-	@Column( name = "COMPANYYFFILIATION" )
+	@Column( name = "COMPANYAFFILIATION" )
 	private int companyAffiliation;
 	@Column( name = "DESCRIPTION" )
 	private String description;
