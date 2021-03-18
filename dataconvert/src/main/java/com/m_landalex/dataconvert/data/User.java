@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -21,15 +21,17 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class User extends AbstractObject implements Serializable{
 
-	@NotNull @Size(min = 2, max = 50) 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" ) 
 	private String username;
-	@NotNull 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
 	private Integer password;
-	@NotNull @FutureOrPresent(message = "Start date must be in the future") 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@FutureOrPresent( message = "{javax.validation.constraints.FutureOrPresent.message}" ) 
 	private LocalDate start;
-	@NotNull 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
 	private Boolean aktiv;
-	@NotNull 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
 	private Role userRole;
 	
 }
