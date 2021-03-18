@@ -56,7 +56,7 @@ public class EmployeeEntity {
 	@Column( name = "WEBSITE" )
 	private URL webSite;
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "USER_ID", referencedColumnName = "id")
+	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
 	private UserEntity user;
 	
 }
