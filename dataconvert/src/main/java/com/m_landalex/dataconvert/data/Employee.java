@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
@@ -25,18 +26,25 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class Employee extends AbstractObject implements Serializable{
 	
-	@NotNull
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
+	@Size( min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" )
 	private String firstName;
-	@NotNull @Size(min = 2, max = 50) 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@Size( min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" ) 
 	private String lastName;
-	@NotNull @Past(message = "Birth date must be in the past") 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@Past( message = "{javax.validation.constraints.Past.message}" ) 
 	private LocalDate birthDate;
-	@NotNull
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
+	@FutureOrPresent( message = "{javax.validation.constraints.FutureOrPresent.message}" )
 	private LocalDate jobStartInTheCompany;
-	@NotNull @Min(value = 0, message = "The experience of a new employee of the company must be equal to 0")
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@Min( value = 0, message = "{javax.validation.constraints.Min.message}" )
 	private int companyAffiliation;
+	private String description;
+	private byte photo;
 	private URL webSite;
-	@NotNull 
+	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
 	private User user;
 
 }
