@@ -1,4 +1,4 @@
-package com.m_landalex.dataconvert.view.controller;
+package com.m_landalex.dataconvert.view.controller.rest;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.m_landalex.dataconvert.service.DefaultService;
 
 @Controller
 @RequestMapping(value = "/rest/employees")
-public class EmployeeController {
+public class RestEmployeeController {
 
 	@Autowired
 	@Qualifier(value = "employeeService")
