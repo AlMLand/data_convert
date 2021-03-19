@@ -1,8 +1,5 @@
 package com.m_landalex.dataconvert.jmx;
 
-import javax.annotation.PostConstruct;
-
-import org.hibernate.SessionFactory;
 import org.hibernate.stat.CacheRegionStatistics;
 import org.hibernate.stat.CollectionStatistics;
 import org.hibernate.stat.EntityStatistics;
@@ -13,14 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CustomStatistics {
 
 	@Autowired
-	private SessionFactory sessionFactory;
 	private Statistics statistics;
-	
-	@PostConstruct
-	private void init() {
-		statistics = sessionFactory.getStatistics();
-	}
-	
+
 	public EntityStatistics getEntityStatistics(String entityName) {
 		return statistics.getEntityStatistics(entityName);
 	}
