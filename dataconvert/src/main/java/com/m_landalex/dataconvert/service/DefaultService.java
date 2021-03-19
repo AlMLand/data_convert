@@ -14,8 +14,8 @@ public interface DefaultService {
 
 	AbstractObject fetchById( Long id );
 	
-	List<AbstractObject> fetchAll();
-
+	<T extends AbstractObject> List<T> fetchAll();
+	
 	void deleteById( Long id );
 	
 	void deleteAll();

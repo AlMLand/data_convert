@@ -63,8 +63,9 @@ public class EmployeeService implements DefaultService{
 		return conversionService.convert( employeeRepository.findById(id).get(), Employee.class );
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional( readOnly = true )
-	public List<AbstractObject> fetchAll(){
+	public List<Employee> fetchAll(){
 		return employeeRepository.findAll()
 					.stream()
 					.map( employeeEntity -> conversionService.convert( employeeEntity, Employee.class ) )
@@ -81,7 +82,7 @@ public class EmployeeService implements DefaultService{
 	
 	@Scheduled( fixedRate = 50000 )
 	public void updateCompanyAffiliation() {
-		List<AbstractObject> returnedList = fetchAll();
+		List<Employee> returnedList = fetchAll();
 		returnedList.forEach( employee -> {
 			int years = Period.between( ( ( Employee ) employee ).getJobStartInTheCompany(), LocalDate.now() ).getYears();
 			if( years < 0 ) {

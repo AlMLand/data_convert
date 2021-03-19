@@ -41,8 +41,9 @@ public class UserService implements DefaultService{
 		return conversionService.convert(userRepository.findById(id).get(), User.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<AbstractObject> fetchAll(){
+	public List<User> fetchAll(){
 		return userRepository.findAll()
 				.stream()
 				.map(userEntity -> conversionService.convert(userEntity, User.class))
