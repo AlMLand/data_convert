@@ -19,7 +19,10 @@ import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +37,17 @@ import com.m_landalex.dataconvert.jmx.CustomStatistics;
 @Profile( "!test" )
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
 public class WebConfig implements WebMvcConfigurer {
+	
+	private static final String PATH_PATTERNS = "/resources/**";
+	private static final String LOCATIONS = "/";
+	private static final int CACH_PERIOD = 30323456;
+	private static final String URL_PATH_OR_PATTERN = "/";
+	private static final String VIEW_NAME = "employees/list";
+	private static final String RESOURCE_PREFIX = "/WEB-INF/views/";
+	private static final String RESOURCE_SUFFIX = ".html";
+	private static final String REQUEST_CONTEXT_ATTRIBUITE = "requestContext";
+	private static final String KEY_MY_STATISTIC = "bean:name=MyBeansStatistics";
+	private static final String KEY_CUSTOM_STATISTIC = "bean:name=MyBeansStatisticsHibernate"; 
 
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
@@ -53,16 +67,6 @@ public class WebConfig implements WebMvcConfigurer {
 		return objectMapper;
 	}
 	
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
-	
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(mappingJackson2HttpMessageConverter());
-	}
-	
 	@Bean
 	AbstractObjectStatistics abstractObjectStatistics() {
 		return new AbstractObjectStatisticsImpl();
@@ -73,8 +77,8 @@ public class WebConfig implements WebMvcConfigurer {
 		MBeanExporter exporter = new MBeanExporter();
 		exporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
 		Map<String, Object> beansToExport = new HashMap<String, Object>();
-		beansToExport.put( "bean:name=MyBeansStatistics", abstractObjectStatistics() );
-		beansToExport.put( "bean:name=MyBeansStatisticsHibernate", customStatistics() );
+		beansToExport.put( KEY_MY_STATISTIC, abstractObjectStatistics() );
+		beansToExport.put( KEY_CUSTOM_STATISTIC, customStatistics() );
 		exporter.setBeans( beansToExport );
 		exporter.afterPropertiesSet();
 		return exporter;
@@ -88,6 +92,35 @@ public class WebConfig implements WebMvcConfigurer {
 	@Bean
 	CustomStatistics customStatistics() {
 		return new CustomStatistics();
+	}
+	
+	@Bean
+	InternalResourceViewResolver internalResourceViewResolver() {
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setPrefix(RESOURCE_PREFIX);
+		resolver.setSuffix(RESOURCE_SUFFIX);
+		resolver.setRequestContextAttribute(REQUEST_CONTEXT_ATTRIBUITE);
+		return resolver;
+	}
+	
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
+	
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(mappingJackson2HttpMessageConverter());
+	}
+	
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler(PATH_PATTERNS).addResourceLocations(LOCATIONS).setCachePeriod(CACH_PERIOD);
+	}
+	
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController(URL_PATH_OR_PATTERN).setViewName(VIEW_NAME);
 	}
 	
 }
