@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -80,13 +81,13 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
 	@Bean
-	CustomStatistics customStatistics() {
-		return new CustomStatistics();
+	Statistics statistics() {
+		return entityManagerFactory.unwrap( SessionFactory.class ).getStatistics();
 	}
 	
 	@Bean
-	SessionFactory sessionFactory() {
-		return entityManagerFactory.unwrap( SessionFactory.class );
+	CustomStatistics customStatistics() {
+		return new CustomStatistics();
 	}
 	
 }
