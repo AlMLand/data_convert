@@ -1,4 +1,4 @@
-package com.m_landalex.dataconvert.configuration.restsecurity;
+package com.m_landalex.dataconvert.configuration.websecurity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
