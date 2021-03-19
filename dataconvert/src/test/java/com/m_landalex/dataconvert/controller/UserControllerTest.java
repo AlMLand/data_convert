@@ -24,19 +24,19 @@ import com.m_landalex.dataconvert.data.Role;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.service.DefaultService;
-import com.m_landalex.dataconvert.view.controller.UserController;
+import com.m_landalex.dataconvert.view.controller.rest.RestUserController;
 
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
 public class UserControllerTest {
 
 	@Mock 
 	private DefaultService mockedDefaultService;
-	private UserController userController;
+	private RestUserController userController;
 	private List<AbstractObject> listUsers = new ArrayList<>();
 	
 	@Before
 	public void setUp() {
-		userController = new UserController();
+		userController = new RestUserController();
 		User user = User.builder().username("Test_1").password(123).start(LocalDate.now()).aktiv(false)
 				.userRole(Role.DEVELOPER).build();
 		user.setId(1L);
