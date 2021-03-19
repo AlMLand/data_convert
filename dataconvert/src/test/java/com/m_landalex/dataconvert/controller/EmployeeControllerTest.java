@@ -25,19 +25,19 @@ import com.m_landalex.dataconvert.data.Role;
 import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.service.DefaultService;
-import com.m_landalex.dataconvert.view.controller.EmployeeController;
+import com.m_landalex.dataconvert.view.controller.rest.RestEmployeeController;
 
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
 public class EmployeeControllerTest {
 	
 	@Mock
 	private DefaultService mockedDefaultService;
-	private EmployeeController employeeController;
+	private RestEmployeeController employeeController;
 	private List<AbstractObject> listEmployee = new ArrayList<>();
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		employeeController = new EmployeeController();
+		employeeController = new RestEmployeeController();
 		User user = User.builder().username("TestUserName_1").password(12345).start(LocalDate.now()).aktiv(true)
 				.userRole(Role.DEVELOPER).build();
 		user.setId(1L);
