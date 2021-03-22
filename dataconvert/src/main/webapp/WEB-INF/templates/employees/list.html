@@ -6,7 +6,7 @@
 		<title>My dataconvert app</title>
 	</head>
 
-	<body>
+	<body style="background-color:#7FFF00">
 	
 		<table border="1">
 			<tr>
@@ -30,7 +30,6 @@
 				<td th:utext="${employee.companyAffiliation}">Company affiliation</td>
 				<td th:if="${employee.description}" th:utext="${employee.description}">Description</td>
 				<td th:unless="${employee.description}">Description is empty</td>	
-			</tr>
 		</table>
 		
 	</body>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thyeleaf.org">
+		
+		<head>
+			<meta charset="ISO-8859-1">
+			<title>My dataconvert app</title>
+		</head>
+
+		<body style="background-color:#EE82EE">
+			
+			<h1>Users listing</h1>
+			
+			<table border="1">
+				<tr>
+					<th>No</th>
+					<th>User name</th>
+					<th>Password</th>
+					<th>Start</th>
+					<th>Aktiv</th>
+					<th>User Role</th>
+				</tr>
+				<tr th:if="${#lists.isEmpty(users)}">
+					<td colspan="5">No data found</td>
+				</tr>
+				<tr th:each="user,state:${users}">
+					<td th:text="${state.count}">No</td>
+					<td th:text="${user.username}">User name</td>
+					<td th:text="${user.password}">Password</td>
+					<td th:text="${user.start}">Start</td>
+					<td th:text="${user.aktiv}">Aktiv</td>
+					<td th:text="${user.userRole}">User role</td>
+				</tr>
+			</table>
+			
+		</body>
+		
+	</html>
