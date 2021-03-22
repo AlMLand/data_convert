@@ -9,10 +9,12 @@ import javax.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
@@ -22,7 +24,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,19 +43,18 @@ import com.m_landalex.dataconvert.jmx.CustomStatistics;
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
 public class WebConfig implements WebMvcConfigurer {
 	
-	private static final String PATH_PATTERNS = "/resources/**";
-	private static final String LOCATIONS = "/";
-	private static final int CACH_PERIOD = 30323456;
-	private static final String URL_PATH_OR_PATTERN = "/";
-	private static final String VIEW_NAME = "employees/list";
-	private static final String RESOURCE_PREFIX = "/WEB-INF/views/";
-	private static final String RESOURCE_SUFFIX = ".html";
-	private static final String REQUEST_CONTEXT_ATTRIBUITE = "requestContext";
+	@Autowired
+	private ApplicationContext applicationContext;
+	
 	private static final String KEY_MY_STATISTIC = "bean:name=MyBeansStatistics";
 	private static final String KEY_CUSTOM_STATISTIC = "bean:name=MyBeansStatisticsHibernate"; 
 
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
+	
+    /* ******************************************************************* */
+    /*  GENERAL CONFIGURATION ARTIFACTS                                    */
+    /* ******************************************************************* */
 	
 	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
@@ -94,15 +98,6 @@ public class WebConfig implements WebMvcConfigurer {
 		return new CustomStatistics();
 	}
 	
-	@Bean
-	InternalResourceViewResolver internalResourceViewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix(RESOURCE_PREFIX);
-		resolver.setSuffix(RESOURCE_SUFFIX);
-		resolver.setRequestContextAttribute(REQUEST_CONTEXT_ATTRIBUITE);
-		return resolver;
-	}
-	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
@@ -113,14 +108,55 @@ public class WebConfig implements WebMvcConfigurer {
 		converters.add(mappingJackson2HttpMessageConverter());
 	}
 	
+	@Bean
+	public ResourceBundleMessageSource resourceBundleMessageSource() {
+		ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+		source.setBasename("Messages");
+		return source;
+	}
+	
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler(PATH_PATTERNS).addResourceLocations(LOCATIONS).setCachePeriod(CACH_PERIOD);
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/").setCachePeriod(3600000);
+		registry.addResourceHandler("/images/**").addResourceLocations("/images/");
+		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
 	}
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController(URL_PATH_OR_PATTERN).setViewName(VIEW_NAME);
+		registry.addViewController("/").setViewName("home");
+	}
+	
+    /* **************************************************************** */
+    /*  THYMELEAF-SPECIFIC ARTIFACTS                                    */
+    /*  TemplateResolver <- TemplateEngine <- ViewResolver              */
+    /* **************************************************************** */
+	
+	@Bean
+	public SpringResourceTemplateResolver springResourceTemplateResolver() {
+		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+		resolver.setApplicationContext(this.applicationContext);
+		resolver.setPrefix("/WEB-INF/templates/");
+		resolver.setSuffix(".html");
+		resolver.setTemplateMode(TemplateMode.HTML);
+		resolver.setCacheable(true);
+		return resolver;
+	}
+	
+	@Bean
+	public SpringTemplateEngine springTemplateEngine() {
+		SpringTemplateEngine engine = new SpringTemplateEngine();
+		engine.setTemplateResolver(springResourceTemplateResolver());
+		engine.setEnableSpringELCompiler(true);
+		return engine;
+	}
+	
+	@Bean
+	public ThymeleafViewResolver thymeleafViewResolver() {
+		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+		resolver.setTemplateEngine(springTemplateEngine());
+		return resolver;
 	}
 	
 }
