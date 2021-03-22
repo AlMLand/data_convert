@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>My dataconvert app</title>
+	</head>
+
+	<body>
+	
+		<table border="1">
+			<tr>
+				<th>No</th>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Birth date</th>
+				<th>Job start in the company</th>
+				<th>Company affiliation</th>
+				<th>Description</th>
+			</tr>
+			<tr th:if="${employees.empty}">
+				<td colspan="7">No data found</td>
+			</tr>
+			<tr th:each="employee,state:${employees}">
+				<td th:utext="${state.count}">No</td>
+				<td th:utext="${employee.firstName}">First name</td>
+				<td th:utext="${employee.lastName}">Last name</td>
+				<td th:utext="${employee.birthDate}">Birth date</td>
+				<td th:utext="${employee.jobStartInTheCompany}">Job start in the company</td>
+				<td th:utext="${employee.companyAffiliation}">Company affiliation</td>
+				<td th:if="${employee.description}" th:utext="${employee.description}">Description</td>
+				<td th:unless="${employee.description}">Description is empty</td>	
+			</tr>
+		</table>
+		
+	</body>
+
+</html>

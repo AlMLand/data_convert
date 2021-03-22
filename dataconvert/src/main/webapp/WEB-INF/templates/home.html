@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>RESTful</title>
+		<title>Hallo from Dresden</title>
 	</head>
 	
 	<body>
-		<h1>Hallo from DD</h1>
+		<h1 title="built on the relationship between">App dataconvert</h1>
+		<br>
+		
+		<p>Please select a option</p>
+		<ul>
+			<li><a href="employees" th:href="@{/employees}">Employees list</a></li>
+		</ul>
 	</body>
 </html>
