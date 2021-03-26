@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -29,7 +30,7 @@ import com.m_landalex.dataconvert.converter.UserToUserEntityConverter;
 
 @EnableJpaRepositories(basePackages = "com.m_landalex.dataconvert.petsistence")
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
-@PropertySource("classpath:application.properties")
+@PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 @Configuration
 public class AppServiceConfig {
 	
@@ -50,6 +51,13 @@ public class AppServiceConfig {
 	@Autowired private UserEntityToUserConverter userEntityToUserConverter;
 	@Autowired private UserToUserEntityConverter userToUserEntityConverter;
 	@Autowired private DataSource dataSource;
+	
+	 @Bean
+	 public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
+		PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+		configurer.setIgnoreUnresolvablePlaceholders(true);
+		return configurer;
+	 }
 	
 	private Properties getProperties() {
 		Properties properties = new Properties();
