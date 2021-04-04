@@ -1,37 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-	
-	<head>
-		<meta charset="ISO-8859-1">
-		<title>My dataconvert app</title>
-	</head>
+	<html xmlns:th="http://www.thymeleaf.org">
 
-	<body style="background-color:#7FFF00">
-	
-		<table border="1">
-			<tr>
-				<th>No</th>
-				<th>First name</th>
-				<th>Last name</th>
-				<th>Birth date</th>
-				<th>Job start in the company</th>
-				<th>Company affiliation</th>
-				<th>Description</th>
-			</tr>
-			<tr th:if="${employees.empty}">
-				<td colspan="7">No data found</td>
-			</tr>
-			<tr th:each="employee,state:${employees}">
-				<td th:utext="${state.count}">No</td>
-				<td th:utext="${employee.firstName}">First name</td>
-				<td th:utext="${employee.lastName}">Last name</td>
-				<td th:utext="${employee.birthDate}">Birth date</td>
-				<td th:utext="${employee.jobStartInTheCompany}">Job start in the company</td>
-				<td th:utext="${employee.companyAffiliation}">Company affiliation</td>
-				<td th:if="${employee.description}" th:utext="${employee.description}">Description</td>
-				<td th:unless="${employee.description}">Description is empty</td>	
-		</table>
+		<head th:replace="fragments :: html_head"/>
 		
-	</body>
+		<body>
+			<div class="container_style">
+				<div th:replace="fragments :: header"></div>
+				
+				<div th:replace="fragments :: nav-default"></div>
+				
+				<div class="content_style">
+					<table class="table">
+						<tr>
+							<th th:text="#{no}">No</th>
+							<th th:text="#{fn}">First name</th>
+							<th th:text="#{ln}">Last name</th>
+							<th th:text="#{bd}">Birth date</th>
+							<th th:text="#{job.start}">Job start in the company</th>
+							<th th:text="#{company.aff}">Company affiliation</th>
+							<th th:text="#{description}">Description</th>
+						</tr>
+						<tr th:if="${#lists.isEmpty(employees)}">
+							<td colspan="7" th:text="#{no.data}">No data found</td>
+						</tr>
+						<tr th:each="employee,state:${employees}">
+							<td th:utext="${state.count}">No</td>
+							<td th:utext="${employee.firstName}">First name</td>
+							<td th:utext="${employee.lastName}">Last name</td>
+							<td th:utext="${employee.birthDate}">Birth date</td>
+							<td th:utext="${employee.jobStartInTheCompany}">Job start in the company</td>
+							<td th:utext="${employee.companyAffiliation}">Company affiliation</td>
+							<td th:if="${employee.description}" th:utext="${employee.description}">Description</td>
+							<td th:unless="${employee.description}" th:text="#{descr.empty}">Description is empty</td>	
+					</table>
+				</div>
+			
+				<div th:replace="fragments :: copyright"></div>
+			</div>
+		</body>
 
-</html>
+	</html>

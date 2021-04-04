@@ -1,37 +1,40 @@
 <!DOCTYPE html>
-	<html xmlns:th="http://www.thyeleaf.org">
+	<html xmlns:th="http://www.thymeleaf.org">
+												
+		<head th:replace="fragments :: html_head"/>
 		
-		<head>
-			<meta charset="ISO-8859-1">
-			<title>My dataconvert app</title>
-		</head>
-
-		<body style="background-color:#EE82EE">
+		<body>
+			<div class="container_style">
+				<div th:replace="fragments :: header"></div>
+				
+				<div th:replace="fragments :: nav-default"></div>
+				
+				<div class="content_style">
+					<table class="table">
+						<tr>
+							<th th:text="#{no}">No</th>
+							<th th:text="#{us}">User name</th>
+							<th th:text="#{password}">Password</th>
+							<th th:text="#{start}">Start</th>
+							<th th:text="#{active}">Active</th>
+							<th th:text="#{u.role}">User Role</th>
+						</tr>
+						<tr th:if="${#lists.isEmpty(users)}">
+							<td colspan="6" th:text="#{no.data}">No data found</td>
+						</tr>
+						<tr th:each="user,state:${users}">
+							<td th:text="${state.count}">No</td>
+							<td th:text="${user.username}">User name</td>
+							<td th:text="${user.password}">Password</td>
+							<td th:text="${user.start}">Start</td>
+							<td th:text="${user.aktiv}">Aktiv</td>
+							<td th:text="${user.userRole}">User role</td>
+						</tr>
+					</table>
+				</div>
 			
-			<h1>Users listing</h1>
-			
-			<table border="1">
-				<tr>
-					<th>No</th>
-					<th>User name</th>
-					<th>Password</th>
-					<th>Start</th>
-					<th>Aktiv</th>
-					<th>User Role</th>
-				</tr>
-				<tr th:if="${#lists.isEmpty(users)}">
-					<td colspan="5">No data found</td>
-				</tr>
-				<tr th:each="user,state:${users}">
-					<td th:text="${state.count}">No</td>
-					<td th:text="${user.username}">User name</td>
-					<td th:text="${user.password}">Password</td>
-					<td th:text="${user.start}">Start</td>
-					<td th:text="${user.aktiv}">Aktiv</td>
-					<td th:text="${user.userRole}">User role</td>
-				</tr>
-			</table>
-			
-		</body>
+				<div th:replace="fragments :: copyright"></div>	
+			</div>
+		</body>										
 		
 	</html>
