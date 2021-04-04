@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thyeleaf.org">
+	
+		<head th:fragment="html_head">
+			<meta charset="ISO-8859-1">
+			<title>Title of home page</title>
+			<link rel="styleSheet" href="styles/standard.css"/>
+		</head>
+		
+		<body>
+			<div th:fragment="header" class="header_style">Dataconvert App</div>
+			
+			<ul th:fragment="nav-default" class="sidebar_style">
+				<li><a th:href="@{/}">Home</a></li>
+				<li><a th:href="@{/employees}" th:text="#{e.list}">Employees</a></li>
+				<li><a th:href="@{/users}" th:text="#{u.list}">Users</a></li>
+			</ul>
+			
+			<div th:fragment="copyright" class="footer_style">&copy; A_M_land</div>
+		</body>
+		
+	</html>
