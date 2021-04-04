@@ -28,7 +28,7 @@ public class DBInitialization {
 	private DefaultService defaultService;
 	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
-
+	
 	@PostConstruct
 	public void init() throws ParseException, MalformedURLException, ResourceNullException {
 

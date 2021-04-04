@@ -2,6 +2,7 @@ package com.m_landalex.dataconvert.configuration.restserver;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
@@ -14,16 +15,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
+import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.theme.CookieThemeResolver;
+import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -46,6 +53,10 @@ public class WebConfig implements WebMvcConfigurer {
 	@Autowired
 	private ApplicationContext applicationContext;
 	
+	private static final String COOKIE_LOCAL_NAME = "locale";
+	private static final String COOKIE_THEME_NAME = "theme";
+	private static final String COOKIE_DEFAULT_THEME_NAME = "standard";
+	private static final String INTERCEPTOR_NAME = "lang";
 	private static final String KEY_MY_STATISTIC = "bean:name=MyBeansStatistics";
 	private static final String KEY_CUSTOM_STATISTIC = "bean:name=MyBeansStatisticsHibernate"; 
 
@@ -55,6 +66,25 @@ public class WebConfig implements WebMvcConfigurer {
     /* ******************************************************************* */
     /*  GENERAL CONFIGURATION ARTIFACTS                                    */
     /* ******************************************************************* */
+	
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
+	
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/").setViewName("index");
+	}
+
+	@Override
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/").setCachePeriod(3600000);
+	}
+	
+    /* **************************************************************** */
+    /*  REST-SPECIFIC ARTIFACTS                                         */
+    /* **************************************************************** */
 	
 	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
@@ -70,6 +100,15 @@ public class WebConfig implements WebMvcConfigurer {
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		return objectMapper;
 	}
+	
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(mappingJackson2HttpMessageConverter());
+	}
+	
+    /* **************************************************************** */
+    /*  STATISTICS-SPECIFIC ARTIFACTS                                         */
+    /* **************************************************************** */
 	
 	@Bean
 	AbstractObjectStatistics abstractObjectStatistics() {
@@ -98,39 +137,62 @@ public class WebConfig implements WebMvcConfigurer {
 		return new CustomStatistics();
 	}
 	
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
-	
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(mappingJackson2HttpMessageConverter());
-	}
+    /* **************************************************************** */
+    /*  i18n MESSAGES, THEME -SPECIFIC ARTIFACTS                        */
+    /* **************************************************************** */
 	
 	@Bean
-	public ResourceBundleMessageSource resourceBundleMessageSource() {
-		ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-		source.setBasename("Messages");
+	ReloadableResourceBundleMessageSource messageSource() {
+		ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
+		source.setBasenames("WEB-INF/i18n/messages");
+		source.setDefaultEncoding("UTF-8");
+		source.setFallbackToSystemLocale(false);
 		return source;
 	}
 	
-	@Override
-	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/").setCachePeriod(3600000);
-		registry.addResourceHandler("/images/**").addResourceLocations("/images/");
-		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
-		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+	@Bean
+	LocaleChangeInterceptor localeChangeInterceptor() {
+		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+		interceptor.setParamName(INTERCEPTOR_NAME);
+		return interceptor;
+	}
+	
+	@Bean
+	ResourceBundleThemeSource resourceBundleThemeSource() {
+		return new ResourceBundleThemeSource();
+	}
+	
+	@Bean
+	ThemeChangeInterceptor themeChangeInterceptor() {
+		return new ThemeChangeInterceptor();
 	}
 	
 	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("home");
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(themeChangeInterceptor());
+	}
+	
+	@Bean
+	CookieLocaleResolver cookieLocaleResolver() {
+		CookieLocaleResolver resolver = new CookieLocaleResolver();
+		resolver.setDefaultLocale(Locale.ENGLISH);
+		resolver.setCookieMaxAge(3000);
+		resolver.setCookieName(COOKIE_LOCAL_NAME);
+		return resolver;
+	}
+	
+	@Bean
+	CookieThemeResolver cookieThemeResolver() {
+		CookieThemeResolver resolver = new CookieThemeResolver();
+		resolver.setDefaultThemeName(COOKIE_DEFAULT_THEME_NAME);
+		resolver.setCookieMaxAge(3000);
+		resolver.setCookieName(COOKIE_THEME_NAME);
+		return resolver;
 	}
 	
     /* **************************************************************** */
     /*  THYMELEAF-SPECIFIC ARTIFACTS                                    */
-    /*  TemplateResolver <- TemplateEngine <- ViewResolver              */
     /* **************************************************************** */
 	
 	@Bean
