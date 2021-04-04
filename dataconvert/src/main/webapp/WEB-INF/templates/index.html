@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	
+		<head th:replace="fragments :: html_head"/>
+		
+		<body>
+			<div class="container_style">
+			
+				<div th:replace="fragments :: header">Header</div>
+				
+				<div th:replace="fragments :: nav-default">Menu</div>
+				
+				<div class="content_style" th:text="#{home.description}">Content</div>
+			
+				<div th:replace="fragments :: copyright">Footer</div>
+			
+			</div>
+		</body>
+	
+	</html>
