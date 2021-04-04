@@ -20,7 +20,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
-import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -29,7 +28,6 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.theme.CookieThemeResolver;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -54,8 +52,6 @@ public class WebConfig implements WebMvcConfigurer {
 	private ApplicationContext applicationContext;
 	
 	private static final String COOKIE_LOCAL_NAME = "locale";
-	private static final String COOKIE_THEME_NAME = "theme";
-	private static final String COOKIE_DEFAULT_THEME_NAME = "standard";
 	private static final String INTERCEPTOR_NAME = "lang";
 	private static final String KEY_MY_STATISTIC = "bean:name=MyBeansStatistics";
 	private static final String KEY_CUSTOM_STATISTIC = "bean:name=MyBeansStatisticsHibernate"; 
@@ -138,7 +134,7 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
     /* **************************************************************** */
-    /*  i18n MESSAGES, THEME -SPECIFIC ARTIFACTS                        */
+    /*  i18n MESSAGES -SPECIFIC ARTIFACTS                               */
     /* **************************************************************** */
 	
 	@Bean
@@ -156,12 +152,7 @@ public class WebConfig implements WebMvcConfigurer {
 		interceptor.setParamName(INTERCEPTOR_NAME);
 		return interceptor;
 	}
-	
-	@Bean
-	ResourceBundleThemeSource resourceBundleThemeSource() {
-		return new ResourceBundleThemeSource();
-	}
-	
+
 	@Bean
 	ThemeChangeInterceptor themeChangeInterceptor() {
 		return new ThemeChangeInterceptor();
@@ -170,7 +161,6 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
-		registry.addInterceptor(themeChangeInterceptor());
 	}
 	
 	@Bean
@@ -181,16 +171,7 @@ public class WebConfig implements WebMvcConfigurer {
 		resolver.setCookieName(COOKIE_LOCAL_NAME);
 		return resolver;
 	}
-	
-	@Bean
-	CookieThemeResolver cookieThemeResolver() {
-		CookieThemeResolver resolver = new CookieThemeResolver();
-		resolver.setDefaultThemeName(COOKIE_DEFAULT_THEME_NAME);
-		resolver.setCookieMaxAge(3000);
-		resolver.setCookieName(COOKIE_THEME_NAME);
-		return resolver;
-	}
-	
+
     /* **************************************************************** */
     /*  THYMELEAF-SPECIFIC ARTIFACTS                                    */
     /* **************************************************************** */
