@@ -82,9 +82,9 @@ public class EmployeeService implements DefaultService{
 	
 	@Scheduled( fixedRate = 50000 )
 	public void updateCompanyAffiliation() {
-		List<Employee> returnedList = fetchAll();
+		var returnedList = fetchAll();
 		returnedList.forEach( employee -> {
-			int years = Period.between( ( ( Employee ) employee ).getJobStartInTheCompany(), LocalDate.now() ).getYears();
+			var years = Period.between( ( ( Employee ) employee ).getJobStartInTheCompany(), LocalDate.now() ).getYears();
 			if( years < 0 ) {
 				years = 0;
 			}
