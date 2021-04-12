@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-	<html xmlns:th="http://www.thyeleaf.org">
+	<html xmlns:th="http://www.thymeleaf.org">
 	
 		<head th:fragment="html_head">
 			<meta charset="ISO-8859-1">
 			<title>Title of home page</title>
-			<link rel="styleSheet" href="styles/standard.css"/>
+			<link rel="styleSheet" type="text/css" media="all" href="styles/standard.css"/>
 		</head>
 		
 		<body>
 			<div th:fragment="header" class="header_style">Dataconvert App</div>
 			
-			<ul th:fragment="nav-default" class="sidebar_style">
+			<ul th:fragment="nav_default" class="sidebar_style">
 				<li><a th:href="@{/}">Home</a></li>
 				<li><a th:href="@{/employees}" th:text="#{e.list}">Employees</a></li>
 				<li><a th:href="@{/users}" th:text="#{u.list}">Users</a></li>

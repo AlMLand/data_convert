@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	
+		<head th:replace="fragments :: html_head"/>
+		
+		<body>
+			
+			<div class="container_style">
+				
+				<div th:replace="fragments :: header"></div>
+				
+				<div th:replace="fragments :: nav_default"></div>
+				
+				<div class="content_style">
+					<table class="table">
+						<tr>
+							<th th:text="#{us}">User name</th>
+							<th th:text="#{password}">Password</th>
+							<th th:text="#{start}">Start</th>
+							<th th:text="#{active}">Active</th>
+							<th th:text="#{u.role}">User role</th>
+						</tr>
+						<tr>
+							<td th:text="${returnedUser.username}">User name</td>
+							<td th:text="${returnedUser.password}">Password</td>
+							<td th:text="${returnedUser.start}">Start</td>
+							<td th:text="${returnedUser.aktiv}">Aktiv</td>
+							<td th:text="${returnedUser.userRole}">User role</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div th:replace="fragments :: copyright">Footer</div>
+				
+			</div>
+			
+		</body>
+		
+	</html>

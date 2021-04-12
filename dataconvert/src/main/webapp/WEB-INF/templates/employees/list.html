@@ -4,39 +4,38 @@
 		<head th:replace="fragments :: html_head"/>
 		
 		<body>
+		
 			<div class="container_style">
+			
 				<div th:replace="fragments :: header"></div>
 				
-				<div th:replace="fragments :: nav-default"></div>
-				
+				<div th:replace="fragments :: nav_default"></div>
+					
 				<div class="content_style">
 					<table class="table">
 						<tr>
 							<th th:text="#{no}">No</th>
 							<th th:text="#{fn}">First name</th>
 							<th th:text="#{ln}">Last name</th>
-							<th th:text="#{bd}">Birth date</th>
-							<th th:text="#{job.start}">Job start in the company</th>
-							<th th:text="#{company.aff}">Company affiliation</th>
-							<th th:text="#{description}">Description</th>
 						</tr>
 						<tr th:if="${#lists.isEmpty(employees)}">
-							<td colspan="7" th:text="#{no.data}">No data found</td>
+							<td colspan="3" th:text="#{no.data}">No data found</td>
 						</tr>
 						<tr th:each="employee,state:${employees}">
 							<td th:utext="${state.count}">No</td>
 							<td th:utext="${employee.firstName}">First name</td>
-							<td th:utext="${employee.lastName}">Last name</td>
-							<td th:utext="${employee.birthDate}">Birth date</td>
-							<td th:utext="${employee.jobStartInTheCompany}">Job start in the company</td>
-							<td th:utext="${employee.companyAffiliation}">Company affiliation</td>
-							<td th:if="${employee.description}" th:utext="${employee.description}">Description</td>
-							<td th:unless="${employee.description}" th:text="#{descr.empty}">Description is empty</td>	
+							<td th:utext="${employee.lastName}">Last Name</td>
+							<td>
+								<a th:text="#{inf}" th:href="@{'employees/' + ${employee.id}}">More</a>
+							</td>
+						</tr>
 					</table>
 				</div>
-			
+				
 				<div th:replace="fragments :: copyright"></div>
+				
 			</div>
+			
 		</body>
 
 	</html>

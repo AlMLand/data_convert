@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -27,6 +28,13 @@ public class EmployeeController {
 		List<Employee> returnedList = defaultService.fetchAll();
 		model.addAttribute("employees", returnedList);
 		return "employees/list";
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String show(@PathVariable("id") Long id, Model model) {
+		Employee returnedEmployee = (Employee) defaultService.fetchById(id);
+		model.addAttribute("returnedEmployee", returnedEmployee);
+		return "employees/show";
 	}
 	
 }

@@ -1,10 +1,11 @@
 package com.m_landalex.dataconvert.data;
 
+import static java.util.Comparator.comparing;
+
 import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Comparator;
-import static java.util.Comparator.*;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;

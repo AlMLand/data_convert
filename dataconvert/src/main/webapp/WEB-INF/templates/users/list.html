@@ -4,37 +4,36 @@
 		<head th:replace="fragments :: html_head"/>
 		
 		<body>
+		
 			<div class="container_style">
+			
 				<div th:replace="fragments :: header"></div>
 				
-				<div th:replace="fragments :: nav-default"></div>
-				
+				<div th:replace="fragments :: nav_default"></div>
+					
 				<div class="content_style">
 					<table class="table">
 						<tr>
 							<th th:text="#{no}">No</th>
 							<th th:text="#{us}">User name</th>
-							<th th:text="#{password}">Password</th>
-							<th th:text="#{start}">Start</th>
-							<th th:text="#{active}">Active</th>
-							<th th:text="#{u.role}">User Role</th>
 						</tr>
 						<tr th:if="${#lists.isEmpty(users)}">
-							<td colspan="6" th:text="#{no.data}">No data found</td>
+							<td colspan="2" th:text="#{no.data}">No data found</td>
 						</tr>
 						<tr th:each="user,state:${users}">
 							<td th:text="${state.count}">No</td>
 							<td th:text="${user.username}">User name</td>
-							<td th:text="${user.password}">Password</td>
-							<td th:text="${user.start}">Start</td>
-							<td th:text="${user.aktiv}">Aktiv</td>
-							<td th:text="${user.userRole}">User role</td>
+							<td>
+								<a th:href="@{users/{id}(id=${user.id})}" th:text="#{inf}">More</a>
+							</td>
 						</tr>
 					</table>
 				</div>
 			
-				<div th:replace="fragments :: copyright"></div>	
+				<div th:replace="fragments :: copyright"></div>
+					
 			</div>
+			
 		</body>										
 		
 	</html>
