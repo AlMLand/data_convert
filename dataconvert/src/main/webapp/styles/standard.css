@@ -74,7 +74,7 @@ html, body{
 }
 
 .table tbody td {
-	text-align: left;
+	text-align: center;
 	border: none;
 	padding: 10px 15px;
 	font-size: 14px;
