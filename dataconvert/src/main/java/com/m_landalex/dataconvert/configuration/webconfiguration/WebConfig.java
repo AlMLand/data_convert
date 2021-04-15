@@ -1,4 +1,4 @@
-package com.m_landalex.dataconvert.configuration.restserver;
+package com.m_landalex.dataconvert.configuration.webconfiguration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
@@ -38,6 +39,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.m_landalex.dataconvert.formatter.LocalDateFormatter;
 import com.m_landalex.dataconvert.jmx.AbstractObjectStatistics;
 import com.m_landalex.dataconvert.jmx.AbstractObjectStatisticsImpl;
 import com.m_landalex.dataconvert.jmx.CustomStatistics;
@@ -134,7 +136,7 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
     /* **************************************************************** */
-    /*  i18n MESSAGES -SPECIFIC ARTIFACTS                               */
+    /*  i18n MESSAGES FORMATTERS - SPECIFIC ARTIFACTS                   */
     /* **************************************************************** */
 	
 	@Bean
@@ -172,6 +174,11 @@ public class WebConfig implements WebMvcConfigurer {
 		return resolver;
 	}
 
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+		registry.addFormatter(new LocalDateFormatter());
+	}
+	
     /* **************************************************************** */
     /*  THYMELEAF-SPECIFIC ARTIFACTS                                    */
     /* **************************************************************** */
