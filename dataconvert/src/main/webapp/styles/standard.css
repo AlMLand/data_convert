@@ -160,3 +160,8 @@ html, body{
 .form_input:hover{
 	border-bottom: 1px solid #1a73a8;
 }
+
+.form_errors{
+	font-size: x-small;
+	color: #ff0000
+}

@@ -19,31 +19,31 @@
 						<div class="form_group">
 							<label class="form_label" th:text="#{fn}">First name</label>
 							<input class="form_input" th:field="*{firstName}" placeholder="first name" type="text">
-							<p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"/>
+							<p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="form_errors"/>
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{ln}">Last name</label>
 							<input class="form_input" th:field="*{lastName}" placeholder="last name" type="text">
-							<p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"/>
+							<p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="form_errors"/>
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{bd}">Birth date</label>
 							<input class="form_input" th:field="*{birthDate}" placeholder="yyyy-mm-dd">
-							<p th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"/>
+							<p th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="form_errors"/>
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{job.start}">Job start in the company</label>
 							<input class="form_input" th:field="*{jobStartInTheCompany}" placeholder="yyyy-mm-dd">
-							<p th:if="${#fields.hasErrors('jobStartInTheCompany')}" th:errors="*{jobStartInTheCompany}"/>
+							<p th:if="${#fields.hasErrors('jobStartInTheCompany')}" th:errors="*{jobStartInTheCompany}" class="form_errors"/>
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{company.aff}">Company affiliation</label>
 							<input class="form_input" th:field="*{companyAffiliation}" placeholder="company affiliation">
-							<p th:if="${#fields.hasErrors('companyAffiliation')}" th:errors="*{companyAffiliation}"/>
+							<p th:if="${#fields.hasErrors('companyAffiliation')}" th:errors="*{companyAffiliation}" class="form_errors"/>
 						</div>
 						
 						<div class="form_group">
@@ -58,31 +58,31 @@
 						<div class="form_group">
 							<label class="form_label" th:text="#{us}">Username</label>
 							<input class="form_input" th:field="*{user.username}" placeholder="username">
-							<p th:if="${#fields.hasErrors('user.username')}" th:errors="*{user.username}"/> 
+							<p th:if="${#fields.hasErrors('user.username')}" th:errors="*{user.username}" class="form_errors"/> 
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{password}">Password</label>
 							<input class="form_input" th:field="*{user.password}" placeholder="password">
-							<p th:if="${#fields.hasErrors('user.password')}" th:errors="*{user.password}"/> 
+							<p th:if="${#fields.hasErrors('user.password')}" th:errors="*{user.password}" class="form_errors"/> 
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{active}">Aktiv</label>
 							<input class="form_input" th:field="*{user.aktiv}" placeholder="aktiv">
-							<p th:if="${#fields.hasErrors('user.aktiv')}" th:errors="*{user.aktiv}"/> 
+							<p th:if="${#fields.hasErrors('user.aktiv')}" th:errors="*{user.aktiv}" class="form_errors"/> 
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{start}">Start</label>
 							<input class="form_input" th:field="*{user.start}" placeholder="yyyy-mm-dd">
-							<p th:if="${#fields.hasErrors('user.start')}" th:errors="*{user.start}"/>
+							<p th:if="${#fields.hasErrors('user.start')}" th:errors="*{user.start}" class="form_errors"/>
 						</div>
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{u.role}">User role</label><br>
 							<input class="form_input" th:field="*{user.userRole}" placeholder="user role">
-							<p th:if="${#fields.hasErrors('user.userRole')}" th:errors="*{user.userRole}"/>
+							<p th:if="${#fields.hasErrors('user.userRole')}" th:errors="*{user.userRole}" class="form_errors"/>
 						</div>
 						
  						<input class="form_button" type="submit" value="Submit">&nbsp;<input class="form_button" type="reset" value="Reset">
