@@ -40,13 +40,13 @@ public class EmployeeController {
 		return "employees/show";
 	}
 	
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/edits/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable Long id, Model model) {
 		model.addAttribute("employeeToUpdate", defaultService.fetchById(id));
 		return "employees/update";
 	}
 	
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/edits/{id}", method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("employeeToUpdate")Employee employee, BindingResult bindingResult, 
 			Model model) throws ResourceNullException {
 		if(bindingResult.hasErrors()) {
