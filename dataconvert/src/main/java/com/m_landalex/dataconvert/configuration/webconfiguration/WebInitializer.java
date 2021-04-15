@@ -1,4 +1,4 @@
-package com.m_landalex.dataconvert.configuration.restserver;
+package com.m_landalex.dataconvert.configuration.webconfiguration;
 
 import javax.servlet.Filter;
 
