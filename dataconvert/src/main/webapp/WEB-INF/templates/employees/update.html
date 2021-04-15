@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	
+		<head th:replace="fragments :: html_head"/>
+		
+		<body>
+			
+			<div class="container_style">
+			
+				<div th:replace="fragments :: header"></div>
+				
+				<div th:replace="fragments :: nav_default"></div>
+
+				<div class="content_style">
+					<form class="form" action="#" th:action="@{/employees/edit/{id}}" th:object="${employeeToUpdate}" method="post">
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{version}">
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{fn}">First name</label>
+							<input class="form_input" th:field="*{firstName}" placeholder="first name" type="text">
+							<p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"/>
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{ln}">Last name</label>
+							<input class="form_input" th:field="*{lastName}" placeholder="last name" type="text">
+							<p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"/>
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{bd}">Birth date</label>
+							<input class="form_input" th:field="*{birthDate}" placeholder="yyyy-mm-dd">
+							<p th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"/>
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{job.start}">Job start in the company</label>
+							<input class="form_input" th:field="*{jobStartInTheCompany}" placeholder="yyyy-mm-dd">
+							<p th:if="${#fields.hasErrors('jobStartInTheCompany')}" th:errors="*{jobStartInTheCompany}"/>
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{company.aff}">Company affiliation</label>
+							<input class="form_input" th:field="*{companyAffiliation}" placeholder="company affiliation">
+							<p th:if="${#fields.hasErrors('companyAffiliation')}" th:errors="*{companyAffiliation}"/>
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{description}">Description</label>
+							<textarea class="form_input" th:field="*{description}" placeholder="description"></textarea>
+						</div>						
+						
+						<input type="hidden" th:field="*{user.id}">
+						
+						<input type="hidden" th:field="*{user.version}">
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{us}">Username</label>
+							<input class="form_input" th:field="*{user.username}" placeholder="username">
+							<p th:if="${#fields.hasErrors('user.username')}" th:errors="*{user.username}"/> 
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{password}">Password</label>
+							<input class="form_input" th:field="*{user.password}" placeholder="password">
+							<p th:if="${#fields.hasErrors('user.password')}" th:errors="*{user.password}"/> 
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{active}">Aktiv</label>
+							<input class="form_input" th:field="*{user.aktiv}" placeholder="aktiv">
+							<p th:if="${#fields.hasErrors('user.aktiv')}" th:errors="*{user.aktiv}"/> 
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{start}">Start</label>
+							<input class="form_input" th:field="*{user.start}" placeholder="yyyy-mm-dd">
+							<p th:if="${#fields.hasErrors('user.start')}" th:errors="*{user.start}"/>
+						</div>
+						
+						<div class="form_group">
+							<label class="form_label" th:text="#{u.role}">User role</label><br>
+							<input class="form_input" th:field="*{user.userRole}" placeholder="user role">
+							<p th:if="${#fields.hasErrors('user.userRole')}" th:errors="*{user.userRole}"/>
+						</div>
+						
+ 						<input class="form_button" type="submit" value="Submit">&nbsp;<input class="form_button" type="reset" value="Reset">
+					</form>
+				</div>
+
+				<div th:replace="fragments :: copyright"></div>
+			
+			</div>
+			
+		</body>
+		
+	</html>
