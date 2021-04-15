@@ -1,3 +1,7 @@
+/************************/
+/* 		GENERAL 		*/
+/************************/
+
 *{
 	margin: 0;
 	padding: 0;
@@ -56,6 +60,10 @@ html, body{
 	margin-bottom: 20px;
 }
 
+/************************************************/
+/* 		  template show & list all TABLE 		*/
+/************************************************/
+
 .table thead th {
 	font-weight: bold;
 	text-align: left;
@@ -92,6 +100,10 @@ html, body{
 .table tbody tr td:last-child {
 	border-radius: 0 8px 8px 0;
 }
+
+/********************************/
+/* 		templpate UPDATE 		*/
+/********************************/
 
 .form {
     width: 1200px;
