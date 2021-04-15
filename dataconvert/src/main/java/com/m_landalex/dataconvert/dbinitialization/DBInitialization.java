@@ -20,11 +20,11 @@ import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryB
 import com.m_landalex.dataconvert.service.DefaultService;
 
 @Service
-@Profile( "!test" )
+@Profile("!test")
 public class DBInitialization {
 
 	@Autowired
-	@Qualifier( value = "employeeService" )
+	@Qualifier(value = "employeeService")
 	private DefaultService defaultService;
 	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
@@ -32,18 +32,18 @@ public class DBInitialization {
 	@PostConstruct
 	public void init() throws ParseException, MalformedURLException, ResourceNullException {
 
-		for( int i = 1; i < 10; i++ ) {
+		for(int i = 1; i < 10; i++) {
 			
-			defaultService.save( Employee.builder().firstName( "Firstname_" + i ).lastName( "Lastname_" + i )
-				.birthDate( applicationConversionServiceFactoryBean.getLocalDateFormatter().parse( "2000-0" + i + "-0" + i , Locale.GERMAN ) )
-				.jobStartInTheCompany( applicationConversionServiceFactoryBean.getLocalDateFormatter().parse( "2022-0" + i + "-0" + i, Locale.GERMAN ) )
-				.companyAffiliation( 0 ).description( "description_" + i ).photo( null ).webSite( new URL( "http://employee_" + i + ".com/" ) )
-				.user( User.builder().username( "Username_" + i )
-						.password( applicationConversionServiceFactoryBean.getIntegerFormatter().parse( "12345", Locale.GERMAN ) )
-						.start( applicationConversionServiceFactoryBean.getLocalDateFormatter().parse( "2022-0" + i + "-0" + i, Locale.GERMAN ) )
-						.aktiv( applicationConversionServiceFactoryBean.getBooleanFormatter().parse( "true", Locale.GERMAN ) )
-						.userRole( Role.DEVELOPER ).build() )
-				.build() );
+			defaultService.save(Employee.builder().firstName("Firstname_" + i).lastName("Lastname_" + i)
+				.birthDate(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse( "2000-0" + i + "-0" + i , Locale.GERMAN))
+				.jobStartInTheCompany(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse("2022-0" + i + "-0" + i, Locale.GERMAN))
+				.companyAffiliation(0).description("description_" + i).photo(null).webSite(new URL( "http://employee_" + i + ".com/"))
+				.user(User.builder().username("Username_" + i)
+						.password(applicationConversionServiceFactoryBean.getIntegerFormatter().parse("12345", Locale.GERMAN))
+						.start(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse("2022-0" + i + "-0" + i, Locale.GERMAN))
+						.aktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().parse("true", Locale.GERMAN))
+						.userRole(Role.DEVELOPER).build())
+				.build());
 		
 		}
 
