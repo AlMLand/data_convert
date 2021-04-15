@@ -28,6 +28,9 @@
 							<td>
 								<a th:text="#{inf}" th:href="@{'employees/' + ${employee.id}}">More</a>
 							</td>
+							<td>
+								<a th:text="#{upd}" th:href="@{'employees/edit/' + ${employee.id}}">Update</a>
+							</td>
 						</tr>
 					</table>
 				</div>
