@@ -20,6 +20,7 @@
 							<th th:text="#{job.start}">Job start in the company</th>
 							<th th:text="#{company.aff}">Company affiliation</th>
 							<th th:text="#{description}">Description</th>
+							<th><a th:href="@{'delete/' + ${returnedEmployee.id}}"><input class="form_button" type="button" value="Delete"></a></th>
 						</tr>
 						<tr>
 							<td th:utext="${returnedEmployee.firstName}">First name</td>
