@@ -44,7 +44,7 @@
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{company.aff}">Company affiliation</label>
-							<input class="form_input" th:field="*{companyAffiliation}" placeholder="company affiliation">
+							<input class="form_input" th:field="*{companyAffiliation}" placeholder="company affiliation" disabled="disabled">
 							<p th:if="${#fields.hasErrors('companyAffiliation')}" th:errors="*{companyAffiliation}" class="form_errors"/>
 						</div>
 						
