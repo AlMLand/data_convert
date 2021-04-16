@@ -66,7 +66,9 @@
 						<div class="form_group">
 							<label class="form_label" th:text="#{password}">Password</label>
 							<input class="form_input" th:field="*{user.password}" placeholder="password">
-							<p th:if="${#fields.hasErrors('user.password')}" th:errors="*{user.password}" class="form_errors"/> 
+							<p th:if="${#fields.hasErrors('user.password')}" th:text="#{password.err}" class="form_errors">
+								must have paid 5 or more
+							</p> 
 						</div>
 						
 						<div class="form_group">
