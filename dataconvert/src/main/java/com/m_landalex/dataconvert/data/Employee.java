@@ -7,9 +7,10 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Comparator;
 
+import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -35,10 +36,10 @@ public class Employee extends AbstractObject implements Serializable, Comparable
 			.thenComparing(Employee::getFirstName, String.CASE_INSENSITIVE_ORDER)
 			.thenComparingInt((Employee e) -> e.getCompanyAffiliation());
 	
-	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" )
+	@NotBlank( message = "{javax.validation.constraints.NotBlank.message}" )
 	@Size( min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" )
 	private String firstName;
-	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@NotBlank( message = "{javax.validation.constraints.NotBlank.message}" ) 
 	@Size( min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" ) 
 	private String lastName;
 	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
@@ -52,6 +53,7 @@ public class Employee extends AbstractObject implements Serializable, Comparable
 	private String description;
 	private byte[] photo;
 	private URL webSite;
+	@Valid
 	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
 	private User user;
 	
