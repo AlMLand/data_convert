@@ -34,7 +34,7 @@ public class User extends AbstractObject implements Serializable, Comparable<Use
 	@NotBlank(message = "{javax.validation.constraints.NotBlank.message}") 
 	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}") 
 	private String username;
-	@Min(value = 9999, message = "{javax.validation.constraints.Min.message}")
+	@Min(value = 9999)
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
 	private Integer password;
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}") 
