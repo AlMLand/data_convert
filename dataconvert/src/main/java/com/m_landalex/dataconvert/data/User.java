@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,17 +31,18 @@ public class User extends AbstractObject implements Serializable, Comparable<Use
 	private static final Comparator<User> COMPARATOR = comparing(User::getUserRole)
 			.thenComparing(User::getUsername, String.CASE_INSENSITIVE_ORDER);
 	
-	@NotBlank( message = "{javax.validation.constraints.NotBlank.message}" ) 
-	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" ) 
+	@NotBlank(message = "{javax.validation.constraints.NotBlank.message}") 
+	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}") 
 	private String username;
-	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
+	@Min(value = 9999, message = "{javax.validation.constraints.Min.message}")
+	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
 	private Integer password;
-	@NotNull( message = "{javax.validation.constraints.NotNull.message}" ) 
-	@FutureOrPresent( message = "{javax.validation.constraints.FutureOrPresent.message}" ) 
+	@NotNull(message = "{javax.validation.constraints.NotNull.message}") 
+	@FutureOrPresent(message = "{javax.validation.constraints.FutureOrPresent.message}") 
 	private LocalDate start;
-	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
+	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
 	private Boolean aktiv;
-	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
+	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
 	private Role userRole;
 	
 	@Override
