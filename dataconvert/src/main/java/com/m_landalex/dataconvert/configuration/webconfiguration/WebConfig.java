@@ -21,6 +21,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -136,8 +138,20 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
     /* **************************************************************** */
-    /*  i18n MESSAGES FORMATTERS - SPECIFIC ARTIFACTS                   */
+    /*  i18n MESSAGES FORMATTERS VALIDATOR - SPECIFIC ARTIFACTS         */
     /* **************************************************************** */
+	
+	@Bean
+	public Validator validator() {
+		final LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+		bean.setValidationMessageSource(messageSource());
+		return bean;
+	}
+	
+	@Override
+	public Validator getValidator() {
+		return validator();
+	}
 	
 	@Bean
 	ReloadableResourceBundleMessageSource messageSource() {
