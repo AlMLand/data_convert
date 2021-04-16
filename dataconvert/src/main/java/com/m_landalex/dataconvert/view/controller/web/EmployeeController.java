@@ -68,4 +68,10 @@ public class EmployeeController {
 		return "redirect:/employees";
 	}
 	
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	public String delete(@PathVariable Long id) {
+		defaultService.deleteById(id);
+		return "redirect:/employees";
+	}
+	
 }
