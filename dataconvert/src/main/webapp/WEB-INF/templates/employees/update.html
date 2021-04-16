@@ -12,11 +12,11 @@
 				<div th:replace="fragments :: nav_default"></div>
 
 				<div class="content_style">
-					<form class="form" action="#" th:action="@{/employees/edits/{id}}" th:object="${employeeToUpdate}" method="post">
+					<form class="form" action="#" th:action="@{/employees}" th:object="${employee}" method="post">
 						
-						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{id}" th:value="0">
 						
-						<input type="hidden" th:field="*{version}">
+						<input type="hidden" th:field="*{version}" th:value="0">
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{fn}">First name</label>
@@ -53,9 +53,9 @@
 							<textarea class="form_input" th:field="*{description}" placeholder="description"></textarea>
 						</div>						
 						
-						<input type="hidden" th:field="*{user.id}">
+						<input type="hidden" th:field="*{user.id}" th:value="0">
 						
-						<input type="hidden" th:field="*{user.version}">
+						<input type="hidden" th:field="*{user.version}" th:value="0">
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{us}">Username</label>
