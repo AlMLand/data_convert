@@ -36,8 +36,8 @@ public class EmployeeController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String show(@PathVariable("id") Long id, Model model) {
-		Employee returnedEmployee = (Employee) defaultService.fetchById(id);
-		model.addAttribute("returnedEmployee", returnedEmployee);
+		Employee employee = (Employee) defaultService.fetchById(id);
+		model.addAttribute("employee", employee);
 		return "employees/show";
 	}
 	

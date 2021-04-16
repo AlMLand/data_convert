@@ -20,16 +20,16 @@
 							<th th:text="#{job.start}">Job start in the company</th>
 							<th th:text="#{company.aff}">Company affiliation</th>
 							<th th:text="#{description}">Description</th>
-							<th><a th:href="@{'delete/' + ${returnedEmployee.id}}"><input class="form_button" type="button" value="Delete"></a></th>
+							<th><a th:href="@{'delete/' + ${employee.id}}"><input class="form_button" type="button" value="Delete"></a></th>
 						</tr>
 						<tr>
-							<td th:utext="${returnedEmployee.firstName}">First name</td>
-							<td th:utext="${returnedEmployee.lastName}">Last name</td>
-							<td th:utext="${returnedEmployee.birthDate}">Birth date</td>
-							<td th:utext="${returnedEmployee.jobStartInTheCompany}">Job start in the company</td>
-							<td th:utext="${returnedEmployee.companyAffiliation}">Company affiliation</td>
-							<td th:if="${returnedEmployee.description}" th:utext="${returnedEmployee.description}">Description</td>
-							<td th:unless="${returnedEmployee.description}" th:text="#{descr.empty}">Description is empty</td>
+							<td th:utext="${employee.firstName}">First name</td>
+							<td th:utext="${employee.lastName}">Last name</td>
+							<td th:utext="${employee.birthDate}">Birth date</td>
+							<td th:utext="${employee.jobStartInTheCompany}">Job start in the company</td>
+							<td th:utext="${employee.companyAffiliation}">Company affiliation</td>
+							<td th:if="${employee.description}" th:utext="${employee.description}">Description</td>
+							<td th:unless="${employee.description}" th:text="#{descr.empty}">Description is empty</td>
 						</tr>	
 					</table>
 				</div>
