@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,7 +30,7 @@ public class User extends AbstractObject implements Serializable, Comparable<Use
 	private static final Comparator<User> COMPARATOR = comparing(User::getUserRole)
 			.thenComparing(User::getUsername, String.CASE_INSENSITIVE_ORDER);
 	
-	@NotEmpty( message = "{javax.validation.constraints.NotEmpty.message}" ) 
+	@NotBlank( message = "{javax.validation.constraints.NotBlank.message}" ) 
 	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" ) 
 	private String username;
 	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
