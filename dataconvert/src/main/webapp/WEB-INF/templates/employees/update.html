@@ -71,7 +71,10 @@
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{active}">Aktiv</label>
-							<input class="form_input" th:field="*{user.aktiv}" placeholder="aktiv">
+							<select th:field="*{user.aktiv}" class="select-css">
+								<option th:value="'true'" th:text="true"/>
+								<option th:value="'false'" th:text="false"/>
+							</select>
 							<p th:if="${#fields.hasErrors('user.aktiv')}" th:errors="*{user.aktiv}" class="form_errors"/> 
 						</div>
 						
@@ -83,7 +86,11 @@
 						
 						<div class="form_group">
 							<label class="form_label" th:text="#{u.role}">User role</label><br>
-							<input class="form_input" th:field="*{user.userRole}" placeholder="user role">
+							<select th:field="*{user.userRole}" class="select-css">
+								<option th:value="'SUPPORTER'" th:text="SUPPORTER"/>
+								<option th:value="'ADMINISTRATOR'" th:text="ADMINISTRATOR"/>
+								<option th:value="'DEVELOPER'" th:text="DEVELOPER"/>
+							</select>
 							<p th:if="${#fields.hasErrors('user.userRole')}" th:errors="*{user.userRole}" class="form_errors"/>
 						</div>
 						
