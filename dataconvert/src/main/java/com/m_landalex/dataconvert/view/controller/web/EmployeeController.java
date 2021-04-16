@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.m_landalex.dataconvert.data.Employee;
+import com.m_landalex.dataconvert.data.User;
 import com.m_landalex.dataconvert.exception.ResourceNullException;
 import com.m_landalex.dataconvert.service.DefaultService;
 
@@ -42,19 +43,29 @@ public class EmployeeController {
 	
 	@RequestMapping(value = "/edits/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable Long id, Model model) {
-		model.addAttribute("employeeToUpdate", defaultService.fetchById(id));
+		model.addAttribute("employee", defaultService.fetchById(id));
 		return "employees/update";
 	}
 	
-	@RequestMapping(value = "/edits/{id}", method = RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("employeeToUpdate")Employee employee, BindingResult bindingResult, 
+	@RequestMapping(value = "/new", method = RequestMethod.GET)
+	public String createForm(Model model) {
+		Employee employee = Employee.builder().user(new User()).build();
+		model.addAttribute("employee", employee);
+		return "employees/update";
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public String update(@Valid @ModelAttribute("employee")Employee employee, BindingResult bindingResult, 
 			Model model) throws ResourceNullException {
 		if(bindingResult.hasErrors()) {
-			model.addAttribute("employeeToUpdate", employee);
+			model.addAttribute("employee", employee);
 			return "employees/update";
 		}
 		defaultService.save(employee);
-		return "redirect:/employees/" + employee.getId();
+		if(employee.getId() != null) {
+			return "redirect:/employees/" + employee.getId();
+		}
+		return "redirect:/employees";
 	}
 	
 }
