@@ -1,7 +1,10 @@
 package com.m_landalex.dataconvert.view.controller.web;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.Part;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.m_landalex.dataconvert.data.Employee;
 import com.m_landalex.dataconvert.data.User;
@@ -56,10 +61,18 @@ public class EmployeeController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("employee")Employee employee, BindingResult bindingResult, 
-			Model model) throws ResourceNullException {
+			Model model, @RequestParam(value = "file", required = false) Part part) throws ResourceNullException, IOException {
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("employee", employee);
 			return "employees/update";
+		}
+		if(part != null) {
+			try(InputStream inputStream = part.getInputStream()) {
+				if(inputStream != null) {
+					byte[] fileContent = inputStream.readAllBytes();
+					employee.setPhoto(fileContent);
+				}
+			}
 		}
 		defaultService.save(employee);
 		if(employee.getId() != null) {
@@ -72,6 +85,12 @@ public class EmployeeController {
 	public String delete(@PathVariable Long id) {
 		defaultService.deleteById(id);
 		return "redirect:/employees";
+	}
+	
+	@RequestMapping(value = "/photo/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public byte[] downloadPhoto(@PathVariable("id") Long id) {
+		return ((Employee)defaultService.fetchById(id)).getPhoto();
 	}
 	
 }
