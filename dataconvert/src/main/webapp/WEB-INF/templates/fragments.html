@@ -2,12 +2,15 @@
 	<html xmlns:th="http://www.thymeleaf.org">
 	
 		<head th:fragment="html_head">
+		
 			<meta charset="ISO-8859-1">
 			<title>Title of home page</title>
 			<link rel="stylesheet" type="text/css" media="all" href="../../styles/standard.css" th:href="@{/styles/standard.css}"/>
+		
 		</head>
 		
 		<body>
+			
 			<div th:fragment="header" class="header_style">Dataconvert App</div>
 			
 			<ul th:fragment="nav_default" class="sidebar_style">
@@ -17,6 +20,7 @@
 			</ul>
 			
 			<div th:fragment="copyright" class="footer_style">&copy; A_M_land</div>
+		
 		</body>
 		
 	</html>
