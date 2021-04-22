@@ -1,7 +1,10 @@
 package com.m_landalex.dataconvert.configuration.webconfiguration;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -32,6 +35,16 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	protected Filter[] getServletFilters() {
 		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter("utf-8", true);
 		return new Filter[] { new HiddenHttpMethodFilter(), encodingFilter };
+	}
+	
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		registration.setMultipartConfig(multipartConfigElement());
+	}
+	
+	@Bean
+	private MultipartConfigElement multipartConfigElement() {
+		return new MultipartConfigElement(null, 5000000, 5000000, 0);
 	}
 
 }
