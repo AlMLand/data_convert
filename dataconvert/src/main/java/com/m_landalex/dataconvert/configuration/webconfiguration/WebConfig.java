@@ -23,6 +23,7 @@ import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -79,7 +80,18 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/images/**").addResourceLocations("/images/**");
 		registry.addResourceHandler("/css/**").addResourceLocations("/styles/**");
+		registry.addResourceHandler("/js/**").addResourceLocations("/scripts/**");
+	}
+	
+    /* **************************************************************** */
+    /*  MULTIPART RESOLVER                                              */
+    /* **************************************************************** */
+	
+	@Bean
+	StandardServletMultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver();
 	}
 	
     /* **************************************************************** */
