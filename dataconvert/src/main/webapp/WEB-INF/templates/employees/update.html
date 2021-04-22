@@ -12,7 +12,8 @@
 				<div th:replace="fragments :: nav_default"></div>
 
 				<div class="content_style">
-					<form class="form" action="#" th:action="@{/employees}" th:object="${employee}" method="post">
+				
+					<form class="form" action="#" th:action="@{/employees}" th:object="${employee}" enctype="multipart/form-data" method="post">
 						
 						<input type="hidden" th:field="*{id}" th:value="0">
 						
@@ -51,7 +52,12 @@
 						<div class="form_group">
 							<label class="form_label" th:text="#{description}">Description</label>
 							<textarea class="form_input" th:field="*{description}" placeholder="description"></textarea>
-						</div>						
+						</div>	
+						
+						<div class="form_group">
+							<label class="form_label">Photo</label>
+							<input class="form_button" type="file" name="file"/>
+						</div>					
 						
 						<input type="hidden" th:field="*{user.id}" th:value="0">
 						
