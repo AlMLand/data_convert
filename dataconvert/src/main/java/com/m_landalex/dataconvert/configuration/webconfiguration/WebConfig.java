@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jmx.export.MBeanExporter;
@@ -53,14 +55,13 @@ import com.m_landalex.dataconvert.jmx.CustomStatistics;
 @ComponentScan(basePackages = "com.m_landalex.dataconvert")
 public class WebConfig implements WebMvcConfigurer {
 	
-	@Autowired
-	private ApplicationContext applicationContext;
-	
 	private static final String COOKIE_LOCAL_NAME = "locale";
 	private static final String INTERCEPTOR_NAME = "lang";
 	private static final String KEY_MY_STATISTIC = "bean:name=MyBeansStatistics";
 	private static final String KEY_CUSTOM_STATISTIC = "bean:name=MyBeansStatisticsHibernate"; 
 
+	@Autowired
+	private ApplicationContext applicationContext;
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 	
@@ -85,6 +86,12 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/js/**").addResourceLocations("/scripts/**");
 	}
 	
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(mappingJackson2HttpMessageConverter());
+		converters.add(byteArrayHttpMessageConverter());
+	}
+	
     /* **************************************************************** */
     /*  MULTIPART RESOLVER                                              */
     /* **************************************************************** */
@@ -92,6 +99,22 @@ public class WebConfig implements WebMvcConfigurer {
 	@Bean
 	StandardServletMultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();
+	}
+	
+    /* **************************************************************** */
+    /*  RETURNING MEDIADATA                                             */
+    /* **************************************************************** */
+	
+	@Bean
+	public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
+		ByteArrayHttpMessageConverter converter = new ByteArrayHttpMessageConverter();
+		converter.setSupportedMediaTypes(getSupportedMediaType());
+		return converter;
+	}
+	
+	private List<MediaType> getSupportedMediaType(){
+		List<MediaType> listMediaType = List.of(MediaType.IMAGE_JPEG, MediaType.IMAGE_PNG, MediaType.APPLICATION_OCTET_STREAM);
+		return listMediaType;
 	}
 	
     /* **************************************************************** */
@@ -111,11 +134,6 @@ public class WebConfig implements WebMvcConfigurer {
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		return objectMapper;
-	}
-	
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(mappingJackson2HttpMessageConverter());
 	}
 	
     /* **************************************************************** */
