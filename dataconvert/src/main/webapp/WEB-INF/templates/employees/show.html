@@ -24,7 +24,7 @@
 							<th><a th:href="@{'delete/' + ${employee.id}}"><input class="form_button" type="button" value="Delete"></a></th>
 						</tr>
 						<tr>
-							<td><img alt="Avatar" th:src="@{'photo/' + ${employee.id}}">Photo</td>
+							<td><img th:src="@{${'photo/' + employee.id}}" class="photo-mediadata"></td>
 							<td th:utext="${employee.firstName}">First name</td>
 							<td th:utext="${employee.lastName}">Last name</td>
 							<td th:utext="${employee.birthDate}">Birth date</td>
