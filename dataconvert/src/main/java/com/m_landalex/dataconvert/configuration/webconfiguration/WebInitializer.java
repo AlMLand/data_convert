@@ -12,13 +12,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import com.m_landalex.dataconvert.configuration.AppServiceConfig;
 import com.m_landalex.dataconvert.configuration.TransactionManagerConfig;
 import com.m_landalex.dataconvert.configuration.httpremotingserver.HttpInvokerConfigEmployee;
-import com.m_landalex.dataconvert.configuration.websecurity.SecurityConfig;
+import com.m_landalex.dataconvert.configuration.websecurity.RestSecurityConfig;
 
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { AppServiceConfig.class, TransactionManagerConfig.class, SecurityConfig.class };
+		return new Class<?>[] { AppServiceConfig.class, TransactionManagerConfig.class, RestSecurityConfig.class };
 	}
 
 	@Override

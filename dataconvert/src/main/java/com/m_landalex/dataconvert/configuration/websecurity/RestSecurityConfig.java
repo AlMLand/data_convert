@@ -12,9 +12,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+	private static final Logger logger = LoggerFactory.getLogger(RestSecurityConfig.class);
 	
 	@Autowired
 	protected void configureClobal(AuthenticationManagerBuilder authenticationManagerBuilder) {
