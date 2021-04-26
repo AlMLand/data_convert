@@ -46,10 +46,10 @@ public class RestClientUserTest {
 	@Test
 	public void a_testCreateUser() {
 		User newUser = User.builder()
-				.username("test_rest_username_1").password(123).start(LocalDate.now()).aktiv(false).userRole(Role.SUPPORTER).build();
+				.username("test_rest_username_1").password("12345").start(LocalDate.now()).aktiv(false).userRole(Role.SUPPORTER).build();
 		restTemplate.postForObject(URL_POST_USER, newUser, User.class);
 		newUser = User.builder()
-				.username("test_rest_username_2").password(456).start(LocalDate.now()).aktiv(false).userRole(Role.SUPPORTER).build();
+				.username("test_rest_username_2").password("45678").start(LocalDate.now()).aktiv(false).userRole(Role.SUPPORTER).build();
 		restTemplate.postForObject(URL_POST_USER, newUser, User.class);
 		
 		User[] returnedArray = restTemplate.getForObject(URL_GET_ALL_USERS, User[].class);

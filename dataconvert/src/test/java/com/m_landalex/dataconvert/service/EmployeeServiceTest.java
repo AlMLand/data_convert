@@ -86,7 +86,7 @@ public class EmployeeServiceTest {
 		newEmployee.setJobStartInTheCompany(LocalDate.of(2044, 04, 03));
 		newEmployee.setCompanyAffiliation(0);
 		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
-		newEmployee.setUser(User.builder().username("Test_new_user").password(123).start(LocalDate.of(2032, 04, 02))
+		newEmployee.setUser(User.builder().username("Test_new_user").password("12345").start(LocalDate.of(2032, 04, 02))
 				.userRole(Role.DEVELOPER).aktiv(true).build());
 		defaultService.save(newEmployee);
 
@@ -121,7 +121,7 @@ public class EmployeeServiceTest {
 		newEmployee.setJobStartInTheCompany(LocalDate.of(2018, 04, 03));
 		newEmployee.setCompanyAffiliation(0);
 		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
-		newEmployee.setUser(User.builder().username("T").password(123).start(LocalDate.of(2032, 04, 02))
+		newEmployee.setUser(User.builder().username("T").password("12345").start(LocalDate.of(2032, 04, 02))
 				.userRole(Role.DEVELOPER).aktiv(true).build());
 		defaultService.save(newEmployee);
 	}

@@ -50,7 +50,7 @@ public class RestClientEmployeeTest {
 	@Before
 	public void setUp() throws MalformedURLException, ResourceNullException {
 		defaultService.deleteAll();
-		User user = User.builder().username("Test_rest_user").password(123).start(LocalDate.of(2025, 10, 10)).aktiv(false)
+		User user = User.builder().username("Test_rest_user").password("12345").start(LocalDate.of(2025, 10, 10)).aktiv(false)
 				.userRole(Role.DEVELOPER).build();
 		Employee employee = Employee.builder().firstName("Test_rest_firstname").lastName("Test_rest_lastname")
 				.birthDate(LocalDate.of(2001, 01, 01)).jobStartInTheCompany(LocalDate.of(2043, 04, 04))
@@ -69,7 +69,7 @@ public class RestClientEmployeeTest {
 	public void testCreateEmployee() {
 		Employee newEmployee = Employee.builder().firstName("test_create").lastName("test_create").birthDate(LocalDate.of(2000, 10, 20))
 				.jobStartInTheCompany(LocalDate.of(2030, 05, 05)).companyAffiliation(0).webSite(null)
-				.user(User.builder().username("Yy").password(123).start(LocalDate.now()).aktiv(false)
+				.user(User.builder().username("Yy").password("12345").start(LocalDate.now()).aktiv(false)
 						.userRole(Role.DEVELOPER).build())
 				.build();
 		newEmployee = restTemplate.postForObject(URL_POST_EMPLOYEE, newEmployee, Employee.class);

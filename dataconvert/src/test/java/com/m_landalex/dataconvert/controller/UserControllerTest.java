@@ -37,7 +37,7 @@ public class UserControllerTest {
 	@Before
 	public void setUp() {
 		userController = new RestUserController();
-		User user = User.builder().username("Test_1").password(123).start(LocalDate.now()).aktiv(false)
+		User user = User.builder().username("Test_1").password("12345").start(LocalDate.now()).aktiv(false)
 				.userRole(Role.DEVELOPER).build();
 		user.setId(1L);
 		user.setVersion(0);
@@ -46,7 +46,7 @@ public class UserControllerTest {
 	
 	@Test
 	public void createUserTest() throws ResourceNullException {
-		User newUser = User.builder().username("Test_2").password(12345).start(LocalDate.now()).aktiv(false)
+		User newUser = User.builder().username("Test_2").password("12345").start(LocalDate.now()).aktiv(false)
 				.userRole(Role.SUPPORTER).build();
 		newUser.setId(2L);
 		newUser.setVersion(0);
@@ -130,7 +130,7 @@ public class UserControllerTest {
 	
 	@Test
 	public void updateUserByIdTest() throws ResourceNullException {
-		User newUser = User.builder().username("Test_2").password(12345).start(LocalDate.now()).aktiv(false)
+		User newUser = User.builder().username("Test_2").password("12345").start(LocalDate.now()).aktiv(false)
 				.userRole(Role.SUPPORTER).build();
 		Mockito.doAnswer(new Answer<AbstractObject>() {
 

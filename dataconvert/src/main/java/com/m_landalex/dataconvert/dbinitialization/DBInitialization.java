@@ -39,7 +39,7 @@ public class DBInitialization {
 				.jobStartInTheCompany(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse("2022-0" + i + "-0" + i, Locale.GERMAN))
 				.companyAffiliation(0).description("description_" + i).photo(null).webSite(new URL( "http://employee_" + i + ".com/"))
 				.user(User.builder().username("Username_" + i)
-						.password(applicationConversionServiceFactoryBean.getIntegerFormatter().parse("12345", Locale.GERMAN))
+						.password("12345")
 						.start(applicationConversionServiceFactoryBean.getLocalDateFormatter().parse("2022-0" + i + "-0" + i, Locale.GERMAN))
 						.aktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().parse("true", Locale.GERMAN))
 						.userRole(Role.DEVELOPER).build())

@@ -22,8 +22,7 @@ public class UserToUserEntityConverter implements Converter<User, UserEntity> {
 			UserEntity userEntity = new UserEntity();
 			userEntity.setId(source.getId());
 			userEntity.setUsername(source.getUsername());
-			userEntity.setPassword(applicationConversionServiceFactoryBean.getIntegerFormatter()
-					.print(source.getPassword(), Locale.GERMAN));
+			userEntity.setPassword(source.getPassword());
 			userEntity.setStart(applicationConversionServiceFactoryBean.getLocalDateFormatter().print(source.getStart(),
 					Locale.GERMAN));
 			userEntity.setAktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().print(source.getAktiv(),

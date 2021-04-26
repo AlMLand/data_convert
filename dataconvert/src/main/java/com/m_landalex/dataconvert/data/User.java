@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,9 +33,9 @@ public class User extends AbstractObject implements Serializable, Comparable<Use
 	@NotBlank(message = "{javax.validation.constraints.NotBlank.message}") 
 	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}") 
 	private String username;
-	@Min(value = 9999)
-	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
-	private Integer password;
+	@NotBlank(message = "{javax.validation.constraints.NotBlank.message}") 
+	@Size(min = 5, max = 50, message = "{javax.validation.constraints.Size.message}") 
+	private String password;
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}") 
 	@FutureOrPresent(message = "{javax.validation.constraints.FutureOrPresent.message}") 
 	private LocalDate start;

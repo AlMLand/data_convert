@@ -71,7 +71,7 @@ public class UserServiceTest {
 			executionPhase = ExecutionPhase.AFTER_TEST_METHOD) } )
 	@Test
 	public void saveTest() throws ResourceNullException {
-		User newUser = User.builder().username("Test_SAVE").password(123).start(LocalDate.of(2032, 04, 02))
+		User newUser = User.builder().username("Test_SAVE").password("12345").start(LocalDate.of(2032, 04, 02))
 				.userRole(Role.DEVELOPER).aktiv(true).build();
 		defaultService.save(newUser);
 		List<AbstractObject> returnedList = defaultService.fetchAll();
@@ -81,7 +81,7 @@ public class UserServiceTest {
 	
 	@Test(expected = ConstraintViolationException.class)
 	public void saveWithConstraintViolationExceptionTest() throws ResourceNullException {
-		User newUser = User.builder().username("T").password(123).start(LocalDate.of(2010, 04, 02))
+		User newUser = User.builder().username("T").password("12345").start(LocalDate.of(2010, 04, 02))
 				.userRole(Role.DEVELOPER).aktiv(true).build();
 		defaultService.save(newUser);
 	}
