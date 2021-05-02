@@ -24,6 +24,8 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import com.m_landalex.dataconvert.converter.EmployeeEntityToEmployeeConverter;
 import com.m_landalex.dataconvert.converter.EmployeeToEmployeeEntityConverter;
 import com.m_landalex.dataconvert.converter.LocalDateToStringConverter;
+import com.m_landalex.dataconvert.converter.RoleEntityToRoleConverter;
+import com.m_landalex.dataconvert.converter.RoleToRoleEntityConverter;
 import com.m_landalex.dataconvert.converter.StringToLocalDateConverter;
 import com.m_landalex.dataconvert.converter.UserEntityToUserConverter;
 import com.m_landalex.dataconvert.converter.UserToUserEntityConverter;
@@ -50,6 +52,8 @@ public class AppServiceConfig {
 	@Autowired private EmployeeToEmployeeEntityConverter employeeToEmployeeEntityConverter;
 	@Autowired private UserEntityToUserConverter userEntityToUserConverter;
 	@Autowired private UserToUserEntityConverter userToUserEntityConverter;
+	@Autowired private RoleToRoleEntityConverter roleToRoleEntityConverter;
+	@Autowired private RoleEntityToRoleConverter roleEntityToRoleConverter;
 	@Autowired private DataSource dataSource;
 	
 	 @Bean
@@ -92,6 +96,8 @@ public class AppServiceConfig {
 		converters.add(employeeToEmployeeEntityConverter);
 		converters.add(userEntityToUserConverter);
 		converters.add(userToUserEntityConverter);
+		converters.add(roleToRoleEntityConverter);
+		converters.add(roleEntityToRoleConverter);
 		converters.add(stringToLocalDateConverter);
 		converters.add(localDateToStringConverter);
 		conversionServiceFactoryBean.setConverters(converters);
