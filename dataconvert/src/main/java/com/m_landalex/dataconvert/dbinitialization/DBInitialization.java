@@ -39,9 +39,9 @@ public class DBInitialization {
 			Collection<Role> roles = List.of(Role.builder().role("ADMINISTRATOR").build());
 			
 			if (i == 2) {
-				roles = List.of(Role.builder().role("DEVELOPER").build());
+				roles = List.of(Role.builder().role("OFFICE").build());
 			} else if (i == 3) {
-				roles = List.of(Role.builder().role("SUPPORTER").build());
+				roles = List.of(Role.builder().role("OFFICE_EDITOR").build());
 			}
 
 			// password: 12345
