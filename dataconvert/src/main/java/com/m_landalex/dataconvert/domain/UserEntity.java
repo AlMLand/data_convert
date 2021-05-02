@@ -1,10 +1,16 @@
 package com.m_landalex.dataconvert.domain;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -19,26 +25,29 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "employee_user")
+@Table(name = "users")
 public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column( name = "ID" )
+	@Column(name = "ID")
 	private Long id;
 	@Version
-	@Column( name = "VERSION")
+	@Column(name = "VERSION")
 	private int version;
-	@Column( name = "USERNAME" )
+	@Column(name = "USERNAME")
 	private String username;
-	@Column( name = "PASSWORD" )
+	@Column(name = "PASSWORD")
 	private String password;
-	@Column( name = "START" )
+	@Column(name = "START")
 	private String start;
-	@Column( name = "AKTIV" )
+	@Column(name = "AKTIV")
 	private String aktiv;
-	@Column( name = "USERROLE" )
-	private String userRole;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "users_roles",
+			joinColumns = {@JoinColumn(name = "USER_FK")},
+			inverseJoinColumns = {@JoinColumn(name = "ROLE_FK")})
+	private Collection<RoleEntity> userRole;
 	@OneToOne(mappedBy = "user")
 	private EmployeeEntity employeeEntity;
 	
