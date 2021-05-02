@@ -14,11 +14,11 @@
 			<div th:fragment="header" class="header_style">Dataconvert App</div>
 			
 			<ul th:fragment="nav_default" class="sidebar_style">
-				<li><a th:href="@{/}">Home</a></li>
-				<li><a th:href="@{/employees}" th:text="#{e.list}">Employees</a></li>
-				<li><a th:href="@{/users}" th:text="#{u.list}">Users</a></li>
+				<li><a class="s13" th:href="@{/}">Home</a></li>
+				<li><a class="s13" th:href="@{/employees}" th:text="#{e.list}">Employees</a></li>
+				<li><a class="s13" th:href="@{/users}" th:text="#{u.list}">Users</a></li>
 				<li>
-					<a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}">Logout</a>
+					<a th:if="${#authorization.expression('isAuthenticated()')}" class="s13" th:href="@{/logout}">Logout</a>
 				</li>
 			</ul>
 			
