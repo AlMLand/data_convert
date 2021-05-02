@@ -110,5 +110,10 @@ public class EmployeeService implements DefaultService{
 	public Page<Employee> findAllByPage(Pageable pageable) {
 		return (Page<Employee>) conversionService.convert(employeeRepository.findAll(pageable), Employee.class);
 	}
+
+	@Override
+	public AbstractObject fetchByUserName(String userName) {
+		return null;
+	}
 	
 }
