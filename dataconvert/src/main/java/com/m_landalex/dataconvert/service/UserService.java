@@ -74,4 +74,9 @@ public class UserService implements DefaultService{
 		return (Page<User>) conversionService.convert( userRepository.findAll( pageable ), User.class );
 	}
 
+	@Override
+	public User fetchByUserName(String userName) {
+		return conversionService.convert(userRepository.findByUsername(userName), User.class);
+	}
+
 }
