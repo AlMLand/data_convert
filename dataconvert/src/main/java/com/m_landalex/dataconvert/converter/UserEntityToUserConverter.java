@@ -2,6 +2,7 @@ package com.m_landalex.dataconvert.converter;
 
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
 	private static final Logger logger = LoggerFactory.getLogger(UserEntityToUserConverter.class);
 
 	@Autowired
+	private RoleEntityToRoleConverter roleEntityToRoleConverter;
+	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
 
 	@Override
@@ -34,8 +37,8 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
 						Locale.GERMAN));
 				user.setAktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().parse(source.getAktiv(),
 						Locale.GERMAN));
-				user.setUserRole(applicationConversionServiceFactoryBean.getEnumFormatter().parse(source.getUserRole(),
-						Locale.GERMAN));
+				user.setUserRole(source.getUserRole()
+						.stream().map(roleEntity -> roleEntityToRoleConverter.convert(roleEntity)).collect(Collectors.toList()));
 			} catch (ParseException e) {
 				logger.error("Parse ERROR", e);
 			}

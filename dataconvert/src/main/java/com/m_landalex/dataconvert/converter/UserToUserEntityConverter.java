@@ -1,6 +1,7 @@
 package com.m_landalex.dataconvert.converter;
 
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -15,6 +16,8 @@ public class UserToUserEntityConverter implements Converter<User, UserEntity> {
 
 	@Autowired
 	private ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean;
+	@Autowired
+	private RoleToRoleEntityConverter roleToRoleEntityConverter;
 
 	@Override
 	public UserEntity convert(User source) {
@@ -27,8 +30,9 @@ public class UserToUserEntityConverter implements Converter<User, UserEntity> {
 					Locale.GERMAN));
 			userEntity.setAktiv(applicationConversionServiceFactoryBean.getBooleanFormatter().print(source.getAktiv(),
 					Locale.GERMAN));
-			userEntity.setUserRole(applicationConversionServiceFactoryBean.getEnumFormatter()
-					.print(source.getUserRole(), Locale.GERMAN));
+			userEntity.setUserRole(source.getUserRole()
+					.stream().
+					map(role -> roleToRoleEntityConverter.convert(role)).collect(Collectors.toList()));
 			userEntity.setVersion(source.getVersion());
 			return userEntity;
 		} else {
