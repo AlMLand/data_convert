@@ -17,6 +17,9 @@
 				<li><a th:href="@{/}">Home</a></li>
 				<li><a th:href="@{/employees}" th:text="#{e.list}">Employees</a></li>
 				<li><a th:href="@{/users}" th:text="#{u.list}">Users</a></li>
+				<li>
+					<a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}">Logout</a>
+				</li>
 			</ul>
 			
 			<div th:fragment="copyright" class="footer_style">&copy; A_M_land</div>
