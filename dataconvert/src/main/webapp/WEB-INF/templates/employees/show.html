@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-	<html xmlns:th="http://www.thymeleaf.org">
+	<html xmlns:th="http://www.thymeleaf.org"
+			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">	
 
 		<head th:replace="fragments :: html_head"/>
 		
@@ -21,7 +22,11 @@
 							<th th:text="#{job.start}">Job start in the company</th>
 							<th th:text="#{company.aff}">Company affiliation</th>
 							<th th:text="#{description}">Description</th>
-							<th><a th:href="@{'delete/' + ${employee.id}}"><input class="form_button" type="button" value="Delete"></a></th>
+							<th>
+								<div sec:authorize="hasAuthority('ADMINISTRATOR')">
+									<a th:href="@{'delete/' + ${employee.id}}"><input class="form_button" type="button" value="Delete"></a>
+								</div>
+							</th>
 						</tr>
 						<tr>
 							<td><img th:src="@{${'photo/' + employee.id}}" class="photo-mediadata"></td>
