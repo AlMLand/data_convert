@@ -38,7 +38,7 @@ public class UserControllerTest {
 	public void setUp() {
 		userController = new RestUserController();
 		User user = User.builder().username("Test_1").password("12345").start(LocalDate.now()).aktiv(false)
-				.userRole(Role.DEVELOPER).build();
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).build();
 		user.setId(1L);
 		user.setVersion(0);
 		listUsers.add(user);
@@ -47,7 +47,7 @@ public class UserControllerTest {
 	@Test
 	public void createUserTest() throws ResourceNullException {
 		User newUser = User.builder().username("Test_2").password("12345").start(LocalDate.now()).aktiv(false)
-				.userRole(Role.SUPPORTER).build();
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).build();
 		newUser.setId(2L);
 		newUser.setVersion(0);
 		
@@ -69,7 +69,7 @@ public class UserControllerTest {
 		assertEquals(2, listUsers.size());
 		assertNotNull(returnedUser);
 		assertEquals("Test_2", returnedUser.getUsername());
-		assertEquals(Integer.valueOf(12345), returnedUser.getPassword());
+		assertEquals("12345", returnedUser.getPassword());
 	}
 	
 	@Test(expected = RuntimeException.class)
@@ -125,13 +125,13 @@ public class UserControllerTest {
 		
 		assertNotNull(returnedUser);
 		assertEquals("Test_1", returnedUser.getUsername());
-		assertEquals(Integer.valueOf(123), returnedUser.getPassword());
+		assertEquals("12345", returnedUser.getPassword());
 	}
 	
 	@Test
 	public void updateUserByIdTest() throws ResourceNullException {
 		User newUser = User.builder().username("Test_2").password("12345").start(LocalDate.now()).aktiv(false)
-				.userRole(Role.SUPPORTER).build();
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).build();
 		Mockito.doAnswer(new Answer<AbstractObject>() {
 
 			@Override

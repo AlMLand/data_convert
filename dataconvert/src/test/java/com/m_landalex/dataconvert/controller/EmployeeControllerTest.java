@@ -39,7 +39,7 @@ public class EmployeeControllerTest {
 	public void setUp() throws MalformedURLException {
 		employeeController = new RestEmployeeController();
 		User user = User.builder().username("TestUserName_1").password("12345").start(LocalDate.now()).aktiv(true)
-				.userRole(Role.DEVELOPER).build();
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).build();
 		user.setId(1L);
 		user.setVersion(0);
 		Employee employee = Employee.builder().firstName("TestFirstName_1").lastName("TestLastName_1")
@@ -67,7 +67,7 @@ public class EmployeeControllerTest {
 	@Test
 	public void createEmployeeTest() throws ResourceNullException, MalformedURLException {
 		User user = User.builder().username("TestUserName_2").password("12345").start(LocalDate.now()).aktiv(true)
-				.userRole(Role.ADMINISTRATOR).build();
+				.userRole(List.of(Role.builder().role("ADMINISTRATOR").build())).build();
 		user.setId(2L);
 		user.setVersion(0);
 		Employee employee = Employee.builder().firstName("TestFirstName_2").lastName("TestLastName_2")
@@ -168,7 +168,7 @@ public class EmployeeControllerTest {
 	@Test
 	public void updateEmployeeByIdTest() throws MalformedURLException, ResourceNullException {
 		User user = User.builder().username("TestUserName_2").password("12345").start(LocalDate.now()).aktiv(true)
-				.userRole(Role.ADMINISTRATOR).build();
+				.userRole(List.of(Role.builder().role("ADMINISTRATOR").build())).build();
 		Employee employee = Employee.builder().firstName("TestFirstName_2").lastName("TestLastName_2")
 				.birthDate(LocalDate.of(2000, 10, 10)).jobStartInTheCompany(LocalDate.of(2019, 10, 10))
 				.companyAffiliation(0).webSite(new URL("http://test_2.com/")).user(user).build();
