@@ -30,8 +30,10 @@ public class UserController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String show(@PathVariable("id") long id, Model model) {
-		User returnedUser = (User) defaultService.fetchById(id);
-		model.addAttribute("returnedUser", returnedUser);
+		User user = (User) defaultService.fetchById(id);
+		model.addAttribute("user", user);
+		model.addAttribute("userRole", user.getUserRole()
+				.toString().substring(1, user.getUserRole().toString().length() - 1));
 		return "users/show";
 	}
 	
