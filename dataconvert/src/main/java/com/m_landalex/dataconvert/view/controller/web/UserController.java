@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ public class UserController {
 	@Qualifier(value = "userService")
 	private DefaultService defaultService;
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
 		List<User> returnedList = defaultService.fetchAll();
@@ -28,6 +30,7 @@ public class UserController {
 		return "users/list";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String show(@PathVariable("id") long id, Model model) {
 		User user = (User) defaultService.fetchById(id);

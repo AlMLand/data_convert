@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class EmployeeController {
 	@Qualifier(value = "employeeService")
 	private DefaultService defaultService;
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
 		List<Employee> returnedList = defaultService.fetchAll();
@@ -39,6 +41,7 @@ public class EmployeeController {
 		return "employees/list";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String show(@PathVariable("id") Long id, Model model) {
 		Employee employee = (Employee) defaultService.fetchById(id);
@@ -46,12 +49,14 @@ public class EmployeeController {
 		return "employees/show";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/edits/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable Long id, Model model) {
 		model.addAttribute("employee", defaultService.fetchById(id));
 		return "employees/update";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		Employee employee = Employee.builder().user(new User()).build();
@@ -59,6 +64,7 @@ public class EmployeeController {
 		return "employees/update";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("employee")Employee employee, BindingResult bindingResult, 
 			Model model, @RequestParam(value = "file", required = false) Part part) throws ResourceNullException, IOException {
@@ -81,12 +87,14 @@ public class EmployeeController {
 		return "redirect:/employees";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable Long id) {
 		defaultService.deleteById(id);
 		return "redirect:/employees";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/photo/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public byte[] downloadPhoto(@PathVariable("id") Long id) {
