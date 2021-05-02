@@ -10,20 +10,22 @@ import com.m_landalex.dataconvert.exception.ResourceNullException;
 
 public interface DefaultService {
 
-	<T extends AbstractObject> T save( T object ) throws ResourceNullException;
+	<T extends AbstractObject> T save(T object) throws ResourceNullException;
 
-	AbstractObject fetchById( Long id );
-	
+	AbstractObject fetchById(Long id);
+
+	AbstractObject fetchByUserName(String userName);
+
 	<T extends AbstractObject> List<T> fetchAll();
-	
-	void deleteById( Long id );
-	
+
+	void deleteById(Long id);
+
 	void deleteAll();
-	
+
 	void updateCompanyAffiliation();
-	
+
 	long getTotalCount();
-	
-	<T extends AbstractObject> Page<T> findAllByPage( Pageable pageable );
-	
+
+	<T extends AbstractObject> Page<T> findAllByPage(Pageable pageable);
+
 }
