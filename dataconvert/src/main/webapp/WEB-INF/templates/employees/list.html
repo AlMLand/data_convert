@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-	<html xmlns:th="http://www.thymeleaf.org">
+		<html xmlns:th="http://www.thymeleaf.org"
+			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 		<head th:replace="fragments :: html_head"/>
 		
@@ -18,7 +19,11 @@
 							<th th:text="#{fn}">First name</th>
 							<th th:text="#{ln}">Last name</th>
 							<th></th>
-							<th><a th:href="@{employees/new/}"><input class="form_button" type="button" value="New employee"></a></th>
+							<th>
+								<div sec:authorize="hasAuthority('ADMINISTRATOR') || hasAuthority('OFFICE_EDITOR')">
+									<a th:href="@{employees/new/}"><input class="form_button" type="button" value="New employee"></a>
+								</div>
+							</th>
 						</tr>
 						<tr th:if="${#lists.isEmpty(employees)}">
 							<td colspan="3" th:text="#{no.data}">No data found</td>
