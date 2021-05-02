@@ -4,6 +4,7 @@ import static java.util.Comparator.comparing;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Comparator;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -27,14 +28,13 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class User extends AbstractObject implements Serializable, Comparable<User> {
 
-	private static final Comparator<User> COMPARATOR = comparing(User::getUserRole)
-			.thenComparing(User::getUsername, String.CASE_INSENSITIVE_ORDER);
+	private static final Comparator<User> COMPARATOR = comparing(User::getUsername, String.CASE_INSENSITIVE_ORDER);
 	
 	@NotBlank(message = "{javax.validation.constraints.NotBlank.message}") 
 	@Size(min = 2, max = 50, message = "{javax.validation.constraints.Size.message}") 
 	private String username;
 	@NotBlank(message = "{javax.validation.constraints.NotBlank.message}") 
-	@Size(min = 5, max = 50, message = "{javax.validation.constraints.Size.message}") 
+	@Size(min = 5, max = 100, message = "{javax.validation.constraints.Size.message}") 
 	private String password;
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}") 
 	@FutureOrPresent(message = "{javax.validation.constraints.FutureOrPresent.message}") 
@@ -42,7 +42,7 @@ public class User extends AbstractObject implements Serializable, Comparable<Use
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
 	private Boolean aktiv;
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
-	private Role userRole;
+	private Collection<Role> userRole;
 	
 	@Override
 	public int compareTo(User o) {
