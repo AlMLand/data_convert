@@ -6,4 +6,6 @@ import com.m_landalex.dataconvert.domain.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+	UserEntity findByUsername(String userName);
+	
 }
