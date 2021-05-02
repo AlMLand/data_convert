@@ -60,7 +60,7 @@ public class UserServiceTest {
 	public void fetchByIdTest() {
 		User returnedUser = (User) defaultService.fetchById(1L);
 		assertNotNull(returnedUser);
-		assertEquals(Integer.valueOf(12345), returnedUser.getPassword());
+		assertEquals("12345", returnedUser.getPassword());
 	}
 	
 	@SqlGroup( { @Sql( value = "classpath:db/test-data.sql",
@@ -72,7 +72,7 @@ public class UserServiceTest {
 	@Test
 	public void saveTest() throws ResourceNullException {
 		User newUser = User.builder().username("Test_SAVE").password("12345").start(LocalDate.of(2032, 04, 02))
-				.userRole(Role.DEVELOPER).aktiv(true).build();
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).aktiv(true).build();
 		defaultService.save(newUser);
 		List<AbstractObject> returnedList = defaultService.fetchAll();
 		assertNotNull(returnedList);
@@ -82,7 +82,7 @@ public class UserServiceTest {
 	@Test(expected = ConstraintViolationException.class)
 	public void saveWithConstraintViolationExceptionTest() throws ResourceNullException {
 		User newUser = User.builder().username("T").password("12345").start(LocalDate.of(2010, 04, 02))
-				.userRole(Role.DEVELOPER).aktiv(true).build();
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).aktiv(true).build();
 		defaultService.save(newUser);
 	}
 

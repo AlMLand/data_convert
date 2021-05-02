@@ -87,7 +87,7 @@ public class EmployeeServiceTest {
 		newEmployee.setCompanyAffiliation(0);
 		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
 		newEmployee.setUser(User.builder().username("Test_new_user").password("12345").start(LocalDate.of(2032, 04, 02))
-				.userRole(Role.DEVELOPER).aktiv(true).build());
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).aktiv(true).build());
 		defaultService.save(newEmployee);
 
 		List<AbstractObject> returnedList = defaultService.fetchAll();
@@ -122,7 +122,7 @@ public class EmployeeServiceTest {
 		newEmployee.setCompanyAffiliation(0);
 		newEmployee.setWebSite(new URL("http://test_new_employee.com/"));
 		newEmployee.setUser(User.builder().username("T").password("12345").start(LocalDate.of(2032, 04, 02))
-				.userRole(Role.DEVELOPER).aktiv(true).build());
+				.userRole(List.of(Role.builder().role("DEVELOPER").build())).aktiv(true).build());
 		defaultService.save(newEmployee);
 	}
 	
