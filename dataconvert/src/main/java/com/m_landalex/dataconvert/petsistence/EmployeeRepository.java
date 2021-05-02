@@ -6,4 +6,6 @@ import com.m_landalex.dataconvert.domain.EmployeeEntity;
 
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
 
+	EmployeeEntity findByLastName(String employeeLastName);
+	
 }
