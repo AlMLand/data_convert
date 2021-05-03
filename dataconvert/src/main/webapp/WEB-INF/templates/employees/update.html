@@ -95,9 +95,9 @@
 						<div class="form_group">
 							<label class="form_label" th:text="#{u.role}">User role</label><br>
 							<select th:field="*{user.userRole}" class="select-css">
-								<option th:value="'SUPPORTER'" th:text="SUPPORTER"/>
+								<option th:value="'SUPPORTER'" th:text="OFFICE"/>
 								<option th:value="'ADMINISTRATOR'" th:text="ADMINISTRATOR"/>
-								<option th:value="'DEVELOPER'" th:text="DEVELOPER"/>
+								<option th:value="'DEVELOPER'" th:text="OFFICE_EDITOR"/>
 							</select>
 							<p th:if="${#fields.hasErrors('user.userRole')}" th:errors="*{user.userRole}" class="form_errors"/>
 						</div>
