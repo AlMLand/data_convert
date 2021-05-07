@@ -22,7 +22,7 @@ import com.m_landalex.dataconvert.formatter.ApplicationConversionServiceFactoryB
 import com.m_landalex.dataconvert.service.DefaultService;
 
 @Service
-@Profile("!test")
+@Profile({"!test & !test2"})
 public class DBInitialization {
 
 	@Autowired
