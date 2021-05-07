@@ -24,6 +24,19 @@
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-test -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+		    <version>5.4.6</version>
+		    <scope>test</scope>
+		    <exclusions>
+		    	<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+		    </exclusions>
+		</dependency>
  		<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 --> 
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
@@ -114,8 +127,7 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient; 
-			WebService REST -->
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient; WebService REST -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -127,8 +139,7 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind; 
-			JSON<->Object mapping -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind; JSON<->Object mapping -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -146,8 +157,7 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>2.4.6</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.glassfish.web/javax.el !!-for 
-			Validator-!! -->
+		<!-- https://mvnrepository.com/artifact/org.glassfish.web/javax.el !!-for Validator-!! -->
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>javax.el</artifactId>
@@ -221,7 +231,25 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.1</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hamcrest</groupId>
+    				<artifactId>hamcrest-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		<dependency>
+			 <groupId>org.hamcrest</groupId>
+			 <artifactId>hamcrest</artifactId>
+			 <version>2.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		
 	</dependencies>
 	
 </project>
