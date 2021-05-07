@@ -1,18 +1,15 @@
-package com.m_landalex.dataconvert.controller;
+package com.m_landalex.dataconvert.controller.webcontroller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.hamcrest.Matchers;
+import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -88,19 +85,19 @@ public class WebEmployeeControllerTest {
 				.andExpect(view().name("employees/list"))
 				.andDo(print())
 				.andExpect(forwardedUrl("employees/list"))
-				.andExpect(model().attribute("employees", Matchers.hasSize(2)))
-				.andExpect(model().attribute("employees", Matchers.hasItem(
-						Matchers.allOf(
-								Matchers.hasProperty("id", Matchers.is(1L)),
-								Matchers.hasProperty("firstName", Matchers.is("FirstnameTEST1")),
-								Matchers.hasProperty("lastName", Matchers.is("LastnameTEST1"))
+				.andExpect(model().attribute("employees", hasSize(2)))
+				.andExpect(model().attribute("employees", hasItem(
+						allOf(
+								hasProperty("id", is(1L)),
+								hasProperty("firstName", is("FirstnameTEST1")),
+								hasProperty("lastName", is("LastnameTEST1"))
 								)
 						)))
-				.andExpect(model().attribute("employees", Matchers.hasItem(
-						Matchers.allOf(
-								Matchers.hasProperty("id", Matchers.is(2L)),
-								Matchers.hasProperty("firstName", Matchers.is("FirstnameTEST2")),
-								Matchers.hasProperty("lastName", Matchers.is("LastnameTEST2"))
+				.andExpect(model().attribute("employees", hasItem(
+						allOf(
+								hasProperty("id", is(2L)),
+								hasProperty("firstName", is("FirstnameTEST2")),
+								hasProperty("lastName", is("LastnameTEST2"))
 								)
 						)));
 		
