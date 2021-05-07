@@ -1,4 +1,4 @@
-package com.m_landalex.dataconvert.controller;
+package com.m_landalex.dataconvert.controller.restcontroller;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,7 +28,7 @@ import com.m_landalex.dataconvert.service.DefaultService;
 import com.m_landalex.dataconvert.view.controller.rest.RestEmployeeController;
 
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
-public class EmployeeControllerTest {
+public class RestEmployeeControllerTest {
 	
 	@Mock
 	private DefaultService mockedDefaultService;
