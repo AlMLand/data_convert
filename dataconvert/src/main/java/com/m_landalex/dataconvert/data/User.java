@@ -12,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +40,7 @@ public class User extends AbstractObject implements Serializable, Comparable<Use
 	private String password;
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}") 
 	@FutureOrPresent(message = "{javax.validation.constraints.FutureOrPresent.message}") 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate start;
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
 	private Boolean aktiv;

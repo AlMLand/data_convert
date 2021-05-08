@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,10 +45,12 @@ public class Employee extends AbstractObject implements Serializable, Comparable
 	@Size( min = 2, max = 50, message = "{javax.validation.constraints.Size.message}" ) 
 	private String lastName;
 	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
-	@Past( message = "{javax.validation.constraints.Past.message}" ) 
+	@Past( message = "{javax.validation.constraints.Past.message}" )
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 	@NotNull( message = "{javax.validation.constraints.NotNull.message}" )
 	@FutureOrPresent( message = "{javax.validation.constraints.FutureOrPresent.message}" )
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate jobStartInTheCompany;
 	@Min( value = 0, message = "{javax.validation.constraints.Min.message}" )
 	private int companyAffiliation;
