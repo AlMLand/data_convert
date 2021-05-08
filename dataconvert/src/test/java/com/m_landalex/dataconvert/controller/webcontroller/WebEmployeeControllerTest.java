@@ -1,8 +1,9 @@
 package com.m_landalex.dataconvert.controller.webcontroller;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -14,7 +15,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -75,13 +78,12 @@ public class WebEmployeeControllerTest {
 	
 	@Test
 	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
-	public void findAll_ShouldAddEmployeeToModelAndRenderEMployeeListView() throws Exception {
+	public void list_ShouldAddEmployeeToModelAndRenderEmployeeListView() throws Exception {
 		when(mockedDefaultService.fetchAll()).thenReturn(List.of(employeeTEST1, employeeTEST2));
 		
 		mockMvc.perform(get("/employees"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("employees/list"))
-				.andDo(print())
 				.andExpect(forwardedUrl("employees/list"))
 				.andExpect(model().attribute("employees", hasSize(2)))
 				.andExpect(model().attribute("employees", hasItem(
@@ -105,7 +107,7 @@ public class WebEmployeeControllerTest {
 	
 	@Test
 	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
-	public void findById_EmployeeFound_ShouldAddEmployeeToModelAndRenderViewEmployeeView() throws Exception {
+	public void show_EmployeeFound_ShouldAddEmployeeToModelAndRenderViewEmployeeView() throws Exception {
 		when(mockedDefaultService.fetchById(1L)).thenReturn(employeeTEST1);
 		
 		mockMvc.perform(get("/employees/{id}", 1L))
@@ -118,6 +120,53 @@ public class WebEmployeeControllerTest {
 		
 		verify(mockedDefaultService, times(1)).fetchById(1L);
 		verifyNoMoreInteractions(mockedDefaultService);
+	}
+	
+	@Test
+	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
+	public void updateForm_EmployeeFound_ShouldAddEmployeeToModelAndRenderViewEmployeeView() throws Exception {
+		when(mockedDefaultService.fetchById(1L)).thenReturn(employeeTEST1);
+		
+		mockMvc.perform(get("/employees/edits/{id}", 1L))
+				.andExpect(status().isOk())
+				.andExpect(view().name("employees/update"))
+				.andExpect(forwardedUrl("employees/update"))
+				.andExpect(model().attribute("employee", hasProperty("id", is(1L))))
+				.andExpect(model().attribute("employee", hasProperty("firstName", is("FirstnameTEST1"))))
+				.andExpect(model().attribute("employee", hasProperty("lastName", is("LastnameTEST1"))));
+		
+		verify(mockedDefaultService, times(1)).fetchById(1L);
+		verifyNoMoreInteractions(mockedDefaultService);
+	}
+	
+	@Test
+	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
+	public void update_FirstNameAndLastNameAndUserAreFail_ShouldRenderFormViewAndReturnValidationErrorsForFirstnameAndLastnameAndUser()
+			throws Exception {
+		when(mockedDefaultService.save(Mockito.any(Employee.class))).thenReturn(employeeTEST1);
+		
+		mockMvc.perform(post("/employees")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("firstName", "a".repeat(100))
+				.param("lastName", "b".repeat(100))
+				.param("birthDate", LocalDate.of(2000, 01, 01).toString())
+				.param("jobStartInTheCompany", LocalDate.of(2022, 01, 01).toString())
+				.param("companyAffiliation", "0")
+				.param("description", "descriptionTEST")
+				.param("photo", "")
+				.param("webSite", "http://employeeTEST1.com/")
+				.param("user", "null"))
+		.andExpect(status().isOk()).andDo(print())
+		.andExpect(view().name("employees/update"))
+		.andExpect(forwardedUrl("employees/update"))
+		.andExpect(model().errorCount(3))
+		.andExpect(model().attributeHasFieldErrors("employee", "firstName"))
+		.andExpect(model().attributeHasFieldErrors("employee", "lastName"))
+		.andExpect(model().attributeHasFieldErrors("employee", "user"))
+		.andExpect(model().attribute("employee", hasProperty("id", nullValue())))
+		.andExpect(model().attribute("employee", hasProperty("user", nullValue())));
+		
+		verify(mockedDefaultService, times(0)).save(Mockito.any(Employee.class));
 	}
 	
 }
