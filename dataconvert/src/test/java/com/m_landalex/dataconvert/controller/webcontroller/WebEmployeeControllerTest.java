@@ -1,28 +1,13 @@
 package com.m_landalex.dataconvert.controller.webcontroller;
 
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -77,7 +62,7 @@ public class WebEmployeeControllerTest {
 		
 		employeeTEST1 = Employee.builder().firstName("FirstnameTEST1").lastName("LastnameTEST1")
 				.birthDate(LocalDate.of(2000, 01, 01)).jobStartInTheCompany(LocalDate.of(2022, 01, 01))
-				.companyAffiliation(0).description("descriptionTEST1").photo(null)
+				.companyAffiliation(0).description("descriptionTEST1").photo("photoTEST".getBytes())
 				.webSite(new URL("http://employeeTEST1.com/"))
 				.user(User.builder().username("UsernameTEST1")
 						.password("$2y$12$hIN5ajwLnQEKfMPHOyKxv.Hzk2v3yk2O1qaEAsDk/3KKD12LvOll.")
@@ -309,6 +294,16 @@ public class WebEmployeeControllerTest {
 			.andExpect(view().name("redirect:/employees"));
 		
 		assertEquals(1, employees.size());
+	}
+	
+	@Test
+	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
+	public void downloadPhoto_XXX() throws Exception {
+		when(mockedDefaultService.fetchById(Mockito.anyLong())).thenReturn(employeeTEST1);
+		
+		mockMvc.perform(get("/employees/photo/{id}", 1L))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 	
 }
