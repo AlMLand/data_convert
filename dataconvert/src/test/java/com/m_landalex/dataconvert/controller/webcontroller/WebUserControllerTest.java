@@ -45,6 +45,7 @@ public class WebUserControllerTest {
 	public void setUp() {
 		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 		mockedDefaultService = mock(UserService.class);
+		// manually injections
 		ReflectionTestUtils.setField(userController, "defaultService", mockedDefaultService);
 		
 		userTEST1 = User.builder().username("UsernameTEST1")
