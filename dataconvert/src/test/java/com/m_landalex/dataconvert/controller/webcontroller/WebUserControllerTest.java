@@ -73,17 +73,17 @@ public class WebUserControllerTest {
 				.andExpect(model().attribute("users", hasSize(2)))
 				.andExpect(model().attribute("users", hasItem(
 							allOf(
-									hasProperty("id", is(1L)),
-									hasProperty("username", is("UsernameTEST1")),
-									hasProperty("aktiv", is(true))
-									)
+								hasProperty("id", is(1L)),
+								hasProperty("username", is("UsernameTEST1")),
+								hasProperty("aktiv", is(true))
+								)
 						)))
 				.andExpect(model().attribute("users", hasItem(
 							allOf(
-									hasProperty("id", is(2L)),
-									hasProperty("username", is("UsernameTEST2")),
-									hasProperty("aktiv", is(false))
-									)
+								hasProperty("id", is(2L)),
+								hasProperty("username", is("UsernameTEST2")),
+								hasProperty("aktiv", is(false))
+								)
 						)));
 		
 		verify(mockedDefaultService, times(1)).fetchAll();
