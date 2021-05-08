@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -33,6 +35,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -105,17 +109,17 @@ public class WebEmployeeControllerTest {
 				.andExpect(model().attribute("employees", hasSize(2)))
 				.andExpect(model().attribute("employees", hasItem(
 						allOf(
-								hasProperty("id", is(1L)),
-								hasProperty("firstName", is("FirstnameTEST1")),
-								hasProperty("lastName", is("LastnameTEST1"))
-								)
+							hasProperty("id", is(1L)),
+							hasProperty("firstName", is("FirstnameTEST1")),
+							hasProperty("lastName", is("LastnameTEST1"))
+							)
 						)))
 				.andExpect(model().attribute("employees", hasItem(
 						allOf(
-								hasProperty("id", is(2L)),
-								hasProperty("firstName", is("FirstnameTEST2")),
-								hasProperty("lastName", is("LastnameTEST2"))
-								)
+							hasProperty("id", is(2L)),
+							hasProperty("firstName", is("FirstnameTEST2")),
+							hasProperty("lastName", is("LastnameTEST2"))
+							)
 						)));
 		
 		verify(mockedDefaultService, times(1)).fetchAll();
@@ -220,8 +224,8 @@ public class WebEmployeeControllerTest {
 		
 		Employee employee = captorEmployee.getValue();
 		assertNull(employee.getId());
-		assertEquals(employee.getDescription(), "descriptionTEST");
-		assertEquals(employee.getBirthDate(), LocalDate.of(2000, 01, 01));
+		assertEquals("descriptionTEST", employee.getDescription());
+		assertEquals(LocalDate.of(2000, 01, 01), employee.getBirthDate());
 	}
 	
 	@Test
@@ -261,9 +265,50 @@ public class WebEmployeeControllerTest {
 		
 		Employee employee = captorEmployee.getValue();
 		assertNotNull(employee.getId());
-		assertEquals(employee.getFirstName(), "FirstnameTEST1");
-		assertEquals(employee.getUser().getUserRole().toString()
-				.subSequence(1, employee.getUser().getUserRole().toString().length() - 1), "ADMINISTRATOR");
+		assertEquals("FirstnameTEST1", employee.getFirstName());
+		assertEquals("ADMINISTRATOR", employee.getUser().getUserRole().toString()
+				.subSequence(1, employee.getUser().getUserRole().toString().length() - 1));
+
+	}
+	
+	@Test
+	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
+	public void createForm_ShouldReturnNewEmptyEmployeeAndRenderView() throws Exception {
+		mockMvc.perform(get("/employees/new"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("employees/update"))
+			.andExpect(forwardedUrl("employees/update"))
+			.andDo(print())
+			.andExpect(model().errorCount(0))
+			.andExpect(model().attributeDoesNotExist("id", "version", "firstName", "lastName", "birthDate", "jobStartInTheCompany", 
+					"companyAffiliation", "description", "photo", "webSite", "user.username", "user.password",
+					"user.start", "user.aktiv", "user.userRole"));
+	}
+	
+	@Test
+	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
+	public void delete_ShouldRemoveOneEmployeeInCollectionAndRenderView() throws Exception {
+		List<Employee> employees = new ArrayList<>();
+		employees.add(employeeTEST1);
+		employees.add(employeeTEST2);
+		assertEquals(2, employees.size());
+		
+		doAnswer(new Answer<Employee>() {
+
+			@Override
+			public Employee answer(InvocationOnMock invocation) throws Throwable {
+				employees.remove(0);
+				return null;
+			}
+		}).when(mockedDefaultService).deleteById(Mockito.anyLong());
+		
+		mockMvc.perform(get("/employees/delete/{id}", 1L))
+			.andExpect(status().isFound())
+			.andDo(print())
+			.andExpect(redirectedUrl("/employees"))
+			.andExpect(view().name("redirect:/employees"));
+		
+		assertEquals(1, employees.size());
 	}
 	
 }
