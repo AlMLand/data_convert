@@ -298,7 +298,7 @@ public class WebEmployeeControllerTest {
 	
 	@Test
 	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
-	public void downloadPhoto_XXX() throws Exception {
+	public void downloadPhoto_ShouldReturnHTTPStatus200() throws Exception {
 		when(mockedDefaultService.fetchById(Mockito.anyLong())).thenReturn(employeeTEST1);
 		
 		mockMvc.perform(get("/employees/photo/{id}", 1L))
