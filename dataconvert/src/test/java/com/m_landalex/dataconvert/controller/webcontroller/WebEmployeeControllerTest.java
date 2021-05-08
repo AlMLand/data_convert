@@ -6,6 +6,9 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,6 +31,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -210,7 +214,14 @@ public class WebEmployeeControllerTest {
 		.andExpect(model().attribute("employee", hasProperty("firstName", is("FirstnameTEST1"))))
 		.andExpect(model().attribute("employee", hasProperty("description", is("descriptionTEST"))));
 		
-		verify(mockedDefaultService, times(1)).save(Mockito.any(Employee.class));
+		ArgumentCaptor<Employee> captorEmployee = ArgumentCaptor.forClass(Employee.class);
+		verify(mockedDefaultService, times(1)).save(captorEmployee.capture());
+		verifyNoMoreInteractions(mockedDefaultService);
+		
+		Employee employee = captorEmployee.getValue();
+		assertNull(employee.getId());
+		assertEquals(employee.getDescription(), "descriptionTEST");
+		assertEquals(employee.getBirthDate(), LocalDate.of(2000, 01, 01));
 	}
 	
 	@Test
@@ -244,7 +255,15 @@ public class WebEmployeeControllerTest {
 		.andExpect(model().attribute("employee", hasProperty("firstName", is("FirstnameTEST1"))))
 		.andExpect(model().attribute("employee", hasProperty("description", is("descriptionTEST"))));
 		
-		verify(mockedDefaultService, times(1)).save(Mockito.any(Employee.class));
+		ArgumentCaptor<Employee> captorEmployee = ArgumentCaptor.forClass(Employee.class);
+		verify(mockedDefaultService, times(1)).save(captorEmployee.capture());
+		verifyNoMoreInteractions(mockedDefaultService);
+		
+		Employee employee = captorEmployee.getValue();
+		assertNotNull(employee.getId());
+		assertEquals(employee.getFirstName(), "FirstnameTEST1");
+		assertEquals(employee.getUser().getUserRole().toString()
+				.subSequence(1, employee.getUser().getUserRole().toString().length() - 1), "ADMINISTRATOR");
 	}
 	
 }
