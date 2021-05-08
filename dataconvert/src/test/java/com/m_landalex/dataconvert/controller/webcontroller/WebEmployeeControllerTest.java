@@ -1,11 +1,24 @@
 package com.m_landalex.dataconvert.controller.webcontroller;
 
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -167,6 +180,71 @@ public class WebEmployeeControllerTest {
 		.andExpect(model().attribute("employee", hasProperty("user", nullValue())));
 		
 		verify(mockedDefaultService, times(0)).save(Mockito.any(Employee.class));
+	}
+	
+	@Test
+	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
+	public void update_CreateNewEmployee_ShouldAddEmployeeEntryAndRenderViewEmployeeEntryView() throws Exception {
+		when(mockedDefaultService.save(Mockito.any(Employee.class))).thenReturn(employeeTEST1);
+		
+		mockMvc.perform(post("/employees")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("firstName", "FirstnameTEST1")
+				.param("lastName", "LastnameTEST1")
+				.param("birthDate", LocalDate.of(2000, 01, 01).toString())
+				.param("jobStartInTheCompany", LocalDate.of(2022, 01, 01).toString())
+				.param("companyAffiliation", "0")
+				.param("description", "descriptionTEST")
+				.param("photo", "")
+				.param("webSite", "http://employeeTEST1.com/")
+				.param("user.username", "UsernameTEST1")
+				.param("user.password", "$2y$12$hIN5ajwLnQEKfMPHOyKxv.Hzk2v3yk2O1qaEAsDk/3KKD12LvOll.")
+				.param("user.start", LocalDate.of(2022, 01, 01).toString())
+				.param("user.aktiv", "true")
+				.param("user.userRole", "ADMINISTRATOR"))
+		.andExpect(status().isFound())
+		.andDo(print())
+		.andExpect(view().name("redirect:/employees"))
+		.andExpect(redirectedUrl("/employees"))
+		.andExpect(model().errorCount(0))
+		.andExpect(model().attribute("employee", hasProperty("firstName", is("FirstnameTEST1"))))
+		.andExpect(model().attribute("employee", hasProperty("description", is("descriptionTEST"))));
+		
+		verify(mockedDefaultService, times(1)).save(Mockito.any(Employee.class));
+	}
+	
+	@Test
+	@WithMockUser(username = "TESTER", password = "12345", authorities = {"ADMINISTRATOR"})
+	public void update_ModifiedExistingEmployee_ShouldAddEmployeeEntryAndRenderViewEmployeeEntryView() throws Exception {
+		when(mockedDefaultService.save(Mockito.any(Employee.class))).thenReturn(employeeTEST1);
+		
+		mockMvc.perform(post("/employees")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("id", "1")
+				.param("version", "0")
+				.param("firstName", "FirstnameTEST1")
+				.param("lastName", "LastnameTEST1")
+				.param("birthDate", LocalDate.of(2000, 01, 01).toString())
+				.param("jobStartInTheCompany", LocalDate.of(2022, 01, 01).toString())
+				.param("companyAffiliation", "0")
+				.param("description", "descriptionTEST")
+				.param("photo", "")
+				.param("webSite", "http://employeeTEST1.com/")
+				.param("user.username", "UsernameTEST1")
+				.param("user.password", "$2y$12$hIN5ajwLnQEKfMPHOyKxv.Hzk2v3yk2O1qaEAsDk/3KKD12LvOll.")
+				.param("user.start", LocalDate.of(2022, 01, 01).toString())
+				.param("user.aktiv", "true")
+				.param("user.userRole", "ADMINISTRATOR"))
+		.andExpect(status().isFound())
+		.andDo(print())
+		.andExpect(view().name("redirect:/employees/1"))
+		.andExpect(redirectedUrl("/employees/1"))
+		.andExpect(model().errorCount(0))
+		.andExpect(model().attribute("employee", hasProperty("id", is(1L))))
+		.andExpect(model().attribute("employee", hasProperty("firstName", is("FirstnameTEST1"))))
+		.andExpect(model().attribute("employee", hasProperty("description", is("descriptionTEST"))));
+		
+		verify(mockedDefaultService, times(1)).save(Mockito.any(Employee.class));
 	}
 	
 }
