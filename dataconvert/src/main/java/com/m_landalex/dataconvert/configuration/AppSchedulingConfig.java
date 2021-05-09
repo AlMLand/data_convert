@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @Import( AppServiceConfig.class )
-@Profile( "!test & !test2" )
+@Profile( "!test & !test2 & !test3" )
 @EnableScheduling
 @Configuration
 public class AppSchedulingConfig {
