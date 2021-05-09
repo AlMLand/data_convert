@@ -51,13 +51,6 @@ public class RestEmployeeController {
 		return defaultService.fetchById(id);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	@ResponseBody
-	public Employee updateEmployeeById(@Valid @RequestBody Employee employee) throws ResourceNullException {
-		defaultService.save(employee);
-		return employee;
-	}
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void deleteEmployeeById(@PathVariable Long id) {
