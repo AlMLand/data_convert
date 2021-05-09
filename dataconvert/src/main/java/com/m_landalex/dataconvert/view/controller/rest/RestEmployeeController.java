@@ -2,6 +2,8 @@ package com.m_landalex.dataconvert.view.controller.rest;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ public class RestEmployeeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
-	public Employee createEmployee(@RequestBody Employee employee) throws ResourceNullException {
+	public Employee createEmployee(@Valid @RequestBody Employee employee) throws ResourceNullException {
 		defaultService.save(employee);
 		return employee;
 	}
