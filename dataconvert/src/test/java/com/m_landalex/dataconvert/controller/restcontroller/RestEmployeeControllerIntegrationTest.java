@@ -244,7 +244,7 @@ public class RestEmployeeControllerIntegrationTest {
 	}
 	
 	@Test
-	public void deleteEmployeeById_WhenValidInputThenReturn200_VerifyingDeserializedFromHTTPRequest() throws Exception {
+	public void deleteEmployeeById_WhenValidInputThenReturn200() throws Exception {
 		final Long count = 1L;
 		List<Employee> employees = new ArrayList<>();
 		employees.add(employeeTEST1);
