@@ -65,7 +65,7 @@ public class RestEmployeeControllerIntegrationTest {
 	
 	@Test
 	@WithMockUser(username = "Friend", password = "12345", authorities = {"REMOTE"})
-	public void createEmployee_XXX() throws Exception {
+	public void createEmployee_WhenValidInputThenReturn200() throws Exception {
 		mockMvc.perform(post("/rest/employees/")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(employeeTEST1)))
