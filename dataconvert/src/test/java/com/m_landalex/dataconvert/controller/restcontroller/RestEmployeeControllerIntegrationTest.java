@@ -2,19 +2,10 @@ package com.m_landalex.dataconvert.controller.restcontroller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -249,6 +240,37 @@ public class RestEmployeeControllerIntegrationTest {
 				.andExpect(jsonPath("$.birthDate", is("2000-01-01")));
 		
 		verify(mockedDefaultService, times(1)).fetchById(Mockito.anyLong());
+		verifyNoMoreInteractions(mockedDefaultService);
+	}
+	
+	@Test
+	public void deleteEmployeeById_WhenValidInputThenReturn200_VerifyingDeserializedFromHTTPRequest() throws Exception {
+		final Long count = 1L;
+		List<Employee> employees = new ArrayList<>();
+		employees.add(employeeTEST1);
+		employees.add(employeeTEST2);
+		assertEquals(2, employees.size());
+		
+		doAnswer(new Answer<Employee>() {
+
+			@Override
+			public Employee answer(InvocationOnMock invocation) throws Throwable {
+				for(Employee employee : employees) {
+					if(employee.getId() == count) {
+						employees.remove(employee);
+					}
+				}
+				return null;
+			}
+		}).when(mockedDefaultService).deleteById(count);
+		
+		mockMvc.perform(delete("/rest/employees/{id}", 1L))
+				.andExpect(status().isOk());
+		
+		assertNotNull(employees);
+		assertEquals(1, employees.size());
+		
+		verify(mockedDefaultService, times(1)).deleteById(count);
 		verifyNoMoreInteractions(mockedDefaultService);
 	}
 	
