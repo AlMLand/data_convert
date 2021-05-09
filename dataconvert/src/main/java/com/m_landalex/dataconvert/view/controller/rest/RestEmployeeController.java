@@ -53,7 +53,7 @@ public class RestEmployeeController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateEmployeeById(@RequestBody Employee employee) throws ResourceNullException {
+	public void updateEmployeeById(@Valid @RequestBody Employee employee) throws ResourceNullException {
 		defaultService.save(employee);
 	}
 
