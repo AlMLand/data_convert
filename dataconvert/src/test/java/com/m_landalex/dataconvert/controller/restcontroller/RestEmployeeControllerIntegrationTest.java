@@ -2,6 +2,7 @@ package com.m_landalex.dataconvert.controller.restcontroller;
 
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.MalformedURLException;
@@ -14,7 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +23,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.m_landalex.dataconvert.configuration.webconfiguration.WebConfig;
 import com.m_landalex.dataconvert.data.Employee;
@@ -64,12 +65,25 @@ public class RestEmployeeControllerIntegrationTest {
 	}
 	
 	@Test
-	@WithMockUser(username = "Friend", password = "12345", authorities = {"REMOTE"})
-	public void createEmployee_WhenValidInputThenReturn200() throws Exception {
+	public void createEmployee_WhenValidInputThenReturn200_SuccessfullySerializedFromHTTPRequest() throws Exception {
 		mockMvc.perform(post("/rest/employees/")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(employeeTEST1)))
 		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void createEmployee_WhenFirstnameAndUserNullValue_ThenReturn400() throws JsonProcessingException, Exception {
+		Employee employeeTEST2 = Employee.builder().firstName(null).lastName("LastnameTEST1")
+				.birthDate(LocalDate.of(2000, 01, 01)).jobStartInTheCompany(LocalDate.of(2022, 01, 01))
+				.companyAffiliation(0).description("descriptionTEST1").photo("photoTEST".getBytes())
+				.webSite(new URL("http://employeeTEST1.com/")).user(null).build();
+		employeeTEST1.setId(Long.valueOf(1));
+		
+		mockMvc.perform(post("/rest/employees/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(employeeTEST2)))
+		.andExpect(status().isBadRequest());
 	}
 	
 }
