@@ -3,13 +3,23 @@ package com.m_landalex.dataconvert.controller.restcontroller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matchers;
@@ -17,6 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -93,6 +106,8 @@ public class RestEmployeeControllerIntegrationTest {
 	
 	@Test
 	public void createEmployee_WhenFirstnameAndUserNullValueThenReturn400_VerifyingValidation() throws JsonProcessingException, Exception {
+		when(mockedDefaultService.save(Mockito.any(Employee.class))).thenReturn(employeeTEST1);
+		
 		Employee employeeNotValid = Employee.builder().firstName(null).lastName("LastnameTEST1")
 				.birthDate(LocalDate.of(2000, 01, 01)).jobStartInTheCompany(LocalDate.of(2022, 01, 01))
 				.companyAffiliation(0).description("descriptionTEST1").photo("photoTEST".getBytes())
@@ -103,6 +118,24 @@ public class RestEmployeeControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(employeeNotValid)))
 		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void createEmployee_WhenFirstnameAndLastnameTooLongValueThenReturn400_VerifyingValidation() throws JsonProcessingException, Exception {
+		when(mockedDefaultService.save(Mockito.any(Employee.class))).thenReturn(employeeTEST1);
+		
+		Employee employeeNotValid = Employee.builder().firstName("a".repeat(200)).lastName("b".repeat(200))
+				.birthDate(LocalDate.of(2000, 01, 01)).jobStartInTheCompany(LocalDate.of(2022, 01, 01))
+				.companyAffiliation(0).description("descriptionTEST1").photo("photoTEST".getBytes())
+				.webSite(new URL("http://employeeTEST1.com/")).user(null).build();
+		employeeNotValid.setId(Long.valueOf(1));
+		
+		mockMvc.perform(post("/rest/employees/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(employeeNotValid)))
+		.andExpect(status().isBadRequest());
+		
+		verify(mockedDefaultService, times(0)).save(Mockito.any(Employee.class));
 	}
 	
 	@Test
@@ -136,6 +169,19 @@ public class RestEmployeeControllerIntegrationTest {
 	}
 	
 	@Test
+	public void fetchAllEmployees_WhenStatus200ThenReturnEmployeesResource_VerifyingSerializedToHTTPResponse() throws Exception {
+		when(mockedDefaultService.fetchAll()).thenReturn(List.of(employeeTEST1, employeeTEST2));
+		
+		MvcResult mvcResult = mockMvc.perform(get("/rest/employees/"))
+				.andExpect(status().isOk())
+				.andReturn();
+		String actualResponseBody = mvcResult.getResponse().getContentAsString();
+		String expectedResponseBody = objectMapper.writeValueAsString(List.of(employeeTEST1, employeeTEST2));
+		
+		assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
+	}
+	
+	@Test
 	public void fetchAllEmployees_SchouldReturnTwoEmployees() throws Exception {
 		when(mockedDefaultService.fetchAll()).thenReturn(List.of(employeeTEST1, employeeTEST2));
 		
@@ -151,6 +197,58 @@ public class RestEmployeeControllerIntegrationTest {
 			.andExpect(jsonPath("$[1].lastName", is("LastnameTEST2")));
 		
 		verify(mockedDefaultService, times(1)).fetchAll();
+		verifyNoMoreInteractions(mockedDefaultService);
+	}
+	
+	@Test
+	public void deleteAllEmployees_WhenStatus200ThenListSizeIsNull() throws Exception {
+		List<Employee> employees = new ArrayList<>();
+		employees.add(employeeTEST1);
+		employees.add(employeeTEST2);
+		assertEquals(2, employees.size());
+		
+		doAnswer(new Answer<Employee>() {
+
+			@Override
+			public Employee answer(InvocationOnMock invocation) throws Throwable {
+				employees.clear();
+				return null;
+			}
+		}).when(mockedDefaultService).deleteAll();
+		
+		mockMvc.perform(delete("/rest/employees/"))
+				.andExpect(status().isOk());
+		
+		assertEquals(0, employees.size());
+	}
+	
+	@Test
+	public void fetchEmployeeById_WhenStatus200ThenReturnEmployeeResource_VerifyingSerializedToHTTPResponse() throws Exception {
+		when(mockedDefaultService.fetchById(Mockito.anyLong())).thenReturn(employeeTEST1);
+		
+		MvcResult mvcResult = mockMvc.perform(get("/rest/employees/{id}", 1L))
+				.andExpect(status().isOk())
+				.andReturn();
+		
+		String actualResponseBody = mvcResult.getResponse().getContentAsString();
+		String expectedResponseBody = objectMapper.writeValueAsString(employeeTEST1);
+		
+		assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
+	}
+	
+	@Test
+	public void fetchEmployeeById_EmployeeFound_ShouldReturnFoundEmployee() throws Exception {
+		when(mockedDefaultService.fetchById(Mockito.anyLong())).thenReturn(employeeTEST1);
+		
+		mockMvc.perform(get("/rest/employees/{id}", 1L))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id", is(1)))
+				.andExpect(jsonPath("$.firstName", is("FirstnameTEST1")))
+				.andExpect(jsonPath("$.lastName", is("LastnameTEST1")))
+				.andExpect(jsonPath("$.birthDate", is("2000-01-01")));
+		
+		verify(mockedDefaultService, times(1)).fetchById(Mockito.anyLong());
 		verifyNoMoreInteractions(mockedDefaultService);
 	}
 	
