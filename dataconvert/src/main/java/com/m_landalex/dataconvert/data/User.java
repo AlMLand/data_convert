@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,6 +43,7 @@ public class User extends AbstractObject implements Serializable, Comparable<Use
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}") 
 	@FutureOrPresent(message = "{javax.validation.constraints.FutureOrPresent.message}") 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate start;
 	@NotNull(message = "{javax.validation.constraints.NotNull.message}")
 	private Boolean aktiv;
