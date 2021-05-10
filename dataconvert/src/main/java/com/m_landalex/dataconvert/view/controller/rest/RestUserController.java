@@ -2,6 +2,8 @@ package com.m_landalex.dataconvert.view.controller.rest;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ public class RestUserController {
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
-	public User createUser(@RequestBody User user) throws ResourceNullException {
+	public User createUser(@Valid @RequestBody User user) throws ResourceNullException {
 		defaultService.save(user);
 		return user;
 	}
@@ -51,7 +53,7 @@ public class RestUserController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateUserById(@RequestBody User user) throws ResourceNullException {
+	public void updateUserById(@Valid @RequestBody User user) throws ResourceNullException {
 		defaultService.save(user);
 	}
 	
