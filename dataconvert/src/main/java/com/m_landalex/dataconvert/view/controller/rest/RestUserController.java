@@ -51,12 +51,6 @@ public class RestUserController {
 		return defaultService.fetchById(id);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	@ResponseBody
-	public void updateUserById(@Valid @RequestBody User user) throws ResourceNullException {
-		defaultService.save(user);
-	}
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void deleteUserById(@PathVariable Long id) {
