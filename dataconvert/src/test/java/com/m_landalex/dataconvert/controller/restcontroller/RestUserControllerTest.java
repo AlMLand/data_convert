@@ -129,35 +129,6 @@ public class RestUserControllerTest {
 	}
 	
 	@Test
-	public void updateUserByIdTest() throws ResourceNullException {
-		User newUser = User.builder().username("Test_2").password("12345").start(LocalDate.now()).aktiv(false)
-				.userRole(List.of(Role.builder().role("DEVELOPER").build())).build();
-		Mockito.doAnswer(new Answer<AbstractObject>() {
-
-			@Override
-			public AbstractObject answer(InvocationOnMock invocation) throws Throwable {
-				User returnedUser = (User) listUsers.get(0);
-				returnedUser.setUsername(newUser.getUsername());
-				returnedUser.setPassword(newUser.getPassword());
-				returnedUser.setStart(newUser.getStart());
-				returnedUser.setAktiv(newUser.getAktiv());
-				returnedUser.setUserRole(newUser.getUserRole());
-				listUsers.clear();
-				listUsers.add(returnedUser);
-				return null;
-			}
-		}).when(mockedDefaultService).save(newUser);
-		ReflectionTestUtils.setField(userController, "defaultService", mockedDefaultService);
-		
-		userController.updateUserById(newUser);
-
-		User updatedUser = (User) listUsers.get(0);
-		assertEquals(1, listUsers.size());
-		assertEquals("Test_2", updatedUser.getUsername());
-		assertEquals(false, updatedUser.getAktiv());
-	}
-	
-	@Test
 	public void deleteUserByIdTest() {
 		User returnedUser = (User) listUsers.get(0);
 		Mockito.doAnswer(new Answer<AbstractObject>() {
