@@ -183,9 +183,11 @@ public class RestEmployeeControllerIntegrationTest {
 			.andExpect(jsonPath("$[0].id", is(1)))
 			.andExpect(jsonPath("$[0].firstName", is("FirstnameTEST1")))
 			.andExpect(jsonPath("$[0].lastName", is("LastnameTEST1")))
+			.andExpect(jsonPath("$[0].user.userRole[0].role", is("ADMINISTRATOR")))
 			.andExpect(jsonPath("$[1].id", is(2)))
 			.andExpect(jsonPath("$[1].firstName", is("FirstnameTEST2")))
-			.andExpect(jsonPath("$[1].lastName", is("LastnameTEST2")));
+			.andExpect(jsonPath("$[1].lastName", is("LastnameTEST2")))
+			.andExpect(jsonPath("$[1].user.userRole[0].role", is("ADMINISTRATOR")));
 		
 		verify(mockedDefaultService, times(1)).fetchAll();
 		verifyNoMoreInteractions(mockedDefaultService);
@@ -237,7 +239,8 @@ public class RestEmployeeControllerIntegrationTest {
 				.andExpect(jsonPath("$.id", is(1)))
 				.andExpect(jsonPath("$.firstName", is("FirstnameTEST1")))
 				.andExpect(jsonPath("$.lastName", is("LastnameTEST1")))
-				.andExpect(jsonPath("$.birthDate", is("2000-01-01")));
+				.andExpect(jsonPath("$.birthDate", is("2000-01-01")))
+				.andExpect(jsonPath("$.user.userRole[0].role", is("ADMINISTRATOR")));
 		
 		verify(mockedDefaultService, times(1)).fetchById(Mockito.anyLong());
 		verifyNoMoreInteractions(mockedDefaultService);
