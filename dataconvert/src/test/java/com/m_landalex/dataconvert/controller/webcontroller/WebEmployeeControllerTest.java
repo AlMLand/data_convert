@@ -265,9 +265,17 @@ public class WebEmployeeControllerTest {
 			.andExpect(forwardedUrl("employees/update"))
 			.andDo(print())
 			.andExpect(model().errorCount(0))
-			.andExpect(model().attributeDoesNotExist("id", "version", "firstName", "lastName", "birthDate", "jobStartInTheCompany", 
-					"companyAffiliation", "description", "photo", "webSite", "user.username", "user.password",
-					"user.start", "user.aktiv", "user.userRole"));
+			.andExpect(model().attribute("employee", hasProperty("firstName", is(nullValue()))))
+			.andExpect(model().attribute("employee", hasProperty("lastName", is(nullValue()))))
+			.andExpect(model().attribute("employee", hasProperty("birthDate", is(nullValue()))))
+			.andExpect(model().attribute("employee", hasProperty("jobStartInTheCompany", is(nullValue()))))
+			.andExpect(model().attribute("employee", hasProperty("companyAffiliation", is(0))))
+			.andExpect(model().attribute("employee", hasProperty("description", is(nullValue()))))
+			.andExpect(model().attribute("employee", hasProperty("photo", is(nullValue()))))
+			.andExpect(model().attribute("employee", hasProperty("webSite", is(nullValue()))))
+			.andExpect(model().attribute("employee", hasProperty("user", is(new User()))));
+		verifyNoInteractions(mockedDefaultService);
+			
 	}
 	
 	@Test
