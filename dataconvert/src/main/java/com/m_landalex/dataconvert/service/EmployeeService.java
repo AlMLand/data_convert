@@ -11,8 +11,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,15 +24,12 @@ import com.m_landalex.dataconvert.petsistence.EmployeeRepository;
 import com.m_landalex.dataconvert.validator.EmployeeValidator;
 import com.m_landalex.dataconvert.validator.UserValidator;
 
-import lombok.Getter;
-
 @Transactional
 @Service
 public class EmployeeService implements DefaultService{
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 	
-	@Getter	public boolean done;
 	@Autowired private UserValidator userValidator;
 	@Autowired private RabbitTemplate rabbitTemplate;
 	@Autowired private EmployeeValidator employeeValidator;
@@ -91,7 +86,6 @@ public class EmployeeService implements DefaultService{
 				( ( Employee ) employee ).setCompanyAffiliation( years );
 			try {
 				save( employee );
-				done = true;
 			} catch ( ResourceNullException e ) {
 				logger.error( "Resource in method updateEmployeeCompanyAffiliation() is null" );
 				e.printStackTrace();
@@ -105,15 +99,4 @@ public class EmployeeService implements DefaultService{
 		return employeeRepository.count();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Page<Employee> findAllByPage(Pageable pageable) {
-		return (Page<Employee>) conversionService.convert(employeeRepository.findAll(pageable), Employee.class);
-	}
-
-	@Override
-	public AbstractObject fetchByUserName(String userName) {
-		return null;
-	}
-	
 }
