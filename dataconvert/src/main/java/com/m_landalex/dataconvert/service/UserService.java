@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,20 +56,10 @@ public class UserService implements DefaultService{
 		userRepository.deleteAll();
 	}
 
-	@Override
-	public void updateCompanyAffiliation() {}
-
 	@Transactional( propagation = Propagation.NEVER )
 	@Override
 	public long getTotalCount() {
 		return userRepository.count();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Transactional( readOnly = true )
-	@Override
-	public Page<User> findAllByPage( Pageable pageable ) {
-		return (Page<User>) conversionService.convert( userRepository.findAll( pageable ), User.class );
 	}
 
 	@Override
