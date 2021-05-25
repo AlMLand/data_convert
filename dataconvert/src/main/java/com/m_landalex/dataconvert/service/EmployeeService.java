@@ -54,12 +54,14 @@ public class EmployeeService implements DefaultService{
 	}
 	
 	@Transactional( readOnly = true )
+	@Override
 	public Employee fetchById( Long id ) {
 		return conversionService.convert( employeeRepository.findById(id).get(), Employee.class );
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Transactional( readOnly = true )
+	@Transactional(readOnly = true)
+	@Override
 	public List<Employee> fetchAll(){
 		return employeeRepository.findAll()
 					.stream()
@@ -67,15 +69,18 @@ public class EmployeeService implements DefaultService{
 					.collect( Collectors.toList() );
 	}
 	
+	@Override
 	public void deleteById( Long id ) {
 		employeeRepository.deleteById(id);
 	}
 	
+	@Override
 	public void deleteAll() {
 		employeeRepository.deleteAll();
 	}
 	
 	@Scheduled( fixedRate = 50000 )
+	@Override
 	public void updateCompanyAffiliation() {
 		var returnedList = fetchAll();
 		returnedList.forEach( employee -> {

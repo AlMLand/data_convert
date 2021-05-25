@@ -35,12 +35,14 @@ public class UserService implements DefaultService{
 	}
 	
 	@Transactional(readOnly = true)
+	@Override
 	public User fetchById(Long id) {
 		return conversionService.convert(userRepository.findById(id).get(), User.class);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
+	@Override
 	public List<User> fetchAll(){
 		return userRepository.findAll()
 				.stream()
@@ -48,10 +50,12 @@ public class UserService implements DefaultService{
 				.collect(Collectors.toList());
 	}
 	
+	@Override
 	public void deleteById(Long id) {
 		userRepository.deleteById(id);
 	}
 	
+	@Override
 	public void deleteAll() {
 		userRepository.deleteAll();
 	}
