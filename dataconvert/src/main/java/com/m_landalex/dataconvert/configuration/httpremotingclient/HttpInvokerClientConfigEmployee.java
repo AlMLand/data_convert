@@ -6,10 +6,10 @@ import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
 import com.m_landalex.dataconvert.service.DefaultService;
 
+@SuppressWarnings("deprecation")
 @Configuration
 public class HttpInvokerClientConfigEmployee {
 
-	@SuppressWarnings("deprecation")
 	@Bean(name = "emploeeService")
 	public DefaultService defaultService() {
 		HttpInvokerProxyFactoryBean factoryBean = new HttpInvokerProxyFactoryBean();

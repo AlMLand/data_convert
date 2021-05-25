@@ -8,6 +8,7 @@ import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 
 import com.m_landalex.dataconvert.service.DefaultService;
 
+@SuppressWarnings("deprecation")
 @Configuration
 public class HttpInvokerConfigEmployee {
 
@@ -15,7 +16,6 @@ public class HttpInvokerConfigEmployee {
 	@Qualifier(value = "employeeService")
 	private DefaultService defaultService;
 	
-	@SuppressWarnings("deprecation")
 	@Bean(name = "/httpInvoker/defaultService/employee")
 	public HttpInvokerServiceExporter httpInvokerServiceExporter() {
 		HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
